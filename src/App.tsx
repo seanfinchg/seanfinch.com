@@ -1,0 +1,54 @@
+import './App.css';
+import { FaGithub, FaInstagram, FaReddit, FaLinkedin, FaSpotify, FaYoutube} from 'react-icons/fa';
+
+function App() {
+  const openLinkInNewTab = (url: string) => {
+    window.open(url, '_blank');
+  };
+
+  return (
+    <>
+      <div>
+        <h1>Sean Finch</h1>
+        <h3>the one and only</h3>
+      </div>
+      <div className="social-buttons">
+        <div className="button-group">
+          <button onClick={() => openLinkInNewTab('https://github.com/seanfinchg')}>
+            <FaGithub size={30} />
+          </button>
+          <button onClick={() => openLinkInNewTab('https://www.instagram.com/straight.up.sean/')}>
+            <FaInstagram size={30} />
+          </button>
+          <button onClick={() => openLinkInNewTab('https://www.reddit.com/user/mk7sean')}>
+            <FaReddit size={30} />
+          </button>
+          <button onClick={() => openLinkInNewTab('https://www.linkedin.com/in/sean-finch-21803927b/')}>
+            <FaLinkedin size={30} />
+          </button>
+          <button onClick={() => openLinkInNewTab('https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4')}>
+            <FaSpotify size={30} />
+          </button>
+          <button onClick={() => openLinkInNewTab('https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA')}>
+            <FaYoutube size={30} />
+          </button>
+        </div>
+        <div className="button-group">
+          <button onClick={() => openLinkInNewTab('https://300021720.wixsite.com/aotaportfolio')}>
+            Music Portfolio
+          </button>
+          <button onClick={() => openLinkInNewTab('https://docs.google.com/document/d/19Yhwee36co-cGrTDsVJUwNw30nKb_iQjcCVFIlCAKtg/edit?usp=sharing')}>
+            Resume
+          </button>
+        </div>
+      </div>
+      <footer>
+        <p>
+          <span className="footer-link" onClick={() => openLinkInNewTab('https://seanfinch.com')}>seanfinch.com</span> • Website coded with help from <span className="footer-link" onClick={() => openLinkInNewTab('https://asahoo.dev')}>asahoo.dev</span>
+        </p>
+      </footer>
+    </>
+  );
+}
+
+export default App;
