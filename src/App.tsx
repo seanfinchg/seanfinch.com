@@ -10,7 +10,9 @@ function App() {
     <>
       <div>
         <h1>Sean Finch</h1>
-        <h3>the one and only</h3>
+        <h5>the one and only</h5>
+        <h3>Computer Science @ Northeastern University c/o 2027</h3>
+        <h4>Student, Homelabber, Musician, and more</h4>
       </div>
       <div className="social-buttons">
         <div className="button-group">
