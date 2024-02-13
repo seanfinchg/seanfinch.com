@@ -42,78 +42,42 @@ const Navbar: React.FC = () => {
     return theme === "light"
       ? "bg-ultra-light-mode text-ultra-dark-mode"
       : "bg-ultra-dark-mode text-light-mode";
-  }
+  };
+
+  const getThemeSwitcher = () => {
+    return (
+      <button onClick={toggleTheme} className="text-5xl md:text-xl">
+        {theme === "light" ? <FaMoon /> : <FaSun />}
+      </button>
+    );
+  };
 
   const getStyleForMobileNavbar = (): string => {
     return isMobile
-        ? `fixed top-24 left-0 w-screen rounded-br-lg rounded-bl-lg ${getThemeCSS()} flex flex-col 
+      ? `fixed top-24 left-0 w-screen rounded-br-lg rounded-bl-lg ${getThemeCSS()} flex flex-col 
         transition-opacity transition-height ${
-            isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
-          }`
-        : "w-full flex justify-around items-center";
+          isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
+        }`
+      : "w-full flex justify-around items-center";
   };
 
   return (
-    // <div
-    //   className={`w-full text-center flex justify-between px-4 h-24 md:h-16 items-center ${
-    //     theme === "light"
-    //       ? "bg-ultra-light-mode text-ultra-dark-mode"
-    //       : "bg-ultra-dark-mode text-light-mode"
-    //   }`}
-    // >
-    //   {isMobile ? (
-    //     <>
-    //       <div className="flex items-center">
-    //         <button
-    //           className="text-6xl md:invisible"
-    //           onClick={() => setIsOpen(!isOpen)}
-    //         >
-    //           ☰
-    //         </button>
-    //         <div
-    //           className={`fixed top-24 left-0 w-screen rounded-br-lg rounded-bl-lg ${
-    //             theme === "light"
-    //               ? "bg-ultra-light-mode text-ultra-dark-mode"
-    //               : "bg-ultra-dark-mode text-light-mode"
-    //           } flex flex-col transition-opacity transition-height ${
-    //             isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
-    //           }`}
-    //         >
-    //           <Links onClick={() => setIsOpen(false)} />
-    //         </div>
-    //       </div>
-    //     </>
-    //   ) : (
-    //     <div className="w-full flex justify-around items-center">
-    //       <Links onClick={() => setIsOpen(false)} />
-    //     </div>
-    //   )}
-    //   <button onClick={toggleTheme} className="text-5xl md:text-xl">
-    //     {theme === "light" ? <FaMoon /> : <FaSun />}
-    //   </button>
-    // </div>
     <div
       className={`w-full text-center flex justify-between px-4 h-24 md:h-16 items-center ${getThemeCSS()}`}
     >
-      <div className="flex items-center w-full"> 
+      <div className="flex items-center w-full">
         <button
           className="text-6xl md:invisible"
           onClick={() => setIsOpen(!isOpen)}
         >
           ☰
         </button>
-        <div
-          className={getStyleForMobileNavbar()}
-        >
+        <div className={getStyleForMobileNavbar()}>
           <Links onClick={() => setIsOpen(false)} />
-          {!isMobile && <button onClick={toggleTheme} className="text-5xl md:text-xl">
-        {theme === "light" ? <FaMoon /> : <FaSun />}
-      </button>}
+          {!isMobile && getThemeSwitcher()}
         </div>
       </div>
-      {isMobile && <button onClick={toggleTheme} className="text-5xl md:text-xl">
-        {theme === "light" ? <FaMoon /> : <FaSun />}
-      </button>}
+      {isMobile && getThemeSwitcher()}
     </div>
   );
 };
