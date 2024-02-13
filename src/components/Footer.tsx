@@ -1,12 +1,15 @@
-import "../index.css";
+import { useTheme } from "../contexts/themeContext";
 
 const Footer: React.FC = () => {
+  const { theme } = useTheme();
   const openLinkInNewTab = (url: string) => {
     window.open(url, "_blank");
   };
 
   return (
-    <footer className="fixed bottom-0 mb-4 w-full text-center text-white">
+    <footer
+      className={`fixed bottom-0 mb-4 w-full text-center ${theme === "light" ? "bg-light-mode text-dark-mode" : "bg-dark-mode text-light-mode"}`}
+    >
       <p>
         <span
           className="font-medium text-indigo-500 hover:text-indigo-600"

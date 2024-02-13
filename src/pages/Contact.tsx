@@ -1,7 +1,5 @@
-import "../index.css";
-
 function Contact() {
-  return <h1>Contact</h1>;
+  return <p>Contact</p>;
 }
 
 export default Contact;

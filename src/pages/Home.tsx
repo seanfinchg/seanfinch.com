@@ -1,4 +1,4 @@
-import "../index.css";
+import React from "react";
 import {
   FaGithub,
   FaInstagram,
@@ -7,93 +7,76 @@ import {
   FaSpotify,
   FaYoutube,
 } from "react-icons/fa";
+import { useTheme } from "../contexts/themeContext";
 
-function Home() {
+interface SocialMediaButtonProps {
+  url: string;
+  children: React.ReactNode;
+}
+
+const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
+  url,
+  children,
+}) => {
+  const { theme } = useTheme();
+  const buttonClass = `flex justify-center mx-2 px-4 py-2 text-base font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"}`;
+
   const openLinkInNewTab = (url: string) => {
     window.open(url, "_blank");
   };
+
   return (
-    <div>
-      <div>
-        <h1>Sean Finch</h1>
-        <h5>the one and only</h5>
-        <h3>Computer Science @ Northeastern University c/o 2027</h3>
-        <h4>Student, Homelabber, Musician, and more</h4>
+    <button className={buttonClass} onClick={() => openLinkInNewTab(url)}>
+      {children}
+    </button>
+  );
+};
+
+function Home() {
+  const { theme } = useTheme();
+
+  return (
+    <div
+      className={
+        theme === "light"
+          ? "bg-light-mode text-ultra-dark-mode"
+          : "bg-dark-mode text-light-mode"
+      }
+    >
+      <div className="flex flex-col items-center">
+        <p>Sean Finch</p>
+        <p>the one and only</p>
+        <p>Computer Science @ Northeastern University c/o 2027</p>
+        <p>Student, Homelabber, Musician, and more</p>
       </div>
       <div>
         <div className="my-2.5 flex justify-center">
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() => openLinkInNewTab("https://github.com/seanfinchg")}
-          >
+          <SocialMediaButton url="https://github.com/seanfinchg">
             <FaGithub size={30} />
-          </button>
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() =>
-              openLinkInNewTab("https://www.instagram.com/straight.up.sean/")
-            }
-          >
+          </SocialMediaButton>
+          <SocialMediaButton url="https://www.instagram.com/straight.up.sean/">
             <FaInstagram size={30} />
-          </button>
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() =>
-              openLinkInNewTab("https://www.reddit.com/user/mk7sean")
-            }
-          >
+          </SocialMediaButton>
+          <SocialMediaButton url="https://www.reddit.com/user/mk7sean">
             <FaReddit size={30} />
-          </button>
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() =>
-              openLinkInNewTab(
-                "https://www.linkedin.com/in/sean-finch-21803927b/",
-              )
-            }
-          >
+          </SocialMediaButton>
+          <SocialMediaButton url="https://www.linkedin.com/in/sean-finch-21803927b/">
             <FaLinkedin size={30} />
-          </button>
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() =>
-              openLinkInNewTab(
-                "https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4",
-              )
-            }
-          >
+          </SocialMediaButton>
+          <SocialMediaButton url="https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4">
             <FaSpotify size={30} />
-          </button>
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() =>
-              openLinkInNewTab(
-                "https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA",
-              )
-            }
-          >
+          </SocialMediaButton>
+          <SocialMediaButton url="https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA">
             <FaYoutube size={30} />
-          </button>
+          </SocialMediaButton>
         </div>
         <div className="my-2.5 flex justify-center">
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() =>
-              openLinkInNewTab("https://300021720.wixsite.com/aotaportfolio")
-            }
-          >
+          <SocialMediaButton url="https://300021720.wixsite.com/aotaportfolio">
             Music Portfolio
-          </button>
-          <button
-            className="flex justify-center mx-2 px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200"
-            onClick={() =>
-              openLinkInNewTab(
-                "https://docs.google.com/document/d/19Yhwee36co-cGrTDsVJUwNw30nKb_iQjcCVFIlCAKtg/edit?usp=sharing",
-              )
-            }
-          >
+          </SocialMediaButton>
+          <SocialMediaButton url="https://docs.google.com/document/d/19Yhwee36co-cGrTDsVJUwNw30nKb_iQjcCVFIlCAKtg/edit?usp=sharing">
             Resume
-          </button>
+          </SocialMediaButton>
         </div>
       </div>
     </div>

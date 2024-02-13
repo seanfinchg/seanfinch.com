@@ -1,7 +1,5 @@
-import "../index.css";
-
 function About() {
-  return <h1>About</h1>;
+  return <p>About</p>;
 }
 
 export default About;
