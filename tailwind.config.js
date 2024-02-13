@@ -12,17 +12,17 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'raleway': ['Raleway', 'monospace'],
-        'roboto-slab': ['Roboto Slab', 'monospace'],
-        'jost': ['Jost', 'monospace'],
+        raleway: ["Raleway", "monospace"],
+        "roboto-slab": ["Roboto Slab", "monospace"],
+        jost: ["Jost", "monospace"],
       },
       fontWeight: {
-        'normal': '400',
-        'medium': '500',
-        'semibold': '600',
-        'bold': '700',
-        'extrabold': '800',
-        'black': '900',
+        normal: "400",
+        medium: "500",
+        semibold: "600",
+        bold: "700",
+        extrabold: "800",
+        black: "900",
       },
       colors: {
         "dark-mode": "#242424",

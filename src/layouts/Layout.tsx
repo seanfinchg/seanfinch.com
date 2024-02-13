@@ -19,7 +19,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       }
     >
       <Navbar />
-      <div className="flex-1 overflow-y-auto justify-center items-center">{children}</div>
+      <div className="flex-1 overflow-y-auto justify-center items-center">
+        {children}
+      </div>
       <Footer />
     </div>
   );
