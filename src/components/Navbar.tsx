@@ -93,11 +93,7 @@ const Navbar: React.FC = () => {
     //   </button>
     // </div>
     <div
-      className={`w-full text-center flex justify-between px-4 h-24 md:h-16 items-center ${
-        theme === "light"
-          ? "bg-ultra-light-mode text-ultra-dark-mode"
-          : "bg-ultra-dark-mode text-light-mode"
-      }`}
+      className={`w-full text-center flex justify-between px-4 h-24 md:h-16 items-center ${getThemeCSS()}`}
     >
       <div className="flex items-center w-full"> 
         <button
@@ -107,17 +103,7 @@ const Navbar: React.FC = () => {
           ☰
         </button>
         <div
-          className={
-            isMobile
-              ? `fixed top-24 left-0 w-screen rounded-br-lg rounded-bl-lg ${
-                  theme === "light"
-                    ? "bg-ultra-light-mode text-ultra-dark-mode"
-                    : "bg-ultra-dark-mode text-light-mode"
-                } flex flex-col transition-opacity transition-height ${
-                  isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
-                }`
-              : "w-full flex justify-around items-center"
-          }
+          className={getStyleForMobileNavbar()}
         >
           <Links onClick={() => setIsOpen(false)} />
           {!isMobile && <button onClick={toggleTheme} className="text-5xl md:text-xl">
