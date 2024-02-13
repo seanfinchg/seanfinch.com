@@ -19,7 +19,7 @@ const Links = ({ onClick }: { onClick?: () => void }) => {
         <Link
           key={link.to}
           to={link.to}
-          className={`py-2 px-4 hover:font-bold ${location.pathname === link.to ? "font-bold" : ""} lg:w-24 text-center`}
+          className={`py-4 px-4 hover:font-bold text-4xl md:text-lg ${location.pathname === link.to ? "font-bold" : ""} lg:w-24 text-center`}
           onClick={onClick}
         >
           {link.text}
@@ -40,34 +40,34 @@ const Navbar: React.FC = () => {
 
   return (
     <div
-      className={`w-full text-center flex justify-between px-4 h-16 items-center ${
+      className={`w-full text-center flex justify-between px-4 h-24 md:h-16 items-center ${
         theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"
       }`}
     >
       {isMobile ? (
         <>
-          <button className="text-2xl" onClick={() => setIsOpen(!isOpen)}>
-            ☰
-          </button>
-          {isOpen && (
+          <div className="flex items-center">
+            <button className="text-6xl" onClick={() => setIsOpen(!isOpen)}>
+              ☰
+            </button>
             <div
-              className={`fixed top-16 left-0 w-64 rounded-br-lg rounded-bl-lg ${
+              className={`fixed top-24 left-0 w-screen rounded-br-lg rounded-bl-lg ${
                 theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"
+              } flex flex-col transition-opacity transition-height ${
+                isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
               }`}
             >
               <Links onClick={() => setIsOpen(false)} />
-              <div className="flex justify-center py-2">
-                <button onClick={toggleTheme}>
-                  {theme === "light" ? <FaMoon /> : <FaSun />}
-                </button>
-              </div>
             </div>
-          )}
+          </div>
+          <button className="text-5xl" onClick={toggleTheme}>
+            {theme === "light" ? <FaMoon /> : <FaSun />}
+          </button>
         </>
       ) : (
         <div className="w-full flex justify-around items-center">
           <Links />
-          <button onClick={toggleTheme}>
+          <button onClick={toggleTheme} className="text-2xl md:text-xl">
             {theme === "light" ? <FaMoon /> : <FaSun />}
           </button>
         </div>

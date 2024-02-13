@@ -1,3 +1,6 @@
+@import "../node_modules/@fontsource/roboto-slab/index.css";
+@import "../node_modules/@fontsource/raleway/index.css";
+@import "../node_modules/@fontsource/jost/index.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
