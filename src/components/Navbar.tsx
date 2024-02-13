@@ -40,7 +40,9 @@ const Navbar: React.FC = () => {
 
   return (
     <div
-      className={`w-full text-center flex justify-between px-4 h-16 items-center ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"}`}
+      className={`w-full text-center flex justify-between px-4 h-16 items-center ${
+        theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"
+      }`}
     >
       {isMobile ? (
         <>
@@ -49,7 +51,9 @@ const Navbar: React.FC = () => {
           </button>
           {isOpen && (
             <div
-              className={`fixed top-16 left-0 w-64 rounded-br-lg rounded-bl-lg ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"}`}
+              className={`fixed top-16 left-0 w-64 rounded-br-lg rounded-bl-lg ${
+                theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"
+              }`}
             >
               <Links onClick={() => setIsOpen(false)} />
               <div className="flex justify-center py-2">
