@@ -3,12 +3,6 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      width: {
-        200: "200%", // 200% of parent's width
-      },
-      height: {
-        200: "200%", // 200% of parent's height
-      },
       colors: {
         "dark-mode": "#242424",
       },
@@ -17,6 +11,15 @@ export default {
         200: "200ms",
         500: "500ms",
         1000: "1000ms",
+      },
+      animation: {
+        slideDown: "slideDown 0.5s ease-in-out",
+      },
+      keyframes: {
+        slideDown: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
       },
     },
   },
