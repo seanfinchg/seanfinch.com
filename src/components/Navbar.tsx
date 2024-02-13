@@ -30,9 +30,10 @@ const Links = ({ onClick }: { onClick?: () => void }) => {
 };
 
 const Navbar: React.FC = () => {
-  const isMobile = useMediaQuery({ query: "(max-width: 760px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
@@ -47,7 +48,7 @@ const Navbar: React.FC = () => {
       {isMobile ? (
         <>
           <div className="flex items-center">
-            <button className="text-6xl" onClick={() => setIsOpen(!isOpen)}>
+            <button className="text-6xl md:invisible" onClick={() => setIsOpen(!isOpen)}>
               ☰
             </button>
             <div
@@ -60,18 +61,15 @@ const Navbar: React.FC = () => {
               <Links onClick={() => setIsOpen(false)} />
             </div>
           </div>
-          <button className="text-5xl" onClick={toggleTheme}>
-            {theme === "light" ? <FaMoon /> : <FaSun />}
-          </button>
         </>
       ) : (
         <div className="w-full flex justify-around items-center">
-          <Links />
-          <button onClick={toggleTheme} className="text-2xl md:text-xl">
-            {theme === "light" ? <FaMoon /> : <FaSun />}
-          </button>
+          <Links onClick={() => setIsOpen(false)}/>
         </div>
       )}
+      <button onClick={toggleTheme} className="text-5xl md:text-xl">
+            {theme === "light" ? <FaMoon /> : <FaSun />}
+          </button>
     </div>
   );
 };
