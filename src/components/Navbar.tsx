@@ -19,7 +19,7 @@ const Links = ({ onClick }: { onClick?: () => void }) => {
         <Link
           key={link.to}
           to={link.to}
-          className={`block py-2 px-4 hover:font-bold ${location.pathname === link.to ? "font-bold" : ""}`}
+          className={`py-2 px-4 hover:font-bold ${location.pathname === link.to ? "font-bold" : ""} lg:w-24 text-center`}
           onClick={onClick}
         >
           {link.text}
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
 
   return (
     <div
-      className={`fixed top-0 w-full text-center flex justify-between px-4 h-16 items-center ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"}`}
+      className={`w-full text-center flex justify-between px-4 h-16 items-center ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"}`}
     >
       {isMobile ? (
         <>

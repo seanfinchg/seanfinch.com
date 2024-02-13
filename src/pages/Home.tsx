@@ -37,46 +37,48 @@ function Home() {
 
   return (
     <div
-      className={
+      className={`flex justify-center ${
         theme === "light"
           ? "bg-light-mode text-ultra-dark-mode"
           : "bg-dark-mode text-light-mode"
-      }
+      }`}
     >
-      <div className="flex flex-col items-center">
-        <p>Sean Finch</p>
-        <p>the one and only</p>
-        <p>Computer Science @ Northeastern University c/o 2027</p>
-        <p>Student, Homelabber, Musician, and more</p>
-      </div>
-      <div>
-        <div className="my-2.5 flex justify-center">
-          <SocialMediaButton url="https://github.com/seanfinchg">
-            <FaGithub size={30} />
-          </SocialMediaButton>
-          <SocialMediaButton url="https://www.instagram.com/straight.up.sean/">
-            <FaInstagram size={30} />
-          </SocialMediaButton>
-          <SocialMediaButton url="https://www.reddit.com/user/mk7sean">
-            <FaReddit size={30} />
-          </SocialMediaButton>
-          <SocialMediaButton url="https://www.linkedin.com/in/sean-finch-21803927b/">
-            <FaLinkedin size={30} />
-          </SocialMediaButton>
-          <SocialMediaButton url="https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4">
-            <FaSpotify size={30} />
-          </SocialMediaButton>
-          <SocialMediaButton url="https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA">
-            <FaYoutube size={30} />
-          </SocialMediaButton>
+      <div className="w-full">
+        <div className="flex flex-col items-center">
+          <p className="mb-8 text-4xl font-extrabold">Sean Finch</p>
+          <p className="mb-8 text-xs font-extrabold">the one and only</p>
+          <p>Computer Science @ Northeastern University c/o 2027</p>
+          <p>Student, Homelabber, Musician, and more</p>
         </div>
-        <div className="my-2.5 flex justify-center">
-          <SocialMediaButton url="https://300021720.wixsite.com/aotaportfolio">
-            Music Portfolio
-          </SocialMediaButton>
-          <SocialMediaButton url="https://docs.google.com/document/d/19Yhwee36co-cGrTDsVJUwNw30nKb_iQjcCVFIlCAKtg/edit?usp=sharing">
-            Resume
-          </SocialMediaButton>
+        <div>
+          <div className="my-2.5 flex justify-center">
+            <SocialMediaButton url="https://github.com/seanfinchg">
+              <FaGithub size={30} />
+            </SocialMediaButton>
+            <SocialMediaButton url="https://www.instagram.com/straight.up.sean/">
+              <FaInstagram size={30} />
+            </SocialMediaButton>
+            <SocialMediaButton url="https://www.reddit.com/user/mk7sean">
+              <FaReddit size={30} />
+            </SocialMediaButton>
+            <SocialMediaButton url="https://www.linkedin.com/in/sean-finch-21803927b/">
+              <FaLinkedin size={30} />
+            </SocialMediaButton>
+            <SocialMediaButton url="https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4">
+              <FaSpotify size={30} />
+            </SocialMediaButton>
+            <SocialMediaButton url="https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA">
+              <FaYoutube size={30} />
+            </SocialMediaButton>
+          </div>
+          <div className="my-2.5 flex justify-center">
+            <SocialMediaButton url="https://300021720.wixsite.com/aotaportfolio">
+              Music Portfolio
+            </SocialMediaButton>
+            <SocialMediaButton url="https://docs.google.com/document/d/19Yhwee36co-cGrTDsVJUwNw30nKb_iQjcCVFIlCAKtg/edit?usp=sharing">
+              Resume
+            </SocialMediaButton>
+          </div>
         </div>
       </div>
     </div>

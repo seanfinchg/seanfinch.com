@@ -11,6 +11,17 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        'raleway': ['Raleway', 'sans-serif'],
+      },
+      fontWeight: {
+        'normal': '400',
+        'medium': '500',
+        'semibold': '600',
+        'bold': '700',
+        'extrabold': '800',
+        'black': '900',
+      },
       colors: {
         "dark-mode": "#242424",
         "ultra-dark-mode": "#1a1a1a",

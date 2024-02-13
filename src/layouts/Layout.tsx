@@ -14,12 +14,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div
       className={
         theme === "light"
-          ? "bg-light-mode text-dark-mode min-h-screen"
-          : "bg-dark-mode text-light-mode min-h-screen"
+          ? "bg-light-mode text-dark-mode min-h-screen flex flex-col"
+          : "bg-dark-mode text-light-mode min-h-screen flex flex-col"
       }
     >
       <Navbar />
-      <main className="pt-16">{children}</main>
+      <div className="flex-1 overflow-y-auto justify-center items-center">{children}</div>
       <Footer />
     </div>
   );
