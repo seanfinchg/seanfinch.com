@@ -1,29 +1,32 @@
-import '../index.css'
+import "../index.css";
 
 const Footer: React.FC = () => {
   const openLinkInNewTab = (url: string) => {
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   return (
-    <footer>
+    <footer className="fixed bottom-0 mb-4 w-full text-center text-white">
       <p>
         <span
-          className='footer-link'
-          onClick={() => openLinkInNewTab('https://seanfinch.com')}
+          className="font-medium text-indigo-500 hover:text-indigo-600"
+          onClick={() => openLinkInNewTab("https://seanfinch.com")}
         >
           seanfinch.com
-        </span>{' '}
-        • Website coded with help from{' '}
+        </span>{" "}
+        • Website coded with help from{" "}
         <span
-          className='footer-link'
-          onClick={() => openLinkInNewTab('https://asahoo.dev')}
+          className="font-medium text-indigo-500 hover:text-indigo-600"
+          onClick={() => openLinkInNewTab("https://asahoo.dev")}
         >
           asahoo.dev
         </span>
       </p>
       <p>
-        <a className='footer-link' href='mailto:hello@seanfinch.com'>
+        <a
+          className="font-medium text-indigo-500 hover:text-indigo-600"
+          href="mailto:hello@seanfinch.com"
+        >
           hello@seanfinch.com
         </a>
       </p>
