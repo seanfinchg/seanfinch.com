@@ -19,7 +19,7 @@ const Links = ({ onClick }: { onClick?: () => void }) => {
         <Link
           key={link.to}
           to={link.to}
-          className={`py-4 px-4 hover:font-bold text-4xl md:text-lg ${location.pathname === link.to ? "font-bold" : ""} lg:w-24 text-center`}
+          className={`font-jost py-4 px-4 hover:font-extrabold text-4xl md:text-lg ${location.pathname === link.to ? "font-extrabold" : ""} lg:w-24 text-center`}
           onClick={onClick}
         >
           {link.text}
