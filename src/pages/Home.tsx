@@ -52,7 +52,7 @@ function Home() {
             the one and only
           </p>
           <p className="mb-4 mx-4 font-raleway font-bold">
-            Computer Science @ Northeastern University c/o 2027
+            Computer Science at Northeastern University c/o 2027
           </p>
           <p className="mb-8 mx-4 font-raleway font-bold">
             Student, Homelabber, Musician, and more
