@@ -15,9 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       className={`"flex flex-col min-h-screen justify-between ${theme === "light" ? "bg-light-mode text-dark-mode min-h-screen flex flex-col" : "bg-dark-mode text-light-mode min-h-screen flex flex-col"}`}
     >
       <Navbar />
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
       <Footer />
     </div>
   );
