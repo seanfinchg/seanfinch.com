@@ -39,7 +39,7 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
 function Home() {
   const { theme } = useTheme();
   useEffect(() => {
-    document.title = 'Home - Sean Finch • SoCal';
+    document.title = "Home - Sean Finch • SoCal";
   }, []);
 
   return (
