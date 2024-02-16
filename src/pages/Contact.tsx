@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
-import { useTheme } from "../contexts/themeContext";
+import { useEffect } from "react";
 
 function Contact() {
-  const { theme } = useTheme();
   useEffect(() => {
     document.title = 'Contact - Sean Finch • SoCal';
   }, []);
