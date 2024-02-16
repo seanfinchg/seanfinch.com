@@ -29,7 +29,7 @@ const HomeButton: React.FC<ButtonProps> = ({ children }) => {
 const NotFound: React.FC = () => {
   const { theme } = useTheme();
   useEffect(() => {
-    document.title = 'Error 404 - Sean Finch • SoCal';
+    document.title = "Error 404 - Sean Finch • SoCal";
   }, []);
 
   return (
