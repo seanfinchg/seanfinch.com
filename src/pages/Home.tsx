@@ -83,9 +83,7 @@ function Home() {
             <SocialMediaButton url="https://300021720.wixsite.com/aotaportfolio">
               Music Portfolio
             </SocialMediaButton>
-            <SocialMediaButton url="https://docs.google.com/document/d/19Yhwee36co-cGrTDsVJUwNw30nKb_iQjcCVFIlCAKtg/edit?usp=sharing">
-              Resume
-            </SocialMediaButton>
+            <SocialMediaButton url="/resume.pdf">Resume</SocialMediaButton>
           </div>
         </div>
       </div>
