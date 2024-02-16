@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
 
@@ -28,6 +28,10 @@ const HomeButton: React.FC<ButtonProps> = ({ children }) => {
 
 const NotFound: React.FC = () => {
   const { theme } = useTheme();
+  useEffect(() => {
+    document.title = 'Error 404 - Sean Finch • SoCal';
+  }, []);
+
   return (
     <div
       className={`flex justify-center w-full flex-col items-center text-center ${theme === "light" ? "bg-light-mode text-ultra-dark-mode" : "bg-dark-mode text-light-mode"}`}

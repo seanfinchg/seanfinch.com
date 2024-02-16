@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useTheme } from "../contexts/themeContext";
 import {
   FaGithub,
   FaInstagram,
@@ -7,7 +8,6 @@ import {
   FaSpotify,
   FaYoutube,
 } from "react-icons/fa";
-import { useTheme } from "../contexts/themeContext";
 
 interface SocialMediaButtonProps {
   url: string;
@@ -38,6 +38,9 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
 
 function Home() {
   const { theme } = useTheme();
+  useEffect(() => {
+    document.title = 'Home - Sean Finch • SoCal';
+  }, []);
 
   return (
     <div
