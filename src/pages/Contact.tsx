@@ -12,7 +12,7 @@ function Contact() {
     <div
       className={`flex justify-center ${theme === "light" ? "bg-light-mode text-ultra-dark-mode" : "bg-dark-mode text-light-mode"}`}
     >
-      <div className="w-full">
+      <div className="w-full mx-4 md:mx-0">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-4xl font-bold mb-8 font-jost">Contact Me</h1>
           <p className="mb-4">
