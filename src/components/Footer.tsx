@@ -25,14 +25,6 @@ const Footer: React.FC = () => {
           asahoo.dev
         </span>
       </p>
-      <p>
-        <a
-          className="font-medium text-indigo-500 hover:text-indigo-600"
-          href="mailto:hello@seanfinch.com"
-        >
-          hello@seanfinch.com
-        </a>
-      </p>
     </footer>
   );
 };
