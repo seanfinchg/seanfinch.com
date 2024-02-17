@@ -72,7 +72,7 @@ function Home() {
             <SocialMediaButton url="https://www.reddit.com/user/mk7sean">
               <FaReddit size={30} />
             </SocialMediaButton>
-            <SocialMediaButton url="https://www.linkedin.com/in/sean-finch-21803927b/">
+            <SocialMediaButton url="https://www.linkedin.com/in/sean-finch-g">
               <FaLinkedin size={30} />
             </SocialMediaButton>
             <SocialMediaButton url="https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4">

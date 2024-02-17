@@ -35,7 +35,7 @@ function Contact() {
             <div>
               <h2 className="text-2xl font-bold mb-2 font-jost">LinkedIn</h2>
               <a
-                href="https://www.linkedin.com/in/sean-finch-21803927b/"
+                href="https://www.linkedin.com/in/sean-finch-g"
                 className="text-blue-500 underline"
                 target="_blank"
                 rel="noopener noreferrer"
