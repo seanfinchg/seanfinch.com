@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
           ☰
         </button>
         <div className={getStyleForMobileNavbar()}>
-          {isOpen && <Links onClick={() => setIsOpen(false)} />}
+          {(isOpen || !isMobile) && <Links onClick={() => setIsOpen(false)} />}
           {!isMobile && getThemeSwitcher()}
         </div>
       </div>
