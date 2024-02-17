@@ -17,7 +17,7 @@ function About() {
           <h1 className="text-4xl font-bold mb-8 font-jost">About Me</h1>
           <div className="flex flex-col md:flex-row justify-center items-center md:space-x-8 md:items-center">
             <img
-              src="/SeanPortrait.png"
+              src="/SeanPortrait.jpg"
               alt="Sean Finch Portrait"
               className="w-3/4 md:w-96 h-full md:h-120 object-cover mb-8 md:mb-0 rounded-xl"
             />
