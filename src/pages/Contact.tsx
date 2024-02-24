@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
+import { FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 function Contact() {
   const { theme } = useTheme();
@@ -7,6 +8,10 @@ function Contact() {
   useEffect(() => {
     document.title = "Contact - Sean Finch • SoCal";
   }, []);
+
+  const openLinkInNewTab = (url: string) => {
+    window.open(url, "_blank");
+  };
 
   return (
     <div
@@ -21,27 +26,35 @@ function Contact() {
           <div
             className={`w-full md:w-1/2 mb-8 p-4 border-${theme === "light" ? "border-ultra-light-mode" : "border-ultra-dark-mode"} border-2 rounded-lg text-${theme === "light" ? "text-ultra-light-mode" : "text-ultra-dark-mode"} m-4 font-raleway shadow-lg`}
           >
-            <div className="mb-4">
+            <div className="mb-4 flex flex-col items-center">
               <h2 className="text-2xl font-bold mb-2 font-jost">Email</h2>
-              <a
-                href="mailto:contact@seanfinch.com"
-                className="text-blue-500 underline"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openLinkInNewTab("mailto:contact@seanfinch.com")}
+                className={`flex items-center justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${
+                  theme === "light"
+                    ? "bg-ultra-light-mode text-ultra-dark-mode"
+                    : "bg-ultra-dark-mode text-light-mode"
+                }`}
               >
+                <FaEnvelope size={25} className="mr-2" />
                 contact@seanfinch.com
-              </a>
+              </button>
             </div>
-            <div>
+            <div className="flex flex-col items-center">
               <h2 className="text-2xl font-bold mb-2 font-jost">LinkedIn</h2>
-              <a
-                href="https://www.linkedin.com/in/sean-finch-g"
-                className="text-blue-500 underline"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() =>
+                  openLinkInNewTab("https://www.linkedin.com/in/sean-finch-g")
+                }
+                className={`flex items-center justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg cursor-pointer transition-colors duration-200 ${
+                  theme === "light"
+                    ? "bg-linkedin text-light-mode hover:border-ultra-dark-mode"
+                    : "bg-linkedin text-light-mode hover:border-ultra-light-mode"
+                }`}
               >
-                Visit my LinkedIn profile
-              </a>
+                <FaLinkedin size={25} className="mr-2" />
+                LinkedIn
+              </button>
             </div>
           </div>
         </div>
