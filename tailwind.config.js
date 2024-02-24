@@ -29,6 +29,7 @@ export default {
         "ultra-dark-mode": "#1a1a1a",
         "light-mode": "#ffffff",
         "ultra-light-mode": "#d2d3db",
+        linkedin: "#0077b5",
       },
       transitionDelay: {
         0: "0ms",
