@@ -82,6 +82,12 @@ function Home() {
               <FaYoutube size={30} />
             </SocialMediaButton>
           </div>
+          <div className="my-2.5 flex justify-center flex-wrap">
+            <SocialMediaButton url="/music_resume.pdf">
+              Music Resume
+            </SocialMediaButton>
+            <SocialMediaButton url="/resume.pdf">Resume</SocialMediaButton>
+          </div>
         </div>
       </div>
     </div>
