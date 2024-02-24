@@ -82,12 +82,6 @@ function Home() {
               <FaYoutube size={30} />
             </SocialMediaButton>
           </div>
-          <div className="my-2.5 flex justify-center flex-wrap">
-            <SocialMediaButton url="https://300021720.wixsite.com/aotaportfolio">
-              Music Portfolio
-            </SocialMediaButton>
-            <SocialMediaButton url="/resume.pdf">Resume</SocialMediaButton>
-          </div>
         </div>
       </div>
     </div>
