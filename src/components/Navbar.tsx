@@ -12,7 +12,7 @@ const links = [
   { to: "/about", text: "About" },
 ];
 
-const Links = ({ onClick }: { onClick?: () => void }) => {
+const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   const location = useLocation();
   return (
     <>
@@ -36,21 +36,13 @@ const Navbar: React.FC = () => {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   const getThemeCSS = () => {
     return theme === "light"
       ? "bg-ultra-light-mode text-ultra-dark-mode"
       : "bg-ultra-dark-mode text-light-mode";
-  };
-
-  const getThemeSwitcher = () => {
-    return (
-      <button onClick={toggleTheme} className="text-5xl md:text-xl">
-        {theme === "light" ? <FaMoon /> : <FaSun />}
-      </button>
-    );
   };
 
   const getStyleForMobileNavbar = (): string => {
@@ -75,10 +67,18 @@ const Navbar: React.FC = () => {
         </button>
         <div className={getStyleForMobileNavbar()}>
           {(isOpen || !isMobile) && <Links onClick={() => setIsOpen(false)} />}
-          {!isMobile && getThemeSwitcher()}
+          {!isMobile && (
+            <button onClick={toggleTheme} className="text-5xl md:text-xl">
+              {theme === "light" ? <FaMoon /> : <FaSun />}
+            </button>
+          )}
         </div>
       </div>
-      {isMobile && getThemeSwitcher()}
+      {isMobile && (
+        <button onClick={toggleTheme} className="text-5xl md:text-xl">
+          {theme === "light" ? <FaMoon /> : <FaSun />}
+        </button>
+      )}
     </div>
   );
 };

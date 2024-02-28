@@ -19,11 +19,7 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
   children,
 }) => {
   const { theme } = useTheme();
-  const buttonClass = `flex justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${
-    theme === "light"
-      ? "bg-ultra-light-mode text-ultra-dark-mode"
-      : "bg-ultra-dark-mode text-light-mode"
-  }`;
+  const buttonClass = `flex justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"}`;
 
   const openLinkInNewTab = () => {
     window.open(url, "_blank");
@@ -41,6 +37,30 @@ function Home() {
   useEffect(() => {
     document.title = "Home - Sean Finch • SoCal";
   }, []);
+
+  const socialMediaLinks = [
+    { url: "https://github.com/seanfinchg", icon: <FaGithub size={30} /> },
+    {
+      url: "https://www.instagram.com/straight.up.sean/",
+      icon: <FaInstagram size={30} />,
+    },
+    {
+      url: "https://www.reddit.com/user/mk7sean",
+      icon: <FaReddit size={30} />,
+    },
+    {
+      url: "https://www.linkedin.com/in/sean-finch-g",
+      icon: <FaLinkedin size={30} />,
+    },
+    {
+      url: "https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4",
+      icon: <FaSpotify size={30} />,
+    },
+    {
+      url: "https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA",
+      icon: <FaYoutube size={30} />,
+    },
+  ];
 
   return (
     <div
@@ -63,24 +83,11 @@ function Home() {
         </div>
         <div>
           <div className="flex justify-center flex-wrap">
-            <SocialMediaButton url="https://github.com/seanfinchg">
-              <FaGithub size={30} />
-            </SocialMediaButton>
-            <SocialMediaButton url="https://www.instagram.com/straight.up.sean/">
-              <FaInstagram size={30} />
-            </SocialMediaButton>
-            <SocialMediaButton url="https://www.reddit.com/user/mk7sean">
-              <FaReddit size={30} />
-            </SocialMediaButton>
-            <SocialMediaButton url="https://www.linkedin.com/in/sean-finch-g">
-              <FaLinkedin size={30} />
-            </SocialMediaButton>
-            <SocialMediaButton url="https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4">
-              <FaSpotify size={30} />
-            </SocialMediaButton>
-            <SocialMediaButton url="https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA">
-              <FaYoutube size={30} />
-            </SocialMediaButton>
+            {socialMediaLinks.map((link, index) => (
+              <SocialMediaButton key={index} url={link.url}>
+                {link.icon}
+              </SocialMediaButton>
+            ))}
           </div>
           <div className="my-2.5 flex justify-center flex-wrap">
             <SocialMediaButton url="/resume.pdf">Resume</SocialMediaButton>
