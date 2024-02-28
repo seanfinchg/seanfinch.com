@@ -9,11 +9,13 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { theme } = useTheme();
+  const themeClass =
+    theme === "light"
+      ? "bg-light-mode text-dark-mode"
+      : "bg-dark-mode text-light-mode";
 
   return (
-    <div
-      className={`"flex flex-col min-h-screen justify-between ${theme === "light" ? "bg-light-mode text-dark-mode min-h-screen flex flex-col" : "bg-dark-mode text-light-mode min-h-screen flex flex-col"}`}
-    >
+    <div className={`flex flex-col min-h-screen justify-between ${themeClass}`}>
       <Navbar />
       <div>{children}</div>
       <Footer />

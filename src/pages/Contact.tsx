@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { FaLinkedin, FaEnvelope } from "react-icons/fa";
 
-function Contact() {
+const Contact: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -12,6 +12,8 @@ function Contact() {
   const openLinkInNewTab = (url: string) => {
     window.open(url, "_blank");
   };
+
+  const buttonClass = `flex items-center justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg cursor-pointer transition-colors duration-200`;
 
   return (
     <div
@@ -30,11 +32,7 @@ function Contact() {
               <h2 className="text-2xl font-bold mb-2 font-jost">Email</h2>
               <button
                 onClick={() => openLinkInNewTab("mailto:contact@seanfinch.com")}
-                className={`flex items-center justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${
-                  theme === "light"
-                    ? "bg-ultra-light-mode text-ultra-dark-mode"
-                    : "bg-ultra-dark-mode text-light-mode"
-                }`}
+                className={`${buttonClass} ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode hover:border-indigo-600" : "bg-ultra-dark-mode text-light-mode hover:border-indigo-600"}`}
               >
                 <FaEnvelope size={25} className="mr-2" />
                 contact@seanfinch.com
@@ -46,11 +44,7 @@ function Contact() {
                 onClick={() =>
                   openLinkInNewTab("https://www.linkedin.com/in/sean-finch-g")
                 }
-                className={`flex items-center justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg cursor-pointer transition-colors duration-200 ${
-                  theme === "light"
-                    ? "bg-linkedin text-light-mode hover:border-ultra-dark-mode"
-                    : "bg-linkedin text-light-mode hover:border-ultra-light-mode"
-                }`}
+                className={`${buttonClass} ${theme === "light" ? "bg-linkedin text-light-mode hover:border-ultra-dark-mode" : "bg-linkedin text-light-mode hover:border-ultra-light-mode"}`}
               >
                 <FaLinkedin size={25} className="mr-2" />
                 LinkedIn
@@ -61,6 +55,6 @@ function Contact() {
       </div>
     </div>
   );
-}
+};
 
 export default Contact;
