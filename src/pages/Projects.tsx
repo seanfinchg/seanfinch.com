@@ -33,14 +33,16 @@ const ProjectCard: React.FC<ProjectProps> = ({
           </span>
         ))}
       </div>
-      <a
-        href={githubLink}
-        className="text-blue-500 underline font-monospace"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Access project code
-      </a>
+      {githubLink && (
+        <a
+          href={githubLink}
+          className="text-blue-500 underline font-monospace"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Access project code
+        </a>
+      )}
     </div>
   );
 };
@@ -71,7 +73,7 @@ const Projects: React.FC = () => {
       description:
         "My homelab initiatives encompass the establishment of essential records backup, photo backup, and home video backup systems for my family. I have previously utilized Ubuntu Server and TrueNAS Scale, and currently, I am operating Proxmox.",
       technologies: ["Ubuntu Server", "TrueNAS Scale", "Proxmox", "Docker"],
-      githubLink: "#",
+      githubLink: "",
     },
   ];
 
