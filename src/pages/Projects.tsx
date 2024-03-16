@@ -38,7 +38,7 @@ const ProjectCard: React.FC<ProjectProps> = ({
       {githubLink && (
         <a
           href={githubLink}
-          className="text-blue-500 underline font-monospace"
+          className="text-blue-500 underline font-monospace mx-1 my-1"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -48,7 +48,7 @@ const ProjectCard: React.FC<ProjectProps> = ({
       {demoLink && (
         <a
           href={demoLink}
-          className="text-blue-500 underline font-monospace"
+          className="text-blue-500 underline font-monospace mx-1 my-1"
           target="_blank"
           rel="noopener noreferrer"
         >
