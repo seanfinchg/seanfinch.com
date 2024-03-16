@@ -78,7 +78,7 @@ const Projects: React.FC = () => {
     {
       title: "BiblioConnect",
       description:
-        "A book recommendation application that allows users to discover new books based on their preferences. The application was developed using React, Express, and MongoDB. Developed for PawHack 2024 alongside Jonathan Ding, Eric Huang, and Shishir Pokhrel.",
+        "A book recommendation application that allows users to discover new books based on their preferences. The application was developed using React, Express, and MongoDB. Developed for PawHacks 2024 alongside Jonathan Ding, Eric Huang, and Shishir Pokhrel.",
       technologies: [
         "JavaScript",
         "HTML",
