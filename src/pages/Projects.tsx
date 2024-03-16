@@ -6,6 +6,7 @@ interface ProjectProps {
   description: string;
   technologies: string[];
   githubLink: string;
+  demoLink: string;
 }
 
 const ProjectCard: React.FC<ProjectProps> = ({
@@ -13,6 +14,7 @@ const ProjectCard: React.FC<ProjectProps> = ({
   description,
   technologies,
   githubLink,
+  demoLink,
 }) => {
   const { theme } = useTheme();
 
@@ -43,6 +45,16 @@ const ProjectCard: React.FC<ProjectProps> = ({
           Access project code
         </a>
       )}
+      {demoLink && (
+        <a
+          href={demoLink}
+          className="text-blue-500 underline font-monospace"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Demo here
+        </a>
+      )}
     </div>
   );
 };
@@ -67,6 +79,7 @@ const Projects: React.FC = () => {
         "TypeScript",
       ],
       githubLink: "https://github.com/seanfinchg/seanfinch.com",
+      demoLink: "",
     },
     {
       title: "Homelab Initiatives",
@@ -74,6 +87,7 @@ const Projects: React.FC = () => {
         "My homelab initiatives encompass the establishment of essential records backup, photo backup, and home video backup systems for my family. I have previously utilized Ubuntu Server and TrueNAS Scale, and currently, I am operating Proxmox.",
       technologies: ["Ubuntu Server", "TrueNAS Scale", "Proxmox", "Docker"],
       githubLink: "",
+      demoLink: "",
     },
     {
       title: "BiblioConnect",
@@ -89,6 +103,7 @@ const Projects: React.FC = () => {
         "MongoDB",
       ],
       githubLink: "https://github.com/seanfinchg/BiblioConnect",
+      demoLink: "",
     },
   ];
 
