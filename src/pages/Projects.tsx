@@ -103,7 +103,7 @@ const Projects: React.FC = () => {
         "MongoDB",
       ],
       githubLink: "https://github.com/seanfinchg/BiblioConnect",
-      demoLink: "",
+      demoLink: "https://biblioconnect.seanfinch.com/",
     },
   ];
 
