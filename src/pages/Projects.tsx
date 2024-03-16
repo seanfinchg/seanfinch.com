@@ -75,6 +75,21 @@ const Projects: React.FC = () => {
       technologies: ["Ubuntu Server", "TrueNAS Scale", "Proxmox", "Docker"],
       githubLink: "",
     },
+    {
+      title: "BiblioConnect",
+      description:
+        "A book recommendation application that allows users to discover new books based on their preferences. The application was developed using React, Express, and MongoDB. Developed for PawHack 2024 alongside Jonathan Ding, Eric Huang, and Shishir Pokhrel.",
+      technologies: [
+        "JavaScript",
+        "HTML",
+        "React",
+        "Tailwind CSS",
+        "TypeScript",
+        "Express",
+        "MongoDB",
+      ],
+      githubLink: "https://github.com/seanfinchg/BiblioConnect",
+    },
   ];
 
   return (
