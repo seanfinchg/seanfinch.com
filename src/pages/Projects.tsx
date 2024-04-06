@@ -72,11 +72,11 @@ const Projects: React.FC = () => {
       description:
         "This website, constructed utilizing React, Tailwind CSS, and TypeScript, functions as a professional portfolio to exhibit my range of projects and technical abilities. It represents my proficiency in contemporary web development technologies and responsive design principles.",
       technologies: [
+        "TypeScript",
         "JavaScript",
         "HTML",
-        "React",
+        "React.js",
         "Tailwind CSS",
-        "TypeScript",
       ],
       githubLink: "https://github.com/seanfinchg/seanfinch.com",
       demoLink: "",
@@ -92,18 +92,32 @@ const Projects: React.FC = () => {
     {
       title: "BiblioConnect",
       description:
-        "A book recommendation application that allows users to discover new books based on their preferences. The application was developed using React, Express, and MongoDB. Developed for PawHacks 2024 alongside Jonathan Ding, Eric Huang, and Shishir Pokhrel.",
+        "A book recommendation application that allows users to discover new books based on their preferences. The application was developed using React.js, Express.js, and SQLite. Developed for PawHacks 2024 alongside Jonathan Ding, Eric Huang, and Shishir Pokhrel. Currently a work in progress.",
       technologies: [
+        "TypeScript",
         "JavaScript",
         "HTML",
-        "React",
+        "React.js",
         "Tailwind CSS",
-        "TypeScript",
-        "Express",
-        "MongoDB",
+        "Express.js",
+        "SQLite",
       ],
-      githubLink: "https://github.com/seanfinchg/BiblioConnect",
+      githubLink: "https://github.com/Biblio-Connect/BiblioConnect",
       demoLink: "https://biblioconnect.seanfinch.com/",
+    },
+    {
+      title: "Whenabouts",
+      description:
+        "A web application that takes in an itenerary for a business trip that crosses timezones and outputs the time in each timezone. Currently a work in progress.",
+      technologies: [
+        "TypeScript",
+        "JavaScript",
+        "HTML",
+        "React.js",
+        "Tailwind CSS",
+      ],
+      githubLink: "https://github.com/seanfinchg/whenabouts.seanfinch.com",
+      demoLink: "https://whenabouts.seanfinch.com/",
     },
   ];
 
