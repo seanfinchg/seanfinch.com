@@ -108,7 +108,7 @@ const Projects: React.FC = () => {
     {
       title: "Whenabouts",
       description:
-        "A web application that takes in an itenerary for a business trip that crosses timezones and outputs the time in each timezone. Currently a work in progress.",
+        "A web application that takes in an itinerary for a business trip that crosses timezones and outputs the time in each timezone. Currently a work in progress.",
       technologies: [
         "TypeScript",
         "JavaScript",
