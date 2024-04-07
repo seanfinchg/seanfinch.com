@@ -51,7 +51,7 @@ function Music() {
               Music Resume
             </SocialMediaButton>
             <SocialMediaButton
-              url="https://www.youtube.com/playlist?list=PLTjk61hZ9AMXFoNatxL3r2_G_HtDw3764"
+              url="https://youtube.com/playlist?list=PLTjk61hZ9AMUzHDoTL2T4h7XOAIqFlX-4&si=jZlKp-LkJ1imQTnK"
               className="mb-4 md:mb-0"
             >
               Video Gallery
