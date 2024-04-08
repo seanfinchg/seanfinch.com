@@ -79,7 +79,7 @@ const Projects: React.FC = () => {
         "Tailwind CSS",
       ],
       githubLink: "https://github.com/seanfinchg/seanfinch.com",
-      demoLink: "",
+      demoLink: "https://seanfinch.com/",
     },
     {
       title: "Homelab Initiatives",
