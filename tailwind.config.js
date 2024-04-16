@@ -12,9 +12,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        raleway: ["Raleway", "monospace"],
-        "roboto-slab": ["Roboto Slab", "monospace"],
-        jost: ["Jost", "monospace"],
+        raleway: ["Raleway", "monospaced"],
+        "roboto-slab": ["Roboto Slab", "monospaced"],
+        jost: ["Jost", "monospaced"],
       },
       fontWeight: {
         normal: "400",
