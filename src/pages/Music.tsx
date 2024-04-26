@@ -102,8 +102,9 @@ function Music() {
                 found success on my own. I served as the Historian for the Tri-M
                 Music Honor Society Chapter #7054 for one year, earned the Music
                 Teachers' Association of California Certificate of Merit Level 5
-                in Piano, and completed the Fullerton Union High School Academy
-                of the Arts Choral/Vocal Track.
+                in Piano, was nominated for Orange County Artist of the Year in
+                Piano for 2023, and completed the Fullerton Union High School
+                Academy of the Arts Choral/Vocal Track.
               </p>
             </div>
           </div>
