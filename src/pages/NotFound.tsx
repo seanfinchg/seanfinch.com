@@ -23,9 +23,7 @@ const HomeButton: React.FC<ButtonProps> = ({ children }) => {
 
   return (
     <button className={buttonClass} onClick={goToHomePage}>
-      <div className="flex items-center">
-        {children}
-      </div>
+      <div className="flex items-center">{children}</div>
     </button>
   );
 };
