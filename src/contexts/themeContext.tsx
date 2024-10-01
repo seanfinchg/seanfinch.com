@@ -8,7 +8,7 @@ type ThemeContextProps = {
 };
 
 export const ThemeContext = createContext<ThemeContextProps | undefined>(
-  undefined,
+  undefined
 );
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({

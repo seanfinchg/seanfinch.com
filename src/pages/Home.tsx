@@ -92,7 +92,11 @@ function Home() {
           <div className="my-2.5 flex justify-center items-center flex-wrap">
             <SocialMediaButton url="/resume.pdf">Resume</SocialMediaButton>
             <a href="https://www.buymeacoffee.com/seanfinch">
-              <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee!&emoji=☕&slug=seanfinch&button_colour=FF5F5F&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" width="200" height="auto" />
+              <img
+                src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee!&emoji=☕&slug=seanfinch&button_colour=FF5F5F&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00"
+                width="200"
+                height="auto"
+              />
             </a>
             <SocialMediaButton url="/music_resume.pdf">
               Music Resume
