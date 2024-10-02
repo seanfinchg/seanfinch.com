@@ -27,8 +27,7 @@ function About() {
               <p className="mb-4">
                 Hey there! I'm Sean Finch, hailing from Orange County,
                 California. Currently, I'm pursuing a Bachelor of Science in
-                Computer Science with a Minor in Music at Northeastern
-                University.
+                Cybersecurity with a Minor in Music at Northeastern University.
               </p>
               <p className="mb-4">
                 At the Reuse Depot in Northeastern University Oakland, I've
@@ -38,15 +37,24 @@ function About() {
                 ability to navigate complex conversations with professionalism.
               </p>
               <p className="mb-4">
+                In Summer 2024, I was a Cybersecurity Intern at CENIC. CENIC's
+                CalREN Network is country's largest statewide research and
+                education network, which now serves more than 20 million users.
+                During my internship, I performed vulnerability management,
+                analysis of DDoS attacks, and measured KPIs of the Information
+                Security Office's ongoing efforts to bolster security.
+              </p>
+              <p className="mb-4">
                 Proficient in HTML, CSS, JavaScript, React.js, and more, coupled
                 with strong organizational abilities and public speaking
                 prowess, I'm dedicated to making a positive impact in both my
                 academic and professional pursuits.
               </p>
               <p className="mb-4">
-                Recognized for excellence with awards such as the Academy of the
-                Arts Completer and the Jadwin Global Affairs Scholarship, I'm
-                excited to continue learning and growing on this journey.
+                Recognized for excellence with awards such as the Fullerton
+                Union High School Academy of the Arts Completer and the Jadwin
+                Global Affairs Scholarship, I'm excited to continue learning and
+                growing on this journey.
               </p>
             </div>
           </div>
