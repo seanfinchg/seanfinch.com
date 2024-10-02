@@ -67,8 +67,8 @@ function Music() {
               className={`w-full md:w-1/2 mb-8 p-4 border-${theme === "light" ? "border-ultra-light-mode" : "border-ultra-dark-mode"} border-2 rounded-lg text-${theme === "light" ? "text-ultra-light-mode" : "text-ultra-dark-mode"} m-4 font-raleway shadow-lg`}
             >
               <p className="mb-4">
-                My name is Sean Finch, and I am currently a Computer Science
-                Major and Music Minor at Northeastern University Oakland.
+                My name is Sean Finch, and I am currently a second-year
+                Cybersecurity Major and Music Minor at Northeastern University.
               </p>
               <p className="mb-4">
                 Music has been a driving force in my life since childhood. I
@@ -91,11 +91,15 @@ function Music() {
                 California All-State Honor Choir for two years.
               </p>
               <p className="mb-4">
-                Last semester, I had the opportunity to expand my musical
-                horizons by singing in the St. Mary's College of California Glee
-                and Chamber Singers choirs as a visiting student. This semester,
-                I'm excited to continue my musical journey as a member of the UC
-                Berkeley University Chorus.
+                Last year, I had the opportunity to expand my musical horizons
+                by singing in the St. Mary's College of California Glee and
+                Chamber Singers choirs as a visiting student, and as a member of
+                the UC Berkeley University Chorus.
+              </p>
+              <p className="mb-4">
+                This year, I'm exited to continue my musical journey, singing in
+                Northeastern University's Chorus and Chamber Ensembles under
+                direction of Dr. Katherine Chan
               </p>
               <p className="mb-4">
                 In addition to my achievements in group settings, I've also
@@ -104,7 +108,9 @@ function Music() {
                 Teachers' Association of California Certificate of Merit Level 5
                 in Piano, was nominated for Orange County Artist of the Year in
                 Piano for 2023, and completed the Fullerton Union High School
-                Academy of the Arts Choral/Vocal Track.
+                Academy of the Arts Choral/Vocal Track. Most recently, I
+                received a scholarship for voice from Northeastern University's
+                Music Department.
               </p>
             </div>
           </div>
