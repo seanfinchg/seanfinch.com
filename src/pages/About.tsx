@@ -1,6 +1,35 @@
 import { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 
+interface SocialMediaButtonProps {
+  url: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
+  url,
+  children,
+  className = "",
+}) => {
+  const { theme } = useTheme();
+  const buttonClass = `flex justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${
+    theme === "light"
+      ? "bg-ultra-light-mode text-ultra-dark-mode"
+      : "bg-ultra-dark-mode text-light-mode"
+  } ${className}`;
+
+  const openLinkInNewTab = () => {
+    window.open(url, "_blank");
+  };
+
+  return (
+    <button className={buttonClass} onClick={openLinkInNewTab}>
+      {children}
+    </button>
+  );
+};
+
 function About() {
   const { theme } = useTheme();
 
@@ -15,6 +44,11 @@ function About() {
       <div className="w-full mx-4 md:mx-0">
         <div className="flex flex-col items-center text-center mt-16">
           <h1 className="text-4xl font-bold mb-8 font-jost">About Me</h1>
+          <div className="flex justify-center flex-wrap">
+            <SocialMediaButton url="/resume.pdf" className="mb-4 md:mb-0">
+              Resume
+            </SocialMediaButton>
+          </div>
           <div className="flex flex-col md:flex-row justify-center items-center md:space-x-8 md:items-center">
             <img
               src="/SeanPortrait.jpg"
