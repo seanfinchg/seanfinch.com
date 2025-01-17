@@ -42,7 +42,7 @@ const ProjectCard: React.FC<ProjectProps> = ({
           target="_blank"
           rel="noopener noreferrer"
         >
-          Access project code
+          GitHub
         </a>
       )}
       {demoLink && (
@@ -52,7 +52,7 @@ const ProjectCard: React.FC<ProjectProps> = ({
           target="_blank"
           rel="noopener noreferrer"
         >
-          Demo here
+          Demonstration
         </a>
       )}
     </div>
@@ -68,9 +68,31 @@ const Projects: React.FC = () => {
 
   const projects: ProjectProps[] = [
     {
+      title: "Storefront Website",
+      description:
+        "This responsive website was designed and developed to showcase baked goods and ensure accessibility across devices. Dynamic features were implemented to enhance user engagement and provide seamless navigation, creating a user-friendly shopping experience. Additionally, a robust checkout system was integrated to streamline order tracking and facilitate efficient product delivery, ensuring a smooth and satisfying experience for customers.",
+      technologies: [
+        "TypeScript",
+        "JavaScript",
+        "HTML",
+        "React.js",
+        "Tailwind CSS",
+      ],
+      githubLink: "https://github.com/seanfinchg/finchfamilyfudge.com",
+      demoLink: "https://finchfamilyfudge.com/",
+    },
+    {
+      title: "ThreeTrios",
+      description:
+        "ThreeTrios is a strategic card game developed with a focus on Object-Oriented Design principles, leveraging abstraction and polymorphism to enhance code reusability and user engagement. The project features a modular MVC architecture built with encapsulation, ensuring scalability and simplifying the integration of new features. Comprehensive unit and integration tests were implemented to validate game logic, delivering a robust and error-free gameplay experience while maintaining high development standards.",
+      technologies: ["Java", "JUnit", "JFrame"],
+      githubLink: "",
+      demoLink: "",
+    },
+    {
       title: "Personal Website",
       description:
-        "This website, constructed utilizing React, Tailwind CSS, and TypeScript, functions as a professional portfolio to exhibit my range of projects and technical abilities. It represents my proficiency in contemporary web development technologies and responsive design principles.",
+        "This website, built using React, Tailwind CSS, and TypeScript, serves as a professional portfolio to highlight my projects and technical expertise. It features a responsive design to enhance accessibility and personal branding, integrates light and dark mode with device theme detection and a manual toggle for user personalization, and leverages modern web technologies to optimize performance, reducing load times and improving the overall user experience.",
       technologies: [
         "TypeScript",
         "JavaScript",
@@ -84,7 +106,7 @@ const Projects: React.FC = () => {
     {
       title: "Homelab Initiatives",
       description:
-        "My homelab initiatives encompass the establishment of essential records backup, photo backup, and home video backup systems for my family. I have previously utilized Ubuntu Server and TrueNAS Scale, and currently, I am operating Proxmox.",
+        "My homelab initiatives focus on creating efficient and reliable backup systems for personal records, family photos, and home videos. Currently, I leverage Proxmox for home virtualization, streamlining backup management and enhancing data security. Previously, I have worked with Ubuntu Server and TrueNAS Scale. I also actively explore various platforms to optimize system performance, scalability, and future-proofing, ensuring a robust and adaptable home infrastructure.",
       technologies: ["Ubuntu Server", "TrueNAS Scale", "Proxmox", "Docker"],
       githubLink: "",
       demoLink: "",
