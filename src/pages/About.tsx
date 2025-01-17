@@ -25,37 +25,72 @@ function About() {
               className={`w-full md:w-1/2 mb-8 p-4 border-${theme === "light" ? "border-ultra-light-mode" : "border-ultra-dark-mode"} border-2 rounded-lg text-${theme === "light" ? "text-ultra-light-mode" : "text-ultra-dark-mode"} m-4 font-raleway shadow-lg`}
             >
               <p className="mb-4">
-                Hey there! I'm Sean Finch, hailing from Orange County,
-                California. Currently, I'm pursuing a Bachelor of Science in
-                Cybersecurity with a Minor in Music at Northeastern University.
+                Hey there! I'm Sean Finch from sunny Orange County, California,
+                currently pursuing a Bachelor of Science in Cybersecurity with a
+                Minor in Music at Northeastern University. My passion lies in
+                blending technical expertise with creative problem-solving to
+                make a tangible impact.
               </p>
               <p className="mb-4">
-                At the Reuse Depot in Northeastern University Oakland, I've
-                honed my skills as an Eco-Representative, implementing efficient
-                data tracking systems and enhancing customer flow. My experience
-                as a Political Canvasser in Fullerton equipped me with the
-                ability to navigate complex conversations with professionalism.
+                As a Cybersecurity Intern at CENIC, I utilized tools like
+                Tenable.io, Qualys, Elastic, and SIEM to perform vulnerability
+                management and analyze DDoS attacks. I also worked on identity
+                and access management to enhance system security. My
+                contributions included auditing security scans, documenting
+                processes in Confluence to improve team collaboration, and
+                capturing detailed metrics to measure and strengthen the
+                organization's cybersecurity posture.
               </p>
               <p className="mb-4">
-                In Summer 2024, I was a Cybersecurity Intern at CENIC. CENIC's
-                CalREN Network is country's largest statewide research and
-                education network, which now serves more than 20 million users.
-                During my internship, I performed vulnerability management,
-                analysis of DDoS attacks, and measured KPIs of the Information
-                Security Office's ongoing efforts to bolster security.
+                In my homelab, I leverage Proxmox and Docker to manage backups
+                and experiment with various platforms. This hands-on approach
+                has sharpened my skills in virtualization, system
+                administration, and infrastructure optimization. By continuously
+                exploring new technologies, I aim to create scalable and
+                future-proof systems for home use.
               </p>
               <p className="mb-4">
-                Proficient in HTML, CSS, JavaScript, React.js, and more, coupled
-                with strong organizational abilities and public speaking
-                prowess, I'm dedicated to making a positive impact in both my
-                academic and professional pursuits.
+                Currently, I work in IT support for Northeastern University’s
+                Mechanical and Industrial Engineering Department. In this role,
+                I administer and maintain devices, configure software, and
+                ensure reliable system performance to minimize disruptions for
+                faculty and students. This experience has further honed my
+                troubleshooting skills and reinforced the importance of
+                efficient IT operations in an academic environment.
               </p>
               <p className="mb-4">
-                Recognized for excellence with awards such as the Fullerton
-                Union High School Academy of the Arts Completer and the Jadwin
-                Global Affairs Scholarship, I'm excited to continue learning and
-                growing on this journey.
+                Beyond the technical world, I'm a vocalist and outdoor
+                enthusiast who enjoys singing, hiking, and photography. With a
+                creative mindset and a dedication to continuous learning, I'm
+                excited to tackle challenges and drive innovation in
+                cybersecurity and IT.
               </p>
+              <div>
+                <h2 className="text-3xl font-bold mb-4">Technical Skills</h2>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>
+                    <strong>Operating Systems/Software:</strong> Tenable.IO,
+                    Qualys, Elastic, Proxmox, CasaOS, GitHub, GitLab, Ubuntu
+                    Server, Docker, Windows Server, TrueNAS SCALE
+                  </li>
+                  <li>
+                    <strong>Programming Languages:</strong> Java, Kotlin,
+                    TypeScript, JavaScript, HTML, Tailwind, CSS, Python, C++, C,
+                    Assembly, Prisma
+                  </li>
+                  <li>
+                    <strong>Cybersecurity Skills:</strong> SIEM, Incident
+                    Response, Vulnerability Assessment, VPN, System
+                    Administration, Virtualization, Threat Intelligence,
+                    Identity and Access Management (IAM)
+                  </li>
+                  <li>
+                    <strong>Other:</strong> Git, React.js, Node.js, 3-2-1
+                    Backup, JUnit, Code Refactoring, Object-Oriented
+                    Programming, Test-Driven Development
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
