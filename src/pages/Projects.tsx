@@ -85,7 +85,7 @@ const Projects: React.FC = () => {
       title: "ThreeTrios",
       description:
         "ThreeTrios is a strategic card game developed with a focus on Object-Oriented Design principles, leveraging abstraction and polymorphism to enhance code reusability and user engagement. The project features a modular MVC architecture built with encapsulation, ensuring scalability and simplifying the integration of new features. Comprehensive unit and integration tests were implemented to validate game logic, delivering a robust and error-free gameplay experience while maintaining high development standards.",
-      technologies: ["Java", "JUnit", "JFrame"],
+      technologies: ["Java", "JUnit", "Swing"],
       githubLink: "",
       demoLink: "",
     },
