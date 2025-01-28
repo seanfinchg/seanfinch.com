@@ -37,6 +37,9 @@ const ProjectCard: React.FC<ProjectProps> = ({
           </span>
         ))}
       </div>
+      {dateRange && (
+        <p className="text-sm mb-2 italic font-monospace">{dateRange}</p>
+      )}
       {githubLink && (
         <a
           href={githubLink}
