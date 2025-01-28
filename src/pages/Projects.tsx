@@ -7,6 +7,7 @@ interface ProjectProps {
   technologies: string[];
   githubLink: string;
   demoLink: string;
+  dateRange: string;
 }
 
 const ProjectCard: React.FC<ProjectProps> = ({
@@ -15,6 +16,7 @@ const ProjectCard: React.FC<ProjectProps> = ({
   technologies,
   githubLink,
   demoLink,
+  dateRange,
 }) => {
   const { theme } = useTheme();
 
@@ -71,15 +73,10 @@ const Projects: React.FC = () => {
       title: "Storefront Website",
       description:
         "This responsive website was designed and developed to showcase baked goods and ensure accessibility across devices. Dynamic features were implemented to enhance user engagement and provide seamless navigation, creating a user-friendly shopping experience. Additionally, a robust checkout system was integrated to streamline order tracking and facilitate efficient product delivery, ensuring a smooth and satisfying experience for customers.",
-      technologies: [
-        "TypeScript",
-        "JavaScript",
-        "HTML",
-        "React.js",
-        "Tailwind CSS",
-      ],
+      technologies: ["React.js", "Tailwind", "TypeScript"],
       githubLink: "https://github.com/seanfinchg/finchfamilyfudge.com",
       demoLink: "https://finchfamilyfudge.com/",
+      dateRange: "Nov 2024 – Present",
     },
     {
       title: "ThreeTrios",
@@ -88,28 +85,25 @@ const Projects: React.FC = () => {
       technologies: ["Java", "JUnit", "Swing"],
       githubLink: "",
       demoLink: "",
+      dateRange: "October 2024 – December 2024",
     },
     {
       title: "Personal Website",
       description:
         "This website, built using React, Tailwind CSS, and TypeScript, serves as a professional portfolio to highlight my projects and technical expertise. It features a responsive design to enhance accessibility and personal branding, integrates light and dark mode with device theme detection and a manual toggle for user personalization, and leverages modern web technologies to optimize performance, reducing load times and improving the overall user experience.",
-      technologies: [
-        "TypeScript",
-        "JavaScript",
-        "HTML",
-        "React.js",
-        "Tailwind CSS",
-      ],
+      technologies: ["React.js", "Tailwind", "TypeScript"],
       githubLink: "https://github.com/seanfinchg/seanfinch.com",
       demoLink: "https://seanfinch.com/",
+      dateRange: "March 2024 – Present",
     },
     {
-      title: "Homelab Initiatives",
+      title: "Homelab Infrastructue",
       description:
         "My homelab initiatives focus on creating efficient and reliable backup systems for personal records, family photos, and home videos. Currently, I leverage Proxmox for home virtualization, streamlining backup management and enhancing data security. Previously, I have worked with Ubuntu Server and TrueNAS Scale. I also actively explore various platforms to optimize system performance, scalability, and future-proofing, ensuring a robust and adaptable home infrastructure.",
-      technologies: ["Ubuntu Server", "TrueNAS Scale", "Proxmox", "Docker"],
+      technologies: ["Proxmox", "Docket", "CasaOS", "Caddy"],
       githubLink: "",
       demoLink: "",
+      dateRange: "June 2022 – Present",
     },
     {
       title: "BiblioConnect",
@@ -126,20 +120,7 @@ const Projects: React.FC = () => {
       ],
       githubLink: "https://github.com/Biblio-Connect/BiblioConnect",
       demoLink: "https://biblioconnect.seanfinch.com/",
-    },
-    {
-      title: "Whenabouts",
-      description:
-        "A web application that takes in an itinerary for a business trip that crosses timezones and outputs the time in each timezone. Currently a work in progress.",
-      technologies: [
-        "TypeScript",
-        "JavaScript",
-        "HTML",
-        "React.js",
-        "Tailwind CSS",
-      ],
-      githubLink: "https://github.com/seanfinchg/whenabouts.seanfinch.com",
-      demoLink: "https://whenabouts.seanfinch.com/",
+      dateRange: "March 2024 – March 2024",
     },
   ];
 
