@@ -138,7 +138,7 @@ const Projects: React.FC = () => {
       title: "Homelab Infrastructue",
       description:
         "Utilized Proxmox Virtual Environment as a hypervisor to manage virtual machines and containers for home infrastructure. Incorporated Docker and CasaOS to streamline media management, backups, and server functionality. Reverse proxied web interfaces using Caddy, providing secure remote access via TLS. Leveraged Tailscale for VPN capabilities, enabling seamless and secure connections to home resources. Continuously explored new tools and configurations to enhance performance, scalability, and ensure the system remains future-proof.",
-      technologies: ["Proxmox", "Docket", "CasaOS", "Caddy"],
+      technologies: ["Proxmox", "Docker", "CasaOS", "Caddy"],
       githubLink: "",
       demoLink: "",
       dateRange: "June 2022 – Present",
