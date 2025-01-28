@@ -70,6 +70,24 @@ const Projects: React.FC = () => {
 
   const projects: ProjectProps[] = [
     {
+      title: "ThreeTrios",
+      description:
+        "ThreeTrios is a strategic card game developed with a focus on Object-Oriented Design principles, leveraging abstraction and polymorphism to enhance code reusability and user engagement. The project features a modular MVC architecture built with encapsulation, ensuring scalability and simplifying the integration of new features. Comprehensive unit and integration tests were implemented to validate game logic, delivering a robust and error-free gameplay experience while maintaining high development standards.",
+      technologies: ["Java", "JUnit", "Swing"],
+      githubLink: "",
+      demoLink: "",
+      dateRange: "December 2024 – December 2024",
+    },
+    {
+      title: "NUFS File System",
+      description:
+        "",
+      technologies: ["C", "FUSE"],
+      githubLink: "",
+      demoLink: "",
+      dateRange: "December 2024 – December 2024",
+    },
+    {
       title: "Storefront Website",
       description:
         "This responsive website was designed and developed to showcase baked goods and ensure accessibility across devices. Dynamic features were implemented to enhance user engagement and provide seamless navigation, creating a user-friendly shopping experience. Additionally, a robust checkout system was integrated to streamline order tracking and facilitate efficient product delivery, ensuring a smooth and satisfying experience for customers.",
@@ -79,22 +97,13 @@ const Projects: React.FC = () => {
       dateRange: "Nov 2024 – Present",
     },
     {
-      title: "ThreeTrios",
+      title: "Mini-Shell",
       description:
-        "ThreeTrios is a strategic card game developed with a focus on Object-Oriented Design principles, leveraging abstraction and polymorphism to enhance code reusability and user engagement. The project features a modular MVC architecture built with encapsulation, ensuring scalability and simplifying the integration of new features. Comprehensive unit and integration tests were implemented to validate game logic, delivering a robust and error-free gameplay experience while maintaining high development standards.",
-      technologies: ["Java", "JUnit", "Swing"],
+        "",
+      technologies: ["C", "Python"],
       githubLink: "",
       demoLink: "",
-      dateRange: "October 2024 – December 2024",
-    },
-    {
-      title: "Personal Website",
-      description:
-        "This website, built using React, Tailwind CSS, and TypeScript, serves as a professional portfolio to highlight my projects and technical expertise. It features a responsive design to enhance accessibility and personal branding, integrates light and dark mode with device theme detection and a manual toggle for user personalization, and leverages modern web technologies to optimize performance, reducing load times and improving the overall user experience.",
-      technologies: ["React.js", "Tailwind", "TypeScript"],
-      githubLink: "https://github.com/seanfinchg/seanfinch.com",
-      demoLink: "https://seanfinch.com/",
-      dateRange: "March 2024 – Present",
+      dateRange: "October 2024 – October 2024",
     },
     {
       title: "Homelab Infrastructue",
@@ -121,6 +130,15 @@ const Projects: React.FC = () => {
       githubLink: "https://github.com/Biblio-Connect/BiblioConnect",
       demoLink: "https://biblioconnect.seanfinch.com/",
       dateRange: "March 2024 – March 2024",
+    },
+    {
+      title: "Personal Website",
+      description:
+        "This website, built using React, Tailwind CSS, and TypeScript, serves as a professional portfolio to highlight my projects and technical expertise. It features a responsive design to enhance accessibility and personal branding, integrates light and dark mode with device theme detection and a manual toggle for user personalization, and leverages modern web technologies to optimize performance, reducing load times and improving the overall user experience.",
+      technologies: ["React.js", "Tailwind", "TypeScript"],
+      githubLink: "https://github.com/seanfinchg/seanfinch.com",
+      demoLink: "https://seanfinch.com/",
+      dateRange: "March 2024 – Present",
     },
   ];
 
