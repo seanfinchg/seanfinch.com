@@ -81,7 +81,7 @@ const Projects: React.FC = () => {
     {
       title: "NUFS File System",
       description:
-        "",
+        "Engineered an in-memory filesystem using the FUSE API, supporting over 20 file operations. Designed modular components for efficient bitmap, block, and storage management, facilitating streamlined file allocation and system performance.",
       technologies: ["C", "FUSE"],
       githubLink: "",
       demoLink: "",
@@ -99,20 +99,11 @@ const Projects: React.FC = () => {
     {
       title: "Mini-Shell",
       description:
-        "",
-      technologies: ["C", "Python"],
+        "Developed a custom Linux shell in C, supporting built-in commands, piping, and input tokenization with advanced features like quoted strings and special characters. Integrated POSIX system calls for process execution and inter-process communication, ensuring robust functionality.",
+      technologies: ["C", "Python", "POSIX"],
       githubLink: "",
       demoLink: "",
       dateRange: "October 2024 – October 2024",
-    },
-    {
-      title: "Homelab Infrastructue",
-      description:
-        "My homelab initiatives focus on creating efficient and reliable backup systems for personal records, family photos, and home videos. Currently, I leverage Proxmox for home virtualization, streamlining backup management and enhancing data security. Previously, I have worked with Ubuntu Server and TrueNAS Scale. I also actively explore various platforms to optimize system performance, scalability, and future-proofing, ensuring a robust and adaptable home infrastructure.",
-      technologies: ["Proxmox", "Docket", "CasaOS", "Caddy"],
-      githubLink: "",
-      demoLink: "",
-      dateRange: "June 2022 – Present",
     },
     {
       title: "BiblioConnect",
@@ -139,6 +130,15 @@ const Projects: React.FC = () => {
       githubLink: "https://github.com/seanfinchg/seanfinch.com",
       demoLink: "https://seanfinch.com/",
       dateRange: "March 2024 – Present",
+    },
+    {
+      title: "Homelab Infrastructue",
+      description:
+        "Utilized Proxmox Virtual Environment as a hypervisor to manage virtual machines and containers for home infrastructure. Incorporated Docker and CasaOS to streamline media management, backups, and server functionality. Reverse proxied web interfaces using Caddy, providing secure remote access via TLS. Leveraged Tailscale for VPN capabilities, enabling seamless and secure connections to home resources. Continuously explored new tools and configurations to enhance performance, scalability, and ensure the system remains future-proof.",
+      technologies: ["Proxmox", "Docket", "CasaOS", "Caddy"],
+      githubLink: "",
+      demoLink: "",
+      dateRange: "June 2022 – Present",
     },
   ];
 
