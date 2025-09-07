@@ -73,6 +73,24 @@ const Projects: React.FC = () => {
 
   const projects: ProjectProps[] = [
     {
+      title: "FTP Client",
+      description:
+        "Developed a basic FTP Client to interface with a server to send, receive, and transfer files between the server and the client.",
+      technologies: ["Python"],
+      githubLink: "",
+      demoLink: "",
+      dateRange: "January 2024 – January 2024",
+    },
+    {
+      title: "TCP Client",
+      description:
+        "Developed a basic TCP Client to interface with a server to solve a Worldle-like word game.",
+      technologies: ["Python"],
+      githubLink: "",
+      demoLink: "",
+      dateRange: "January 2024 – January 2024",
+    },
+    {
       title: "ThreeTrios",
       description:
         "ThreeTrios is a strategic card game developed with a focus on Object-Oriented Design principles, leveraging abstraction and polymorphism to enhance code reusability and user engagement. The project features a modular MVC architecture built with encapsulation, ensuring scalability and simplifying the integration of new features. Comprehensive unit and integration tests were implemented to validate game logic, delivering a robust and error-free gameplay experience while maintaining high development standards.",
