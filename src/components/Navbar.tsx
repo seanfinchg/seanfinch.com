@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
 
   const getStyleForMobileNavbar = (): string => {
     return isMobile
-      ? `fixed top-24 left-0 w-screen rounded-br-lg rounded-bl-lg ${getThemeCSS()} flex flex-col 
+      ? `fixed top-24 left-0 z-50 w-screen rounded-br-lg rounded-bl-lg ${getThemeCSS()} flex flex-col 
         transition-opacity transition-height ${
           isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
         }`
