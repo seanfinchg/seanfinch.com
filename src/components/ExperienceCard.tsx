@@ -33,18 +33,23 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           ))}
         </ul>
       )}
+      {hideContent && (
+        <div className="text-sm italic text-gray-500">
+          Click to view more details...
+        </div>
+      )}
     </div>
   );
 
-  const baseClasses = `w-full md:w-3/4 mb-8 p-4 rounded-lg shadow-lg border-2 ${
+  const baseClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${
     theme === "light"
-      ? "border-light-mode text-dark-mode bg-white"
-      : "border-dark-mode text-light-mode bg-gray-900"
+      ? "border-dark-mode text-dark-mode bg-light-mode"
+      : "border-light-mode text-light-mode bg-dark-mode"
   }`;
 
   return featured ? (
-    <FeaturedCard type="experience" label={title} className={baseClasses}>
-      {cardContent}
+    <FeaturedCard type="experience" label={title}>
+      <div className={baseClasses}>{cardContent}</div>
     </FeaturedCard>
   ) : (
     <div className={baseClasses}>{cardContent}</div>
