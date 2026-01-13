@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
+import { useNavigate } from "react-router-dom";
 import {
   FaGithub,
   // FaInstagram,
@@ -8,6 +9,8 @@ import {
   // FaSpotify,
   // FaYoutube,
 } from "react-icons/fa";
+import { experiences } from "../data/experiences";
+import { projects } from "../data/projects";
 
 interface SocialMediaButtonProps {
   url: string;
@@ -34,6 +37,8 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
 
 function Home() {
   const { theme } = useTheme();
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Home - Sean Finch • SoCal";
   }, []);
@@ -57,6 +62,14 @@ function Home() {
     //   icon: <FaYoutube size={30} />,
     // },
   ];
+
+  const featuredExperience = experiences.find((exp) => exp.featured);
+  const featuredProject = projects.find((proj) => proj.featured);
+
+  const truncateText = (text: string, maxLength: number = 200) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + "...";
+  };
 
   return (
     <div
@@ -99,6 +112,83 @@ function Home() {
             </SocialMediaButton>
           </div>
         </div>
+
+        {/* Featured Section */}
+        {(featuredExperience || featuredProject) && (
+          <div className="mt-12 mb-8 px-4 max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-6 font-jost">
+              Featured
+            </h2>
+
+            {/* Featured Experience */}
+            {featuredExperience && (
+              <div
+                className={`mb-6 p-6 border-4 ${
+                  theme === "light"
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-blue-400 bg-blue-900/20"
+                } rounded-lg shadow-2xl relative cursor-pointer hover:scale-[1.02] transition-transform group`}
+                onClick={() => navigate("/experience")}
+              >
+                <div className="absolute -top-4 left-4 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
+                  ⭐ UPCOMING ROLE
+                </div>
+                <h3 className="text-2xl font-bold mb-1 mt-2 font-jost">
+                  {featuredExperience.title}
+                </h3>
+                <p className="text-xl font-semibold mb-1 font-jost">
+                  {featuredExperience.company}
+                </p>
+                <p className="text-sm italic mb-3 font-monospace">
+                  {featuredExperience.location} | {featuredExperience.dateRange}
+                </p>
+                <p className="font-raleway">
+                  {truncateText(featuredExperience.description[0], 150)}
+                </p>
+                <p className="mt-3 text-blue-500 font-semibold text-sm group-hover:underline">
+                  Click to learn more →
+                </p>
+              </div>
+            )}
+
+            {/* Featured Project */}
+            {featuredProject && (
+              <div
+                className={`mb-6 p-6 border-4 ${
+                  theme === "light"
+                    ? "border-green-500 bg-green-50"
+                    : "border-green-400 bg-green-900/20"
+                } rounded-lg shadow-2xl relative cursor-pointer hover:scale-[1.02] transition-transform group`}
+                onClick={() => navigate("/projects")}
+              >
+                <div className="absolute -top-4 left-4 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
+                  ⭐ FEATURED PROJECT
+                </div>
+                <h3 className="text-2xl font-bold mb-2 mt-2 font-jost">
+                  {featuredProject.title}
+                </h3>
+                <p className="font-raleway mb-3">
+                  {truncateText(featuredProject.description, 180)}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {featuredProject.technologies
+                    .slice(0, 4)
+                    .map((tech, index) => (
+                      <span
+                        key={index}
+                        className="inline-block bg-green-500 text-white rounded-full px-3 py-1 text-xs font-bold font-monospace"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                </div>
+                <p className="mt-3 text-green-600 font-semibold text-sm group-hover:underline">
+                  Click to learn more →
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
