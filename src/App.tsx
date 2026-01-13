@@ -8,6 +8,7 @@ import Experience from "./pages/Experience";
 import Music from "./pages/Music";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
+import { Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 
 const AppRoutes = () => (
@@ -18,6 +19,7 @@ const AppRoutes = () => (
     <Route path="/music" element={<Music />} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/about" element={<About />} />
+    <Route path="/resume" element={<Navigate to="/resume.pdf" replace />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
