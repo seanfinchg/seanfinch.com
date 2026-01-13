@@ -1,7 +1,6 @@
 import React from "react";
 import { useTheme } from "../contexts/themeContext";
 import { ExperienceProps } from "../data/experiences";
-import FeaturedCard from "./FeaturedCard";
 
 interface ExperienceCardProps extends ExperienceProps {
   featured?: boolean;
@@ -41,18 +40,29 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     </div>
   );
 
-  const baseClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${
+  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${
     theme === "light"
       ? "border-dark-mode text-dark-mode bg-light-mode"
       : "border-light-mode text-light-mode bg-dark-mode"
   }`;
 
-  return featured ? (
-    <FeaturedCard type="experience" label={title}>
-      <div className={baseClasses}>{cardContent}</div>
-    </FeaturedCard>
-  ) : (
-    <div className={baseClasses}>{cardContent}</div>
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${
+    theme === "light"
+      ? "border-blue-500 bg-blue-50 text-dark-mode"
+      : "border-blue-400 bg-blue-900/20 text-light-mode"
+  }`;
+
+  const wrapperClasses = featured ? featuredClasses : regularClasses;
+
+  return (
+    <div className={wrapperClasses}>
+      {featured && (
+        <div className="absolute -top-4 left-4 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
+          ⭐ {title}
+        </div>
+      )}
+      <div className={featured ? "pt-4" : ""}>{cardContent}</div>
+    </div>
   );
 };
 

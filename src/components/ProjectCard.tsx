@@ -1,7 +1,6 @@
 import React from "react";
 import { useTheme } from "../contexts/themeContext";
 import { ProjectProps } from "../data/projects";
-import FeaturedCard from "./FeaturedCard";
 
 interface ProjectCardProps extends ProjectProps {
   featured?: boolean;
@@ -44,6 +43,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {dateRange && (
         <p className="text-sm mb-2 italic font-monospace">{dateRange}</p>
       )}
+      {hideContent && (
+        <div className="text-sm italic text-gray-500">
+          Click to view more details...
+        </div>
+      )}
       <div className="flex flex-wrap gap-2">
         {!hideContent && githubLink && (
           <a
@@ -69,18 +73,29 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     </div>
   );
 
-  const baseClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${
+  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${
     theme === "light"
       ? "border-dark-mode text-dark-mode bg-light-mode"
       : "border-light-mode text-light-mode bg-dark-mode"
   }`;
 
-  return featured ? (
-    <FeaturedCard type="project" label={title}>
-      <div className={baseClasses}>{cardContent}</div>
-    </FeaturedCard>
-  ) : (
-    <div className={baseClasses}>{cardContent}</div>
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${
+    theme === "light"
+      ? "border-green-500 bg-green-50 text-dark-mode"
+      : "border-green-400 bg-green-900/20 text-light-mode"
+  }`;
+
+  const wrapperClasses = featured ? featuredClasses : regularClasses;
+
+  return (
+    <div className={wrapperClasses}>
+      {featured && (
+        <div className="absolute -top-4 left-4 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
+          ⭐ {title}
+        </div>
+      )}
+      <div className={featured ? "pt-4" : ""}>{cardContent}</div>
+    </div>
   );
 };
 
