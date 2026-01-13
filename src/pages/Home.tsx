@@ -110,23 +110,6 @@ function Home() {
           </div>
           <div className="flex flex-col items-center px-4 max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-6 font-jost">
-              Featured Projects
-            </h2>
-            <div className="flex flex-wrap justify-center">
-              {projects
-                .filter((p) => p.featured)
-                .map((proj, i) => (
-                  <div
-                    key={i}
-                    className="cursor-pointer"
-                    onClick={() => navigate("/projects")}
-                  >
-                    <ProjectCard {...proj} featured />
-                  </div>
-                ))}
-            </div>
-
-            <h2 className="text-3xl font-bold text-center mb-6 font-jost">
               Featured Experiences
             </h2>
             <div className="flex flex-wrap justify-center">
@@ -138,7 +121,23 @@ function Home() {
                     className="cursor-pointer"
                     onClick={() => navigate("/experience")}
                   >
-                    <ExperienceCard {...exp} featured />
+                    <ExperienceCard {...exp} featured hideContent />
+                  </div>
+                ))}
+            </div>
+            <h2 className="text-3xl font-bold text-center mb-6 font-jost">
+              Featured Projects
+            </h2>
+            <div className="flex flex-wrap justify-center">
+              {projects
+                .filter((p) => p.featured)
+                .map((proj, i) => (
+                  <div
+                    key={i}
+                    className="cursor-pointer"
+                    onClick={() => navigate("/projects")}
+                  >
+                    <ProjectCard {...proj} featured hideContent />
                   </div>
                 ))}
             </div>
