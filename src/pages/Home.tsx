@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import {
   FaGithub,
-  FaInstagram,
-  FaReddit,
+  // FaInstagram,
+  // FaReddit,
   FaLinkedin,
-  FaSpotify,
-  FaYoutube,
+  // FaSpotify,
+  // FaYoutube,
 } from "react-icons/fa";
 
 interface SocialMediaButtonProps {
