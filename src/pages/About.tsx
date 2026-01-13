@@ -91,11 +91,11 @@ function About() {
                 <h2 className="text-3xl font-bold mb-4">Technical Skills</h2>
                 <ul className="list-disc pl-5 space-y-2">
                   <li>
-                    <strong>Operating Systems/Software:</strong> Intune, Entra
-                    ID, Active Directory, Tenable, Qualys, Crowdstrike, Software
-                    RAIDZ1, Elasticsearch, Kibana, Git, Linux, Proxmox, TrueNAS
-                    SCALE, Tailscale, Nginx, Caddy, Docker, Wireshark, JUnit,
-                    React.js, Node.js, Express.js, Tailwind, Prisma, Swing
+                    <strong>Technologies:</strong> Intune, Entra ID, Active
+                    Directory, Tenable, Qualys, CrowdStrike, Elasticsearch,
+                    Kibana, Git, Linux, Proxmox, TrueNAS SCALE, Tailscale,
+                    Nginx, Caddy, Docker, Wireshark, JUnit, React.js, Node.js,
+                    Express.js
                   </li>
                   <li>
                     <strong>Cybersecurity:</strong> SIEM, Risk Management and
