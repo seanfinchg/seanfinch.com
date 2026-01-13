@@ -119,7 +119,10 @@ function Home() {
                   <div
                     key={i}
                     className="cursor-pointer"
-                    onClick={() => navigate("/experience")}
+                    onClick={() => {
+                      navigate("/experience");
+                      window.scrollTo(0, 0);
+                    }}
                   >
                     <ExperienceCard {...exp} featured hideContent />
                   </div>
@@ -135,7 +138,10 @@ function Home() {
                   <div
                     key={i}
                     className="cursor-pointer"
-                    onClick={() => navigate("/projects")}
+                    onClick={() => {
+                      navigate("/projects");
+                      window.scrollTo(0, 0);
+                    }}
                   >
                     <ProjectCard {...proj} featured hideContent />
                   </div>

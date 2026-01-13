@@ -13,7 +13,6 @@ export default function FeaturedCard({
   type,
   label,
   children,
-  className = "",
 }: FeaturedCardProps) {
   const { theme } = useTheme();
 
@@ -36,7 +35,7 @@ export default function FeaturedCard({
 
   return (
     <div
-      className={`relative w-full mb-8 p-6 border-4 rounded-lg shadow-2xl ${styles.border} ${className}`}
+      className={`relative w-full md:w-1/2 mb-8 rounded-lg shadow-2xl border-4 ${styles.border}`}
     >
       <div
         className={`absolute -top-4 left-4 ${styles.badge} text-white px-4 py-1 rounded-full text-sm font-bold font-monospace`}
@@ -44,7 +43,7 @@ export default function FeaturedCard({
         ⭐ {label}
       </div>
 
-      {children}
+      <div className="pt-4">{children}</div>
     </div>
   );
 }
