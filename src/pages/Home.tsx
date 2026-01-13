@@ -64,6 +64,9 @@ function Home() {
     >
       <div className="w-full">
         <div className="flex flex-col items-center text-center">
+          <p className="mt-20 mb-12 text-7xl font-jost font-extrabold">
+            Sean Finch
+          </p>
           <p className="mb-4 mx-4 font-raleway font-bold">
             B.S. Cybersecurity | Music Minor
           </p>
