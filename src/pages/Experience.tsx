@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { experiences, ExperienceProps } from "../data/experiences";
+import FeaturedCard from "../components/FeaturedCard";
 
 const ExperienceCard: React.FC<ExperienceProps> = ({
   title,
@@ -8,33 +9,18 @@ const ExperienceCard: React.FC<ExperienceProps> = ({
   location,
   description,
   dateRange,
-  featured = false,
 }) => {
   const { theme } = useTheme();
 
-  if (featured) {
-    return (
-      <div
-        className={`w-full mb-8 p-6 border-4 ${
-          theme === "light"
-            ? "border-blue-500 bg-blue-50"
-            : "border-blue-400 bg-blue-900/20"
-        } rounded-lg text-${theme === "light" ? "dark-mode" : "light-mode"} m-4 font-raleway shadow-2xl relative`}
-      >
-        <div className="absolute -top-4 left-4 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
-          ⭐ UPCOMING ROLE
-        </div>
-        <h2 className="text-3xl font-bold mb-1 mt-2 font-jost">{title}</h2>
-        <h3 className="text-2xl font-semibold mb-1 font-jost">{company}</h3>
-        <p className="text-base italic mb-3 font-monospace">
-          {location} | {dateRange}
-        </p>
-        <ul className="list-disc pl-5 space-y-2 text-lg">
-          {description.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
-      </div>
+  {
+    experiences.map((exp, index) =>
+      exp.featured ? (
+        <FeaturedCard key={index} type="experience" label="UPCOMING ROLE">
+          <ExperienceCard {...exp} />
+        </FeaturedCard>
+      ) : (
+        <ExperienceCard key={index} {...exp} />
+      )
     );
   }
 

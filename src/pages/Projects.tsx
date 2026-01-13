@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { projects, ProjectProps } from "../data/projects";
+import FeaturedCard from "../components/FeaturedCard";
 
 const ProjectCard: React.FC<ProjectProps> = ({
   title,
@@ -9,61 +10,18 @@ const ProjectCard: React.FC<ProjectProps> = ({
   githubLink,
   demoLink,
   dateRange,
-  featured = false,
 }) => {
   const { theme } = useTheme();
 
-  if (featured) {
-    return (
-      <div
-        className={`w-full mb-8 p-6 border-4 ${
-          theme === "light"
-            ? "border-blue-500 bg-blue-50"
-            : "border-blue-400 bg-blue-900/20"
-        } rounded-lg text-${theme === "light" ? "dark-mode" : "light-mode"} m-4 font-raleway shadow-2xl relative`}
-      >
-        <div className="absolute -top-4 left-4 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
-          ⭐ FEATURED PROJECT
-        </div>
-        <h2 className="text-3xl font-bold mb-2 mt-2 font-jost">{title}</h2>
-        <p className="mb-2 text-lg">{description}</p>
-        <h3 className="font-bold mb-1 font-monospace">
-          Technologies employed:
-        </h3>
-        <div className="mb-2">
-          {technologies.map((tech) => (
-            <span
-              className="inline-block bg-blue-500 text-light-mode rounded-full px-2 py-1 text-xs font-bold mr-3 mb-2 font-monospace"
-              key={tech}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-        {dateRange && (
-          <p className="text-sm mb-2 italic font-monospace">{dateRange}</p>
-        )}
-        {githubLink && (
-          <a
-            href={githubLink}
-            className="text-blue-500 underline font-monospace mx-1 my-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-        )}
-        {demoLink && (
-          <a
-            href={demoLink}
-            className="text-blue-500 underline font-monospace mx-1 my-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Demonstration
-          </a>
-        )}
-      </div>
+  {
+    projects.map((project, index) =>
+      project.featured ? (
+        <FeaturedCard key={index} type="project" label="FEATURED PROJECT">
+          <ProjectCard {...project} />
+        </FeaturedCard>
+      ) : (
+        <ProjectCard key={index} {...project} />
+      )
     );
   }
 
