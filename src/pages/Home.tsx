@@ -71,6 +71,11 @@ function Home() {
     return text.substring(0, maxLength).trim() + "...";
   };
 
+  const handleNavigate = (path: string) => {
+    window.scrollTo(0, 0);
+    navigate(path);
+  };
+
   return (
     <div
       className={`flex justify-center ${theme === "light" ? "bg-light-mode text-ultra-dark-mode" : "bg-dark-mode text-light-mode"}`}
@@ -80,7 +85,10 @@ function Home() {
           <p className="mt-20 mb-12 text-7xl font-jost font-extrabold">
             Sean Finch
           </p>
-          <p className="mb-4 mx-4 font-raleway font-bold">
+          <p className="mb-4 mx-4 text-l font-raleway font-bold">
+            Seeking Fall 2026 Cybersecurity/Infrastructure Co-op
+          </p>
+          <p className="mb-2 mx-4 font-raleway font-bold">
             B.S. Cybersecurity | Music Minor
           </p>
           <p className="mb-4 mx-4 font-raleway font-bold">
@@ -128,7 +136,7 @@ function Home() {
                     ? "border-blue-500 bg-blue-50"
                     : "border-blue-400 bg-blue-900/20"
                 } rounded-lg shadow-2xl relative cursor-pointer hover:scale-[1.02] transition-transform group`}
-                onClick={() => navigate("/experience")}
+                onClick={() => handleNavigate("/experience")}
               >
                 <div className="absolute -top-4 left-4 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
                   ⭐ UPCOMING ROLE
@@ -159,7 +167,7 @@ function Home() {
                     ? "border-green-500 bg-green-50"
                     : "border-green-400 bg-green-900/20"
                 } rounded-lg shadow-2xl relative cursor-pointer hover:scale-[1.02] transition-transform group`}
-                onClick={() => navigate("/projects")}
+                onClick={() => handleNavigate("/projects")}
               >
                 <div className="absolute -top-4 left-4 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
                   ⭐ FEATURED PROJECT
