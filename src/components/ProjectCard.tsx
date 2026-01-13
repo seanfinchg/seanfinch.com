@@ -5,6 +5,7 @@ import { ProjectProps } from "../data/projects";
 interface ProjectCardProps extends ProjectProps {
   featured?: boolean;
   hideContent?: boolean;
+  badgeLabel?: string;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -16,6 +17,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   dateRange,
   featured = false,
   hideContent = false,
+  badgeLabel,
 }) => {
   const { theme } = useTheme();
 
@@ -79,7 +81,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       : "border-light-mode text-light-mode bg-dark-mode"
   }`;
 
-  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 min-h-[200px] ${
     theme === "light"
       ? "border-green-500 bg-green-50 text-dark-mode"
       : "border-green-400 bg-green-900/20 text-light-mode"
@@ -91,7 +93,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     <div className={wrapperClasses}>
       {featured && (
         <div className="absolute -top-4 left-4 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
-          ⭐ {title}
+          ⭐ {badgeLabel || title}
         </div>
       )}
       <div className={featured ? "pt-4" : ""}>{cardContent}</div>
