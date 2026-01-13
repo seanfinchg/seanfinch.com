@@ -124,7 +124,12 @@ function Home() {
                       window.scrollTo(0, 0);
                     }}
                   >
-                    <ExperienceCard {...exp} featured hideContent />
+                    <ExperienceCard
+                      {...exp}
+                      featured
+                      hideContent
+                      badgeLabel="UPCOMING ROLE"
+                    />
                   </div>
                 ))}
             </div>
@@ -143,7 +148,12 @@ function Home() {
                       window.scrollTo(0, 0);
                     }}
                   >
-                    <ProjectCard {...proj} featured hideContent />
+                    <ProjectCard
+                      {...proj}
+                      featured
+                      hideContent
+                      badgeLabel="FEATURED PROJECT"
+                    />
                   </div>
                 ))}
             </div>
