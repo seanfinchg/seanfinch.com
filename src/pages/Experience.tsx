@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { experiences, ExperienceProps } from "../data/experiences";
-import FeaturedCard from "../components/FeaturedCard";
 
 const ExperienceCard: React.FC<ExperienceProps> = ({
   title,
@@ -13,15 +12,9 @@ const ExperienceCard: React.FC<ExperienceProps> = ({
   const { theme } = useTheme();
 
   {
-    experiences.map((exp, index) =>
-      exp.featured ? (
-        <FeaturedCard key={index} type="experience" label="UPCOMING ROLE">
-          <ExperienceCard {...exp} />
-        </FeaturedCard>
-      ) : (
-        <ExperienceCard key={index} {...exp} />
-      )
-    );
+    experiences.map((exp, i) => (
+      <ExperienceCard key={i} {...exp} featured={exp.featured} />
+    ));
   }
 
   return (
