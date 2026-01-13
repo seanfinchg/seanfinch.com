@@ -36,8 +36,8 @@ export const experiences: ExperienceProps[] = [
     company: "Northeastern University",
     location: "Boston, MA",
     description: [
-      "Administered devices for the Mechanical and Industrial Engineering Department, enabling optimal performance",
-      "Configured and maintained software on departmental devices, enhancing reliability and minimizing disruptions",
+      "•	Administered and supported departmental endpoints, ensuring reliable performance for faculty, staff, and instructional use",
+      "Deployed, configured, and maintained academic and engineering software, reducing downtime and user-impacting issues",
     ],
     dateRange: "September 2024 – April 2025",
   },
