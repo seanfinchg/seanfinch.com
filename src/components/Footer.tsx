@@ -22,10 +22,8 @@ const Footer: React.FC = () => {
       className={`relative bottom-0 py-4 w-full text-center ${theme === "light" ? "bg-light-mode text-dark-mode" : "bg-dark-mode text-light-mode"}`}
     >
       <p>
-        {getLinkElement("https://seanfinch.com", "seanfinch.com")} • Website
-        coded with help from{" "}
-        {getLinkElement("https://asahoo.dev", "asahoo.dev")}
-        <div className="flex justify-center mt-4">
+        {getLinkElement("https://seanfinch.com", "seanfinch.com")}
+        {/* <div className="flex justify-center mt-4">
           <a href="https://www.buymeacoffee.com/seanfinch">
             <img
               src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee!&emoji=☕&slug=seanfinch&button_colour=FF5F5F&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00"
@@ -33,7 +31,7 @@ const Footer: React.FC = () => {
               height="auto"
             />
           </a>
-        </div>
+        </div> */}
       </p>
     </footer>
   );

@@ -59,69 +59,54 @@ function About() {
               className={`w-full md:w-1/2 mb-8 p-4 border-${theme === "light" ? "border-ultra-light-mode" : "border-ultra-dark-mode"} border-2 rounded-lg text-${theme === "light" ? "text-ultra-light-mode" : "text-ultra-dark-mode"} m-4 font-raleway shadow-lg`}
             >
               <p className="mb-4">
-                Hey there! I'm Sean Finch from sunny Orange County, California,
-                currently pursuing a Bachelor of Science in Cybersecurity with a
-                Minor in Music at Northeastern University. My passion lies in
-                blending technical expertise with creative problem-solving to
-                make a tangible impact.
+                I'm Sean Finch, from Orange County, California, and am pursuing
+                a B.S. in Cybersecurity with a Music Minor at Northeastern
+                University. I blend technical expertise with creative
+                problem-solving to make a tangible impact in cybersecurity and
+                IT.
               </p>
               <p className="mb-4">
-                As a Cybersecurity Intern at CENIC, I utilized tools like
-                Tenable.io, Qualys, Elastic, and SIEM to perform vulnerability
-                management and analyze DDoS attacks. I also worked on identity
-                and access management to enhance system security. My
-                contributions included auditing security scans, documenting
-                processes in Confluence to improve team collaboration, and
-                capturing detailed metrics to measure and strengthen the
-                organization's cybersecurity posture.
+                I'm currently working part-time as an IT Operations Co-op at
+                Audax Group, where I advise on cybersecurity strategy, automate
+                infrastructure provisioning, and optimize workflows. Previously,
+                I interned at CENIC, performing vulnerability management with
+                Tenable, Qualys, and SIEM tools while analyzing DDoS attacks and
+                strengthening IAM practices.
               </p>
               <p className="mb-4">
-                In my homelab, I leverage Proxmox and Docker to manage backups
-                and experiment with various platforms. This hands-on approach
-                has sharpened my skills in virtualization, system
-                administration, and infrastructure optimization. By continuously
-                exploring new technologies, I aim to create scalable and
-                future-proof systems for home use.
+                In my homelab, I run a virtualized environment with TrueNAS
+                SCALE, experimenting with platforms and honing my skills in
+                system administration and infrastructure optimization.
               </p>
               <p className="mb-4">
-                Currently, I work in IT support for Northeastern University’s
-                Mechanical and Industrial Engineering Department. In this role,
-                I administer and maintain devices, configure software, and
-                ensure reliable system performance to minimize disruptions for
-                faculty and students. This experience has further honed my
-                troubleshooting skills and reinforced the importance of
-                efficient IT operations in an academic environment.
-              </p>
-              <p className="mb-4">
-                Beyond the technical world, I'm a vocalist and outdoor
-                enthusiast who enjoys singing, hiking, and photography. With a
-                creative mindset and a dedication to continuous learning, I'm
-                excited to tackle challenges and drive innovation in
-                cybersecurity and IT.
+                Beyond tech, I'm deeply involved in music and service
+                leadership. I served as Vice President of Northeastern
+                University Choral Society (NUCS) in Spring 2025 and currently
+                serve as President (Fall 2025 - Spring 2026). In Alpha Phi
+                Omega, I currently serve on the Service Committee (Fall 2025 -
+                Spring 2026) and as Standards Chair (Spring 2026). I'm also a
+                vocalist and outdoor enthusiast.
               </p>
               <div>
                 <h2 className="text-3xl font-bold mb-4">Technical Skills</h2>
                 <ul className="list-disc pl-5 space-y-2">
                   <li>
-                    <strong>Operating Systems/Software:</strong> Tenable.IO,
-                    Qualys, Elastic, Proxmox, CasaOS, GitHub, GitLab, Ubuntu
-                    Server, Docker, Windows Server, TrueNAS SCALE
+                    <strong>Operating Systems/Software:</strong> Intune, Entra
+                    ID, Active Directory, Tenable, Qualys, Crowdstrike, Software
+                    RAIDZ1, Elasticsearch, Kibana, Git, Linux, Proxmox, TrueNAS
+                    SCALE, Tailscale, Nginx, Caddy, Docker, Wireshark, JUnit,
+                    React.js, Node.js, Express.js, Tailwind, Prisma, Swing
                   </li>
                   <li>
-                    <strong>Programming Languages:</strong> Java, Kotlin,
-                    TypeScript, JavaScript, HTML, Tailwind, CSS, Python, C++, C,
-                    Assembly, Prisma
+                    <strong>Cybersecurity:</strong> SIEM, Risk Management and
+                    Assessment, Identity and Access Management, Threat
+                    Intelligence, Incident Response, System Administration,
+                    Virtualization, NIST Cybersecurity Framework, MITRE ATT&CK,
+                    Penetration Testing, Cryptography, Zero Trust
                   </li>
                   <li>
-                    <strong>Cybersecurity Skills:</strong> SIEM, Incident
-                    Response, Vulnerability Assessment, VPN, System
-                    Administration, Virtualization, Threat Intelligence,
-                    Identity and Access Management (IAM)
-                  </li>
-                  <li>
-                    <strong>Other:</strong> Git, React.js, Node.js, 3-2-1
-                    Backup, JUnit, Code Refactoring, Object-Oriented
-                    Programming, Test-Driven Development
+                    <strong>Languages:</strong> Java, Kotlin, TypeScript,
+                    JavaScript, HTML, CSS, Python, C/C++, x86 Assembly, SQL
                   </li>
                 </ul>
               </div>

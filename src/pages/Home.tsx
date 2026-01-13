@@ -40,26 +40,22 @@ function Home() {
 
   const socialMediaLinks = [
     { url: "https://github.com/seanfinchg", icon: <FaGithub size={30} /> },
-    {
-      url: "https://www.instagram.com/straight.up.sean/",
-      icon: <FaInstagram size={30} />,
-    },
-    {
-      url: "https://www.reddit.com/user/mk7sean",
-      icon: <FaReddit size={30} />,
-    },
+    // {
+    //   url: "https://www.instagram.com/seanfinchh/",
+    //   icon: <FaInstagram size={30} />,
+    // },
     {
       url: "https://www.linkedin.com/in/sean-finch-g",
       icon: <FaLinkedin size={30} />,
     },
-    {
-      url: "https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4",
-      icon: <FaSpotify size={30} />,
-    },
-    {
-      url: "https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA",
-      icon: <FaYoutube size={30} />,
-    },
+    // {
+    //   url: "https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4",
+    //   icon: <FaSpotify size={30} />,
+    // },
+    // {
+    //   url: "https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA",
+    //   icon: <FaYoutube size={30} />,
+    // },
   ];
 
   return (
@@ -68,17 +64,14 @@ function Home() {
     >
       <div className="w-full">
         <div className="flex flex-col items-center text-center">
-          <p className="mt-20 mb-12 text-7xl font-jost font-extrabold">
-            Sean Finch
-          </p>
-          <p className="mb-12 text-xs font-jost font-extrabold">
-            the one and only
+          <p className="mb-4 mx-4 font-raleway font-bold">
+            B.S. Cybersecurity | Music Minor
           </p>
           <p className="mb-4 mx-4 font-raleway font-bold">
-            Computer Science at Northeastern University c/o 2027
+            Northeastern University | Class of 2027
           </p>
           <p className="mb-8 mx-4 font-raleway font-bold">
-            Student, Homelabber, Musician, and more
+            Student, Homelabber, Musician
           </p>
         </div>
         <div>
@@ -91,13 +84,13 @@ function Home() {
           </div>
           <div className="my-2.5 flex justify-center items-center flex-wrap">
             <SocialMediaButton url="/resume.pdf">Resume</SocialMediaButton>
-            <a href="https://www.buymeacoffee.com/seanfinch">
+            {/* <a href="https://www.buymeacoffee.com/seanfinch">
               <img
                 src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee!&emoji=☕&slug=seanfinch&button_colour=FF5F5F&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00"
                 width="200"
                 height="auto"
               />
-            </a>
+            </a> */}
             <SocialMediaButton url="/music_resume.pdf">
               Music Resume
             </SocialMediaButton>
