@@ -4,6 +4,7 @@ import { ThemeProvider } from "./contexts/themeContext";
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
+import Experience from "./pages/Experience";
 import Music from "./pages/Music";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
@@ -13,6 +14,7 @@ const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/projects" element={<Projects />} />
+    <Route path="/experience" element={<Experience />} />
     <Route path="/music" element={<Music />} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/about" element={<About />} />
