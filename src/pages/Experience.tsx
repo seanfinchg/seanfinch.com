@@ -93,7 +93,7 @@ const Experience: React.FC = () => {
         "Automated Windows Autopilot provisioning via PowerShell and Win32 applications, reducing imaging time by 20%",
         "Replaced manual internal ticketing creation with Freshservice Service Request forms, cutting intake time by 30%, enforcing structured onboarding/reimaging workflows, and improving auditing and KPI tracking",
       ],
-      dateRange: "May 2025 – Present",
+      dateRange: "May 2025 – April 2026",
     },
     {
       title: "Mechanical and Industrial Engineering IT Support",
