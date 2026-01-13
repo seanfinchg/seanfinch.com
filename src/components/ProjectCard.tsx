@@ -23,7 +23,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const cardContent = (
     <div className="w-full mb-4 font-raleway">
-      <h2 className="text-2xl font-bold mb-2 font-jost">{title}</h2>
+      <div className="flex items-start justify-between mb-2 gap-4">
+        <h2 className="text-3xl font-bold font-jost">{title}</h2>
+        {hideContent && (
+          <button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded font-monospace text-base font-bold transition-colors whitespace-nowrap">
+            Click for details
+          </button>
+        )}
+      </div>
       {!hideContent && <p className="mb-2">{description}</p>}
       {!hideContent && (
         <>
@@ -44,11 +51,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       )}
       {dateRange && (
         <p className="text-sm mb-2 italic font-monospace">{dateRange}</p>
-      )}
-      {hideContent && (
-        <div className="text-sm italic text-gray-500">
-          Click to view more details...
-        </div>
       )}
       <div className="flex flex-wrap gap-2">
         {!hideContent && githubLink && (
@@ -81,10 +83,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       : "border-light-mode text-light-mode bg-dark-mode"
   }`;
 
-  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 min-h-[200px] ${
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${
     theme === "light"
-      ? "border-green-500 bg-green-50 text-dark-mode"
-      : "border-green-400 bg-green-900/20 text-light-mode"
+      ? "border-green-700 bg-green-100 text-dark-mode font-raleway"
+      : "border-green-700 bg-green-950/40 text-light-mode font-raleway"
   }`;
 
   const wrapperClasses = featured ? featuredClasses : regularClasses;
@@ -92,7 +94,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <div className={wrapperClasses}>
       {featured && (
-        <div className="absolute -top-4 left-4 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
+        <div className="absolute -top-4 left-4 bg-green-700 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
           ⭐ {badgeLabel || title}
         </div>
       )}

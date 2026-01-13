@@ -108,55 +108,54 @@ function Home() {
               Music Resume
             </SocialMediaButton>
           </div>
-          <div className="flex flex-col items-center px-4 max-w-6xl mx-auto">
+          <div className="mb-8" />
+          <div className="w-full flex flex-col items-center px-4">
             <h2 className="text-3xl font-bold text-center mb-6 font-jost">
               Featured Experiences
             </h2>
-            <div className="flex flex-wrap justify-center">
-              {experiences
-                .filter((e) => e.featured)
-                .map((exp, i) => (
-                  <div
-                    key={i}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      navigate("/experience");
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    <ExperienceCard
-                      {...exp}
-                      featured
-                      hideContent
-                      badgeLabel="UPCOMING ROLE"
-                    />
-                  </div>
-                ))}
-            </div>
+            {experiences
+              .filter((e) => e.featured)
+              .map((exp, i) => (
+                <div
+                  key={i}
+                  className="w-full flex justify-center"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    navigate("/experience");
+                    window.scrollTo(0, 0);
+                  }}
+                >
+                  <ExperienceCard
+                    {...exp}
+                    featured
+                    hideContent
+                    badgeLabel="UPCOMING ROLE"
+                  />
+                </div>
+              ))}
             <h2 className="text-3xl font-bold text-center mb-6 font-jost">
               Featured Projects
             </h2>
-            <div className="flex flex-wrap justify-center">
-              {projects
-                .filter((p) => p.featured)
-                .map((proj, i) => (
-                  <div
-                    key={i}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      navigate("/projects");
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    <ProjectCard
-                      {...proj}
-                      featured
-                      hideContent
-                      badgeLabel="FEATURED PROJECT"
-                    />
-                  </div>
-                ))}
-            </div>
+            {projects
+              .filter((p) => p.featured)
+              .map((proj, i) => (
+                <div
+                  key={i}
+                  className="w-full flex justify-center"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    navigate("/projects");
+                    window.scrollTo(0, 0);
+                  }}
+                >
+                  <ProjectCard
+                    {...proj}
+                    featured
+                    hideContent
+                    badgeLabel="FEATURED PROJECT"
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>

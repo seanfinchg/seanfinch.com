@@ -22,8 +22,17 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
   const cardContent = (
     <div className="w-full mb-4 font-raleway">
-      <h2 className="text-2xl font-bold mb-1 font-jost">{title}</h2>
-      <h3 className="text-xl font-semibold mb-1 font-jost">{company}</h3>
+      <div className="flex items-start justify-between mb-1 gap-4">
+        <h3 className="text-2xl font-semibold font-jost">{company}</h3>
+        {hideContent && (
+          <button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded font-monospace text-base font-bold transition-colors whitespace-nowrap">
+            Click for details
+          </button>
+        )}
+      </div>
+      <div className="flex items-start justify-between mb-1 gap-4">
+        <h2 className="text-2xl font-bold font-jost">{title}</h2>
+      </div>
       <p className="text-sm italic mb-2 font-monospace">
         {location} | {dateRange}
       </p>
@@ -34,11 +43,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           ))}
         </ul>
       )}
-      {hideContent && (
-        <div className="text-sm italic text-gray-500">
-          Click to view more details...
-        </div>
-      )}
     </div>
   );
 
@@ -48,10 +52,10 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       : "border-light-mode text-light-mode bg-dark-mode"
   }`;
 
-  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 min-h-[200px] ${
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${
     theme === "light"
-      ? "border-blue-500 bg-blue-50 text-dark-mode"
-      : "border-blue-400 bg-blue-900/20 text-light-mode"
+      ? "border-blue-500 bg-blue-50 text-dark-mode font-raleway"
+      : "border-blue-400 bg-blue-900/20 text-light-mode font-raleway"
   }`;
 
   const wrapperClasses = featured ? featuredClasses : regularClasses;

@@ -15,13 +15,16 @@ const Experience: React.FC = () => {
       className={`flex flex-col items-center ${theme === "light" ? "bg-light-mode text-dark-mode" : "bg-dark-mode text-light-mode"} pt-16 p-4 font-roboto-slab`}
     >
       <h1 className="text-4xl font-bold mb-8 font-jost">Experience</h1>
-      {experiences.map((experience, index) => (
-        <ExperienceCard
-          key={index}
-          {...experience}
-          featured={experience.featured}
-        />
-      ))}
+      {[...experiences]
+        .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+        .map((experience, index) => (
+          <ExperienceCard
+            key={index}
+            {...experience}
+            featured={experience.featured}
+            badgeLabel={experience.featured ? "UPCOMING ROLE" : undefined}
+          />
+        ))}
     </div>
   );
 };
