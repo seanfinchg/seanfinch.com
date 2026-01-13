@@ -11,7 +11,8 @@ import {
 } from "react-icons/fa";
 import { experiences } from "../data/experiences";
 import { projects } from "../data/projects";
-import FeaturedCard from "../components/FeaturedCard";
+import ExperienceCard from "../components/ExperienceCard";
+import ProjectCard from "../components/ProjectCard";
 
 interface SocialMediaButtonProps {
   url: string;
@@ -107,61 +108,41 @@ function Home() {
               Music Resume
             </SocialMediaButton>
           </div>
-          {/* Featured Experiences */}
-          {experiences
-            .filter((exp) => exp.featured)
-            .map((exp, index) => (
-              <div
-                key={index}
-                onClick={() => navigate("/experience")}
-                className="cursor-pointer"
-              >
-                <FeaturedCard type="experience" label="UPCOMING ROLE">
-                  <div className="text-left">
-                    <h3 className="text-2xl font-bold mb-1 mt-2 font-jost">
-                      {exp.title}
-                    </h3>
-                    <p className="text-xl font-semibold mb-1 font-jost">
-                      {exp.company}
-                    </p>
-                    <p className="text-sm italic mb-3 font-monospace">
-                      {exp.location} | {exp.dateRange}
-                    </p>
-                    <p className="font-raleway">{exp.description[0]}</p>
+          <div className="flex flex-col items-center px-4 max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-6 font-jost">
+              Featured Projects
+            </h2>
+            <div className="flex flex-wrap justify-center">
+              {projects
+                .filter((p) => p.featured)
+                .map((proj, i) => (
+                  <div
+                    key={i}
+                    className="cursor-pointer"
+                    onClick={() => navigate("/projects")}
+                  >
+                    <ProjectCard {...proj} featured />
                   </div>
-                </FeaturedCard>
-              </div>
-            ))}
+                ))}
+            </div>
 
-          {/* Featured Projects */}
-          {projects
-            .filter((proj) => proj.featured)
-            .map((proj, index) => (
-              <div
-                key={index}
-                onClick={() => navigate("/projects")}
-                className="cursor-pointer"
-              >
-                <FeaturedCard type="project" label="FEATURED PROJECT">
-                  <div className="text-left">
-                    <h3 className="text-2xl font-bold mb-2 mt-2 font-jost">
-                      {proj.title}
-                    </h3>
-                    <p className="font-raleway mb-3">{proj.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {proj.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="inline-block bg-green-500 text-white rounded-full px-3 py-1 text-xs font-bold font-monospace"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+            <h2 className="text-3xl font-bold text-center mb-6 font-jost">
+              Featured Experiences
+            </h2>
+            <div className="flex flex-wrap justify-center">
+              {experiences
+                .filter((e) => e.featured)
+                .map((exp, i) => (
+                  <div
+                    key={i}
+                    className="cursor-pointer"
+                    onClick={() => navigate("/experience")}
+                  >
+                    <ExperienceCard {...exp} featured />
                   </div>
-                </FeaturedCard>
-              </div>
-            ))}
+                ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

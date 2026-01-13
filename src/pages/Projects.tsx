@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { projects, ProjectProps } from "../data/projects";
-import FeaturedCard from "../components/FeaturedCard";
 
 const ProjectCard: React.FC<ProjectProps> = ({
   title,
@@ -14,15 +13,9 @@ const ProjectCard: React.FC<ProjectProps> = ({
   const { theme } = useTheme();
 
   {
-    projects.map((project, index) =>
-      project.featured ? (
-        <FeaturedCard key={index} type="project" label="FEATURED PROJECT">
-          <ProjectCard {...project} />
-        </FeaturedCard>
-      ) : (
-        <ProjectCard key={index} {...project} />
-      )
-    );
+    projects.map((proj, i) => (
+      <ProjectCard key={i} {...proj} featured={proj.featured} />
+    ));
   }
 
   return (
