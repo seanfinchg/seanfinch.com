@@ -8,6 +8,7 @@ interface ProjectProps {
   githubLink: string;
   demoLink: string;
   dateRange: string;
+  featured?: boolean;
 }
 
 const ProjectCard: React.FC<ProjectProps> = ({
@@ -17,8 +18,63 @@ const ProjectCard: React.FC<ProjectProps> = ({
   githubLink,
   demoLink,
   dateRange,
+  featured = false,
 }) => {
   const { theme } = useTheme();
+
+  if (featured) {
+    return (
+      <div
+        className={`w-full mb-8 p-6 border-4 ${
+          theme === "light"
+            ? "border-blue-500 bg-blue-50"
+            : "border-blue-400 bg-blue-900/20"
+        } rounded-lg text-${theme === "light" ? "dark-mode" : "light-mode"} m-4 font-raleway shadow-2xl relative`}
+      >
+        <div className="absolute -top-4 left-4 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
+          ⭐ FEATURED PROJECT
+        </div>
+        <h2 className="text-3xl font-bold mb-2 mt-2 font-jost">{title}</h2>
+        <p className="mb-2 text-lg">{description}</p>
+        <h3 className="font-bold mb-1 font-monospace">
+          Technologies employed:
+        </h3>
+        <div className="mb-2">
+          {technologies.map((tech) => (
+            <span
+              className="inline-block bg-blue-500 text-light-mode rounded-full px-2 py-1 text-xs font-bold mr-3 mb-2 font-monospace"
+              key={tech}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+        {dateRange && (
+          <p className="text-sm mb-2 italic font-monospace">{dateRange}</p>
+        )}
+        {githubLink && (
+          <a
+            href={githubLink}
+            className="text-blue-500 underline font-monospace mx-1 my-1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        )}
+        {demoLink && (
+          <a
+            href={demoLink}
+            className="text-blue-500 underline font-monospace mx-1 my-1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Demonstration
+          </a>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -72,6 +128,16 @@ const Projects: React.FC = () => {
   }, []);
 
   const projects: ProjectProps[] = [
+    {
+      title: "Homelab Infrastructue",
+      description:
+        "Production-grade virtualized environment powered by TrueNAS SCALE with Docker containerization for 15+ self-hosted services. Implements ZFS-based RAID redundancy with automated snapshot scheduling for zero data loss. Secured external access via Tailscale mesh VPN and Nginx reverse proxy with certificate-based authentication and TLS encryption.",
+      technologies: ["TrueNAS SCALE", "Docker", "Tailscale", "Nginx"],
+      githubLink: "",
+      demoLink: "",
+      dateRange: "June 2022 – Present",
+      featured: true,
+    },
     {
       title: "FTP Client",
       description:
@@ -151,15 +217,6 @@ const Projects: React.FC = () => {
       githubLink: "https://github.com/seanfinchg/seanfinch.com",
       demoLink: "https://seanfinch.com/",
       dateRange: "March 2024 – Present",
-    },
-    {
-      title: "Homelab Infrastructue",
-      description:
-        "Utilized Proxmox Virtual Environment as a hypervisor to manage virtual machines and containers for home infrastructure. Incorporated Docker and CasaOS to streamline media management, backups, and server functionality. Reverse proxied web interfaces using Caddy, providing secure remote access via TLS. Leveraged Tailscale for VPN capabilities, enabling seamless and secure connections to home resources. Continuously explored new tools and configurations to enhance performance, scalability, and ensure the system remains future-proof.",
-      technologies: ["Proxmox", "Docker", "CasaOS", "Caddy"],
-      githubLink: "",
-      demoLink: "",
-      dateRange: "June 2022 – Present",
     },
   ];
 
