@@ -36,7 +36,7 @@ export const experiences: ExperienceProps[] = [
     company: "Northeastern University",
     location: "Boston, MA",
     description: [
-      "•	Administered and supported departmental endpoints, ensuring reliable performance for faculty, staff, and instructional use",
+      "Administered and supported departmental endpoints, ensuring reliable performance for faculty, staff, and instructional use",
       "Deployed, configured, and maintained academic and engineering software, reducing downtime and user-impacting issues",
     ],
     dateRange: "September 2024 – April 2025",
@@ -46,7 +46,7 @@ export const experiences: ExperienceProps[] = [
     company: "CENIC",
     location: "La Mirada, CA",
     description: [
-      "Audited security scans for vulnerabilities, automated remediation ticket creation, and strengthened system and device security",
+      "Automated cybersecurity audits using Python, translating scan data into actionable findings and reducing review time by 50%",
       "Documented security processes and software usage in Confluence, enhancing team collaboration and compliance",
       "Captured and verified detailed DDoS metrics on the CalREN Network, bolstering threat detection and response",
       "Gathered KPI metrics to measure initiative effectiveness, demonstrating improvements in response times and overall posture",
