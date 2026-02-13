@@ -24,6 +24,10 @@ const DiagramViewer: React.FC = () => {
     }
   }, [project, diagram, navigate]);
 
+  useEffect(() => {
+    setLoading(true);
+  }, [theme]);
+
   if (!project || !diagram) {
     return null;
   }
@@ -34,10 +38,11 @@ const DiagramViewer: React.FC = () => {
   // Encode the URL for diagrams.net viewer
   const encodedUrl = encodeURIComponent(diagramUrl);
 
-  // diagrams.net viewer URL with your diagram
+  // diagrams.net viewer URL with your diagram and dark mode support
+  const darkModeParam = theme === "dark" ? "&dark=1" : "";
   const viewerUrl = `https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=${encodeURIComponent(
     diagram.file,
-  )}&url=${encodedUrl}`;
+  )}&url=${encodedUrl}${darkModeParam}`;
 
   return (
     <div
@@ -74,6 +79,7 @@ const DiagramViewer: React.FC = () => {
             </div>
           )}
           <iframe
+            key={theme}
             src={viewerUrl}
             className="w-full h-full rounded-lg"
             title={diagram.label}
