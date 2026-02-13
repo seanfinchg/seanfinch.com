@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
 import { ProjectProps } from "../data/projects";
 
@@ -18,6 +19,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   featured = false,
   hideContent = false,
   badgeLabel,
+  diagrams,
 }) => {
   const { theme } = useTheme();
 
@@ -72,6 +74,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           >
             Demonstration
           </a>
+        )}
+        {!hideContent && diagrams && diagrams.length > 0 && (
+          <Link
+            to="/projects/homelab"
+            className="text-blue-500 underline font-monospace"
+          >
+            Diagrams
+          </Link>
         )}
       </div>
     </div>
