@@ -1,3 +1,9 @@
+export interface DiagramInfo {
+  name: string;
+  label: string;
+  file: string;
+}
+
 export interface ProjectProps {
   title: string;
   description: string;
@@ -6,6 +12,7 @@ export interface ProjectProps {
   demoLink: string;
   dateRange: string;
   featured?: boolean;
+  diagrams?: DiagramInfo[];
 }
 
 export const projects: ProjectProps[] = [
@@ -36,6 +43,18 @@ export const projects: ProjectProps[] = [
     demoLink: "",
     dateRange: "June 2022 – Present",
     featured: true,
+    diagrams: [
+      {
+        name: "storage",
+        label: "Storage Architecture",
+        file: "homelab-storage.drawio",
+      },
+      {
+        name: "networking",
+        label: "Network Topology",
+        file: "homelab-networking.drawio",
+      },
+    ],
   },
   {
     title: "NUFS File System",
