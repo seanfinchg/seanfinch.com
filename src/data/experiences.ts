@@ -20,7 +20,7 @@ export const experiences: ExperienceProps[] = [
     featured: true,
   },
   {
-    title: "IT Operations Co-op",
+    title: "IT Operations Co-op — Security Operations",
     company: "Audax Group",
     location: "Boston, MA",
     description: [
