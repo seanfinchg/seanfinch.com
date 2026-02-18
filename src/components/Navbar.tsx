@@ -15,18 +15,25 @@ const links = [
 
 const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   const location = useLocation();
+  const isHomelabPage = location.pathname === "/projects/homelab";
+
   return (
     <>
-      {links.map((link) => (
-        <Link
-          key={link.to}
-          to={link.to}
-          className={`font-jost py-4 px-4 hover:font-extrabold text-4xl md:text-lg ${location.pathname === link.to ? "font-extrabold" : ""} text-center`}
-          onClick={onClick}
-        >
-          {link.text}
-        </Link>
-      ))}
+      {links.map((link) => {
+        const isActive =
+          location.pathname === link.to ||
+          (isHomelabPage && link.to === "/projects");
+        return (
+          <Link
+            key={link.to}
+            to={link.to}
+            className={`font-jost py-4 px-4 hover:font-extrabold text-3xl md:text-base transition-all ${isActive ? "font-extrabold underline decoration-2 underline-offset-4" : ""} text-center`}
+            onClick={onClick}
+          >
+            {link.text}
+          </Link>
+        );
+      })}
     </>
   );
 };
@@ -48,7 +55,7 @@ const Navbar: React.FC = () => {
 
   const getStyleForMobileNavbar = (): string => {
     return isMobile
-      ? `fixed top-24 left-0 z-50 w-screen rounded-br-lg rounded-bl-lg ${getThemeCSS()} flex flex-col 
+      ? `fixed top-20 left-0 z-50 w-screen rounded-br-lg rounded-bl-lg ${getThemeCSS()} flex flex-col 
         transition-opacity transition-height ${
           isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
         }`
@@ -57,11 +64,11 @@ const Navbar: React.FC = () => {
 
   return (
     <div
-      className={`w-full text-center flex justify-between px-4 h-24 md:h-16 items-center ${getThemeCSS()}`}
+      className={`w-full text-center flex justify-between px-4 h-20 md:h-12 items-center ${getThemeCSS()}`}
     >
       <div className="flex items-center w-full">
         <button
-          className="text-6xl md:invisible"
+          className="text-5xl md:invisible"
           onClick={() => setIsOpen(!isOpen)}
         >
           ☰
@@ -69,14 +76,14 @@ const Navbar: React.FC = () => {
         <div className={getStyleForMobileNavbar()}>
           {(isOpen || !isMobile) && <Links onClick={() => setIsOpen(false)} />}
           {!isMobile && (
-            <button onClick={toggleTheme} className="text-5xl md:text-xl">
+            <button onClick={toggleTheme} className="text-base">
               {theme === "light" ? <FaMoon /> : <FaSun />}
             </button>
           )}
         </div>
       </div>
       {isMobile && (
-        <button onClick={toggleTheme} className="text-5xl md:text-xl">
+        <button onClick={toggleTheme} className="text-4xl">
           {theme === "light" ? <FaMoon /> : <FaSun />}
         </button>
       )}

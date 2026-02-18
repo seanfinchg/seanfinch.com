@@ -35,7 +35,7 @@ export const projects: ProjectProps[] = [
     dateRange: "March 2024 – Present",
   },
   {
-    title: "Homelab Infrastructue",
+    title: "Homelab Infrastructure",
     description:
       "Production-grade virtualized environment powered by TrueNAS SCALE with Docker containerization for 15+ self-hosted services. Implements ZFS-based RAID redundancy with automated snapshot scheduling for zero data loss. Secured external access via Tailscale mesh VPN and Nginx reverse proxy with certificate-based authentication and TLS encryption.",
     technologies: ["TrueNAS SCALE", "Docker", "Tailscale", "Nginx"],
