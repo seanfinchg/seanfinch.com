@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useTheme } from "../contexts/themeContext";
+import { useLocation } from "react-router-dom";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -9,6 +10,9 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { theme } = useTheme();
+  const location = useLocation();
+  const hideFooter = location.pathname === "/projects/homelab";
+
   const themeClass =
     theme === "light"
       ? "bg-light-mode text-dark-mode"
@@ -18,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className={`flex flex-col min-h-screen justify-between ${themeClass}`}>
       <Navbar />
       <div>{children}</div>
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 };

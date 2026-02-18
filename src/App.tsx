@@ -8,7 +8,6 @@ import Experience from "./pages/Experience";
 import Music from "./pages/Music";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
-import DiagramViewer from "./pages/DiagramViewer";
 import HomelabDiagrams from "./pages/HomelabDiagrams";
 import { Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
@@ -18,7 +17,6 @@ const AppRoutes = () => (
     <Route path="/" element={<Home />} />
     <Route path="/projects" element={<Projects />} />
     <Route path="/projects/homelab" element={<HomelabDiagrams />} />
-    <Route path="/projects/homelab/:diagramName" element={<DiagramViewer />} />
     <Route path="/experience" element={<Experience />} />
     <Route path="/music" element={<Music />} />
     <Route path="/contact" element={<Contact />} />
