@@ -33,7 +33,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </button>
         )}
       </div>
-      {!hideContent && <p className="mb-2">{description}</p>}
+      {!hideContent && Array.isArray(description) && (
+        <ul className="list-disc pl-5 space-y-2 mb-2">
+          {description.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      )}
+      {!hideContent && !Array.isArray(description) && (
+        <p className="mb-2">{description}</p>
+      )}
       {!hideContent && (
         <>
           <h3 className="font-bold mb-1 font-monospace">
