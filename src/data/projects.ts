@@ -6,7 +6,7 @@ export interface DiagramInfo {
 
 export interface ProjectProps {
   title: string;
-  description: string;
+  description: string | string[];
   technologies: string[];
   githubLink: string;
   demoLink: string;
@@ -36,8 +36,12 @@ export const projects: ProjectProps[] = [
   },
   {
     title: "Homelab Infrastructure",
-    description:
-      "Production-grade virtualized environment powered by TrueNAS SCALE with Docker containerization for 15+ self-hosted services. Implements ZFS-based RAID redundancy with automated snapshot scheduling for zero data loss. Secured external access via Tailscale mesh VPN and Nginx reverse proxy with certificate-based authentication and TLS encryption.",
+    description: [
+      "Built controlled CTF labs for adversary emulation with Metasploit, Burp Suite, and Wireshark to test alerts and security controls",
+      "Monitored live and simulated network traffic using Suricata and Zeek, inspecting flows, port scans, and brute-force attempts",
+      "Deployed Wazuh across multiple endpoints to centralize logs, monitor activity, and tune alerts while hardening a live environment",
+      "Performed continuous vulnerability scanning with OpenVAS across 10+ self-hosted services and endpoints, while hardening remote access with Nginx reverse proxy, Tailscale, and Pi-hole to enforce security and monitor DNS/web traffic",
+    ],
     technologies: ["TrueNAS SCALE", "Docker", "Tailscale", "Nginx"],
     githubLink: "",
     demoLink: "",

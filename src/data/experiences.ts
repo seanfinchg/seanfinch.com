@@ -47,10 +47,9 @@ export const experiences: ExperienceProps[] = [
     company: "CENIC",
     location: "La Mirada, CA",
     description: [
-      "Operated enterprise vulnerability management detection and response platforms including Tenable Nessus and Qualys, leveraging Python to automate scan prioritization and reduce manual review time by 50%",
-      "Analyzed backbone network telemetry to validate DDoS events on the CalREN Network and support incident response actions",
-      "Gathered KPI metrics to measure initiative effectiveness, demonstrating improvements in response times and overall posture",
-      "Documented security processes and software usage in Confluence, enhancing team collaboration and compliance",
+      "Conducted ~5 DDoS analyses per week on the CalREN network, safeguarding connectivity for 20,000,000+ students and educators across 12,000 California K–20 schools including the California State University and University of California systems",
+      "Operated Tenable Nessus and Qualys vulnerability detection systems, using Python to automate scans and cut review time 50%",
+      "Documented security processes and gathered KPI metrics, demonstrating improvements in response times and overall posture",
     ],
     dateRange: "May 2024 – August 2024",
   },
