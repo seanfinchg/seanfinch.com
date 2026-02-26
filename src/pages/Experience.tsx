@@ -22,7 +22,7 @@ const Experience: React.FC = () => {
             key={index}
             {...experience}
             featured={experience.featured}
-            badgeLabel={experience.featured ? "UPCOMING ROLE" : undefined}
+            badgeLabel={experience.featured ? "FEATURED ROLE" : undefined}
           />
         ))}
     </div>
