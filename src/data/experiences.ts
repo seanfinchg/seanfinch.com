@@ -8,17 +8,17 @@ export interface ExperienceProps {
 }
 
 export const experiences: ExperienceProps[] = [
-  {
-    title: "Systems Engineer Intern",
-    company: "Neuralink",
-    location: "Fremont, CA",
-    description: [
-      "Selected to fortify infrastructure across systems with custom cyber defenses, automated monitoring, and proactive mitigation",
-      "Responsibilities include standardizing endpoint provisioning using IaC tools like Terraform, Docker, and Ansible",
-    ],
-    dateRange: "April 2026 – July 2026",
-    featured: true,
-  },
+  // {
+  //   title: "Systems Engineer Intern",
+  //   company: "Neuralink",
+  //   location: "Fremont, CA",
+  //   description: [
+  //     "Selected to fortify infrastructure across systems with custom cyber defenses, automated monitoring, and proactive mitigation",
+  //     "Responsibilities include standardizing endpoint provisioning using IaC tools like Terraform, Docker, and Ansible",
+  //   ],
+  //   dateRange: "April 2026 – July 2026",
+  //   featured: true,
+  // },
   {
     title: "IT Operations Co-op — Security Operations",
     company: "Audax Group",
@@ -31,6 +31,7 @@ export const experiences: ExperienceProps[] = [
       "Automated Windows Autopilot provisioning via PowerShell and Intune Win32 applications, reducing imaging time by 20%",
     ],
     dateRange: "May 2025 – April 2026",
+    featured: true,
   },
   {
     title: "Mechanical and Industrial Engineering IT Support",
