@@ -129,7 +129,7 @@ function Home() {
                     {...exp}
                     featured
                     hideContent
-                    badgeLabel="UPCOMING ROLE"
+                    badgeLabel="FEATURED ROLE"
                   />
                 </div>
               ))}
