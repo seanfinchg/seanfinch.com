@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -13,29 +13,8 @@ import { experiences } from "../data/experiences";
 import { projects } from "../data/projects";
 import ExperienceCard from "../components/ExperienceCard";
 import ProjectCard from "../components/ProjectCard";
-
-interface SocialMediaButtonProps {
-  url: string;
-  children: React.ReactNode;
-}
-
-const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
-  url,
-  children,
-}) => {
-  const { theme } = useTheme();
-  const buttonClass = `flex justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${theme === "light" ? "bg-ultra-light-mode text-ultra-dark-mode" : "bg-ultra-dark-mode text-light-mode"}`;
-
-  const openLinkInNewTab = () => {
-    window.open(url, "_blank");
-  };
-
-  return (
-    <button className={buttonClass} onClick={openLinkInNewTab}>
-      {children}
-    </button>
-  );
-};
+import SocialMediaButton from "../components/SocialMediaButton";
+import { getThemeClasses } from "../utils/themeUtils";
 
 function Home() {
   const { theme } = useTheme();
@@ -66,9 +45,7 @@ function Home() {
   ];
 
   return (
-    <div
-      className={`flex justify-center ${theme === "light" ? "bg-light-mode text-ultra-dark-mode" : "bg-dark-mode text-light-mode"}`}
-    >
+    <div className={`flex justify-center ${getThemeClasses(theme)}`}>
       <div className="w-full">
         <div className="flex flex-col items-center text-center">
           <p className="mt-20 mb-12 text-7xl font-jost font-extrabold">

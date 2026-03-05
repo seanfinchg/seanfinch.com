@@ -1,6 +1,7 @@
 import React from "react";
 import { useTheme } from "../contexts/themeContext";
 import { ExperienceProps } from "../data/experiences";
+import { getCardClasses, getFeaturedCardClasses } from "../utils/themeUtils";
 
 interface ExperienceCardProps extends ExperienceProps {
   featured?: boolean;
@@ -46,17 +47,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     </div>
   );
 
-  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${
-    theme === "light"
-      ? "border-dark-mode text-dark-mode bg-light-mode"
-      : "border-light-mode text-light-mode bg-dark-mode"
-  }`;
+  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(
+    theme,
+  )}`;
 
-  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${
-    theme === "light"
-      ? "border-blue-500 bg-blue-50 text-dark-mode font-raleway"
-      : "border-blue-400 bg-blue-900/20 text-light-mode font-raleway"
-  }`;
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${getFeaturedCardClasses(
+    theme,
+  )} font-raleway`;
 
   const wrapperClasses = featured ? featuredClasses : regularClasses;
 
