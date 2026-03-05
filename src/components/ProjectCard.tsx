@@ -79,14 +79,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </a>
         )}
         {!hideContent && demoLink && (
-          <a
-            href={demoLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 underline font-monospace"
-          >
-            Demonstration
-          </a>
+          <>
+            {demoLink.startsWith("/") || demoLink.startsWith("#") ? (
+              <Link
+                to={demoLink}
+                className="text-blue-500 underline font-monospace"
+              >
+                Demonstration
+              </Link>
+            ) : (
+              <a
+                href={demoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline font-monospace"
+              >
+                Demonstration
+              </a>
+            )}
+          </>
         )}
         {!hideContent && diagrams && diagrams.length > 0 && (
           <Link
