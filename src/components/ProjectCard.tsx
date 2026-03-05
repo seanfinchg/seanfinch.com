@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
 import { ProjectProps } from "../data/projects";
+import {
+  getCardClasses,
+  getFeaturedProjectCardClasses,
+} from "../utils/themeUtils";
 
 interface ProjectCardProps extends ProjectProps {
   featured?: boolean;
@@ -96,17 +100,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     </div>
   );
 
-  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${
-    theme === "light"
-      ? "border-dark-mode text-dark-mode bg-light-mode"
-      : "border-light-mode text-light-mode bg-dark-mode"
-  }`;
+  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(
+    theme,
+  )}`;
 
-  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${
-    theme === "light"
-      ? "border-green-700 bg-green-100 text-dark-mode font-raleway"
-      : "border-green-700 bg-green-950/40 text-light-mode font-raleway"
-  }`;
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${getFeaturedProjectCardClasses(
+    theme,
+  )} font-raleway`;
 
   const wrapperClasses = featured ? featuredClasses : regularClasses;
 

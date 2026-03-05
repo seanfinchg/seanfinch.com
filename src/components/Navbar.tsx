@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useTheme } from "../contexts/themeContext";
 import { FaMoon, FaSun } from "react-icons/fa";
+import { getUltraThemeClasses } from "../utils/themeUtils";
 
 const links = [
   { to: "/", text: "Home" },
@@ -47,15 +48,11 @@ const Navbar: React.FC = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
-  const getThemeCSS = () => {
-    return theme === "light"
-      ? "bg-ultra-light-mode text-ultra-dark-mode"
-      : "bg-ultra-dark-mode text-light-mode";
-  };
+  const themeClasses = getUltraThemeClasses(theme);
 
   const getStyleForMobileNavbar = (): string => {
     return isMobile
-      ? `fixed top-20 left-0 z-50 w-screen rounded-br-lg rounded-bl-lg ${getThemeCSS()} flex flex-col 
+      ? `fixed top-20 left-0 z-50 w-screen rounded-br-lg rounded-bl-lg ${themeClasses} flex flex-col 
         transition-opacity transition-height ${
           isOpen ? "opacity-100 h-auto" : "opacity-0 h-0"
         }`
@@ -64,7 +61,7 @@ const Navbar: React.FC = () => {
 
   return (
     <div
-      className={`w-full text-center flex justify-between px-4 h-20 md:h-12 items-center ${getThemeCSS()}`}
+      className={`w-full text-center flex justify-between px-4 h-20 md:h-12 items-center ${themeClasses}`}
     >
       <div className="flex items-center w-full">
         <button

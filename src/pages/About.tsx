@@ -1,34 +1,7 @@
 import { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
-
-interface SocialMediaButtonProps {
-  url: string;
-  children: React.ReactNode;
-  className?: string;
-}
-
-const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
-  url,
-  children,
-  className = "",
-}) => {
-  const { theme } = useTheme();
-  const buttonClass = `flex justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${
-    theme === "light"
-      ? "bg-ultra-light-mode text-ultra-dark-mode"
-      : "bg-ultra-dark-mode text-light-mode"
-  } ${className}`;
-
-  const openLinkInNewTab = () => {
-    window.open(url, "_blank");
-  };
-
-  return (
-    <button className={buttonClass} onClick={openLinkInNewTab}>
-      {children}
-    </button>
-  );
-};
+import SocialMediaButton from "../components/SocialMediaButton";
+import { getThemeClasses } from "../utils/themeUtils";
 
 function About() {
   const { theme } = useTheme();
@@ -38,9 +11,7 @@ function About() {
   }, []);
 
   return (
-    <div
-      className={`flex justify-center ${theme === "light" ? "bg-light-mode text-ultra-dark-mode" : "bg-dark-mode text-light-mode"}`}
-    >
+    <div className={`flex justify-center ${getThemeClasses(theme)}`}>
       <div className="w-full mx-4 md:mx-0">
         <div className="flex flex-col items-center text-center mt-16">
           <h1 className="text-4xl font-bold mb-8 font-jost">About Me</h1>
@@ -91,22 +62,22 @@ function About() {
                 <h2 className="text-3xl font-bold mb-4">Technical Skills</h2>
                 <ul className="list-disc pl-5 space-y-2">
                   <li>
+                    <strong>Cybersecurity:</strong> Tenable Nessus, Qualys,
+                    OpenVAS, CrowdStrike Falcon, Suricata, Zeek, Elastic SIEM
+                    Stack, Kibana, Wazuh, Wireshark, Burp Suite, Ghidra,
+                    Metasploit, MITRE ATT&CK, CIS Benchmarks, NIST Cybersecurity
+                    Framework
+                  </li>
+                  <li>
                     <strong>Technologies:</strong> Intune, Entra ID, Active
-                    Directory, Tenable, Qualys, CrowdStrike, Elasticsearch,
-                    Kibana, Git, Linux, Proxmox, TrueNAS SCALE, Tailscale,
-                    Nginx, Caddy, Docker, Wireshark, JUnit, React.js, Node.js,
-                    Express.js
+                    Directory, Git, Tailscale, Zscaler, Linux, Proxmox, TrueNAS
+                    SCALE, Kubernetes, Docker, Nginx, Caddy, JUnit, React.js,
+                    Node.js, Express.js
                   </li>
                   <li>
-                    <strong>Cybersecurity:</strong> SIEM, Risk Management and
-                    Assessment, Identity and Access Management, Threat
-                    Intelligence, Incident Response, System Administration,
-                    Virtualization, NIST Cybersecurity Framework, MITRE ATT&CK,
-                    Penetration Testing, Cryptography, Zero Trust
-                  </li>
-                  <li>
-                    <strong>Languages:</strong> Java, Kotlin, TypeScript,
-                    JavaScript, HTML, CSS, Python, C/C++, x86 Assembly, SQL
+                    <strong>Languages:</strong> Python, Java, Kotlin,
+                    TypeScript, JavaScript, HTML, CSS, Bash, Powershell, C/C++,
+                    x86 Assembly, SQL
                   </li>
                 </ul>
               </div>
