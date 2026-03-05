@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 
@@ -43,6 +43,7 @@ const cipherTools: CipherTool[] = [
 
 function CipherTools() {
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Cipher Tools - Sean Finch • SoCal";
@@ -53,6 +54,15 @@ function CipherTools() {
       className={`flex justify-center min-h-screen ${getThemeClasses(theme)}`}
     >
       <div className="w-full max-w-6xl mx-4 md:mx-8 py-16">
+        <div className="mb-8">
+          <button
+            onClick={() => navigate("/projects")}
+            className="text-blue-500 hover:text-blue-600 font-monospace text-lg transition-all flex items-center gap-2"
+            title="Back to Projects"
+          >
+            ← Back to Projects
+          </button>
+        </div>
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-jost">
             Cipher Tools

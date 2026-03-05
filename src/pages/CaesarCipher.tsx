@@ -95,7 +95,10 @@ export default function CaesarCipher() {
   );
 
   return (
-    <ToolsWrapper>
+    <ToolsWrapper
+      backUrl="/projects/cipher-tools"
+      backLabel="Back to Cipher Tools"
+    >
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Caesar Cipher Encoder/Decoder</h1>
         <p className="text-muted-foreground">
