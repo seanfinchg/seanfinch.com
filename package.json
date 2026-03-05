@@ -25,6 +25,7 @@
     "tailwindcss-transitions": "^2.2.0"
   },
   "devDependencies": {
+    "@types/node": "^25.3.3",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/react-transition-group": "^4.4.10",
