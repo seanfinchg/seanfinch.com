@@ -9,6 +9,8 @@ import Music from "./pages/Music";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import HomelabDiagrams from "./pages/HomelabDiagrams";
+import CipherTools from "./pages/CipherTools";
+import CaesarCipher from "./pages/CaesarCipher";
 import { Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 
@@ -17,6 +19,8 @@ const AppRoutes = () => (
     <Route path="/" element={<Home />} />
     <Route path="/projects" element={<Projects />} />
     <Route path="/projects/homelab" element={<HomelabDiagrams />} />
+    <Route path="/projects/cipher-tools" element={<CipherTools />} />
+    <Route path="/projects/cipher-tools/caesar" element={<CaesarCipher />} />
     <Route path="/experience" element={<Experience />} />
     <Route path="/music" element={<Music />} />
     <Route path="/contact" element={<Contact />} />

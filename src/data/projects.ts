@@ -17,6 +17,19 @@ export interface ProjectProps {
 
 export const projects: ProjectProps[] = [
   {
+    title: "Cipher Tools",
+    description: [
+      "Interactive web-based cryptography tools for encoding, decoding, and analyzing classical ciphers",
+      "Features Caesar cipher with customizable shift values, brute-force decryption, and real-time encoding/decoding",
+      "Includes options to preserve capitalization and punctuation for flexible text transformation",
+      "All encryption happens locally in the browser, ensuring complete privacy with no external data transmission",
+    ],
+    technologies: ["React.js", "TypeScript", "Tailwind CSS"],
+    githubLink: "",
+    demoLink: "/projects/cipher-tools",
+    dateRange: "March 2026 – Present",
+  },
+  {
     title: "Storefront Website",
     description:
       "This responsive website was designed and developed to showcase baked goods and ensure accessibility across devices. Dynamic features were implemented to enhance user engagement and provide seamless navigation, creating a user-friendly shopping experience. Additionally, a robust checkout system was integrated to streamline order tracking and facilitate efficient product delivery, ensuring a smooth and satisfying experience for customers.",

@@ -4,3 +4,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom utilities for cipher tools */
+@layer utilities {
+  .text-muted-foreground {
+    @apply text-gray-600 dark:text-gray-400;
+  }
+}
