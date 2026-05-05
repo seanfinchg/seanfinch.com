@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
 import { ProjectProps } from "../data/projects";
+import { FaGithub, FaExternalLinkAlt, FaSitemap } from "react-icons/fa";
 import {
   getCardClasses,
   getFeaturedProjectCardClasses,
@@ -27,6 +28,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   const { theme } = useTheme();
 
+  const linkClass =
+    "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold " +
+    "transition-colors duration-150 " +
+    (theme === "light"
+      ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
+      : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40");
+
   const cardContent = (
     <div className="w-full mb-4 font-raleway">
       <div className="flex items-start justify-between mb-2 gap-4">
@@ -38,21 +46,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         )}
       </div>
       {!hideContent && Array.isArray(description) && (
-        <ul className="list-disc pl-5 space-y-2 mb-2">
+        <ul className="list-disc pl-5 space-y-2 mb-3 text-base leading-relaxed">
           {description.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
         </ul>
       )}
       {!hideContent && !Array.isArray(description) && (
-        <p className="mb-2">{description}</p>
+        <p className="mb-3 text-base leading-relaxed">{description}</p>
       )}
       {!hideContent && (
         <>
-          <h3 className="font-bold mb-1 font-monospace">
+          <h3 className="font-bold mb-1.5 font-monospace text-sm">
             Technologies employed:
           </h3>
-          <div className="mb-2 flex flex-wrap gap-2">
+          <div className="mb-3 flex flex-wrap gap-2">
             {technologies.map((tech) => (
               <span
                 key={tech}
@@ -65,7 +73,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </>
       )}
       {dateRange && (
-        <p className="text-sm mb-2 italic font-monospace">{dateRange}</p>
+        <p className="text-sm mb-3 italic font-monospace">{dateRange}</p>
       )}
       <div className="flex flex-wrap gap-2">
         {!hideContent && githubLink && (
@@ -73,38 +81,32 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             href={githubLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 underline font-monospace"
+            className={linkClass}
           >
-            GitHub
+            <FaGithub size={14} /> GitHub
           </a>
         )}
         {!hideContent && demoLink && (
           <>
             {demoLink.startsWith("/") || demoLink.startsWith("#") ? (
-              <Link
-                to={demoLink}
-                className="text-blue-500 underline font-monospace"
-              >
-                Demonstration
+              <Link to={demoLink} className={linkClass}>
+                <FaExternalLinkAlt size={12} /> Demo
               </Link>
             ) : (
               <a
                 href={demoLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 underline font-monospace"
+                className={linkClass}
               >
-                Demonstration
+                <FaExternalLinkAlt size={12} /> Demo
               </a>
             )}
           </>
         )}
         {!hideContent && diagrams && diagrams.length > 0 && (
-          <Link
-            to="/projects/homelab"
-            className="text-blue-500 underline font-monospace"
-          >
-            Diagrams
+          <Link to="/projects/homelab" className={linkClass}>
+            <FaSitemap size={13} /> Diagrams
           </Link>
         )}
       </div>

@@ -4,6 +4,7 @@ import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { projects, type ProjectProps } from "../data/projects";
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import { FaGithub, FaExternalLinkAlt, FaSitemap } from "react-icons/fa";
 
 const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
   proj,
@@ -67,10 +68,10 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
         </div>
 
         {Array.isArray(proj.description) ? (
-          <ul className="space-y-1.5 text-sm font-raleway mb-3">
+          <ul className="space-y-1.5 text-base leading-relaxed font-raleway mb-3">
             {proj.description.map((item, j) => (
               <li key={j} className="flex gap-2">
-                <span className="text-emerald-600 dark:text-emerald-400 shrink-0 font-monospace mt-0.5 text-xs">
+                <span className="text-emerald-600 dark:text-emerald-400 shrink-0 font-monospace mt-0.5 text-sm">
                   ›
                 </span>
                 <span className="text-muted-foreground">{item}</span>
@@ -78,7 +79,7 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
             ))}
           </ul>
         ) : (
-          <p className="text-sm font-raleway text-muted-foreground mb-3">
+          <p className="text-base leading-relaxed font-raleway text-muted-foreground mb-3">
             {proj.description}
           </p>
         )}
@@ -94,41 +95,53 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
           ))}
         </div>
 
-        <div className="flex gap-4 text-[11px] font-monospace">
+        <div className="flex flex-wrap gap-2">
           {proj.githubLink && (
             <a
               href={proj.githubLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
+                ${theme === "light"
+                  ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
+                  : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40"}`}
             >
-              GitHub →
+              <FaGithub size={14} /> GitHub
             </a>
           )}
           {proj.demoLink &&
             (proj.demoLink.startsWith("/") ? (
               <Link
                 to={proj.demoLink}
-                className="text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
+                  ${theme === "light"
+                    ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
+                    : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"}`}
               >
-                Demo →
+                <FaExternalLinkAlt size={12} /> Demo
               </Link>
             ) : (
               <a
                 href={proj.demoLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
+                  ${theme === "light"
+                    ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
+                    : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"}`}
               >
-                Demo →
+                <FaExternalLinkAlt size={12} /> Demo
               </a>
             ))}
           {proj.diagrams && proj.diagrams.length > 0 && (
             <Link
               to="/projects/homelab"
-              className="text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
+                ${theme === "light"
+                  ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
+                  : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"}`}
             >
-              Diagrams →
+              <FaSitemap size={13} /> Diagrams
             </Link>
           )}
         </div>
