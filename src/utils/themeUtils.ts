@@ -1,69 +1,46 @@
 import type { Theme } from "../contexts/themeContext";
 
-/**
- * Utility functions for consistent styling across the application
- */
-
-/**
- * Returns theme-specific background and text color classes
- * @param theme - The current theme ("light" or "dark")
- * @returns Tailwind CSS classes for background and text
- */
 export const getThemeClasses = (theme: Theme): string => {
   return theme === "light"
-    ? "bg-light-mode text-ultra-dark-mode"
-    : "bg-dark-mode text-light-mode";
+    ? "bg-gradient-to-br from-slate-200 via-blue-50 to-slate-100 text-ultra-dark-mode"
+    : "bg-gradient-to-br from-neutral-900 via-slate-900 to-neutral-950 text-light-mode";
 };
 
-/**
- * Returns theme-specific classes for ultra contrast (navbar, buttons)
- * @param theme - The current theme ("light" or "dark")
- * @returns Tailwind CSS classes for ultra contrast background and text
- */
 export const getUltraThemeClasses = (theme: Theme): string => {
   return theme === "light"
     ? "bg-ultra-light-mode text-ultra-dark-mode"
     : "bg-ultra-dark-mode text-light-mode";
 };
 
-/**
- * Returns theme-specific border classes
- * @param theme - The current theme ("light" or "dark")
- * @returns Tailwind CSS border color classes
- */
 export const getThemeBorderClasses = (theme: Theme): string => {
   return theme === "light" ? "border-dark-mode" : "border-light-mode";
 };
 
-/**
- * Returns theme-specific card classes (border, background, text)
- * @param theme - The current theme ("light" or "dark")
- * @returns Complete card styling classes
- */
 export const getCardClasses = (theme: Theme): string => {
   return theme === "light"
     ? "border-dark-mode text-dark-mode bg-light-mode"
     : "border-light-mode text-light-mode bg-dark-mode";
 };
 
-/**
- * Returns theme-specific featured card classes
- * @param theme - The current theme ("light" or "dark")
- * @returns Complete featured card styling classes
- */
 export const getFeaturedCardClasses = (theme: Theme): string => {
   return theme === "light"
     ? "border-blue-500 bg-blue-50 text-dark-mode"
     : "border-blue-400 bg-blue-900/20 text-light-mode";
 };
 
-/**
- * Returns theme-specific featured project card classes (green variant)
- * @param theme - The current theme ("light" or "dark")
- * @returns Complete featured project card styling classes
- */
 export const getFeaturedProjectCardClasses = (theme: Theme): string => {
   return theme === "light"
     ? "border-green-700 bg-green-100 text-dark-mode"
     : "border-green-700 bg-green-950/40 text-light-mode";
+};
+
+export const getActivityCardClasses = (theme: Theme, accent: "blue-gold" | "purple"): string => {
+  if (accent === "blue-gold") {
+    return theme === "light"
+      ? "border-blue-600 bg-blue-50 text-dark-mode"
+      : "border-yellow-500 bg-blue-950/30 text-light-mode";
+  }
+  return theme === "light"
+    ? "border-purple-600 bg-purple-50 text-dark-mode"
+    : "border-purple-400 bg-purple-950/30 text-light-mode";
 };

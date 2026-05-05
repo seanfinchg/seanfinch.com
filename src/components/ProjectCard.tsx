@@ -32,8 +32,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className="flex items-start justify-between mb-2 gap-4">
         <h2 className="text-3xl font-bold font-jost">{title}</h2>
         {hideContent && (
-          <button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded font-monospace text-base font-bold transition-colors whitespace-nowrap">
-            Click for details
+          <button className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded font-monospace text-sm font-bold transition-colors whitespace-nowrap">
+            Details →
           </button>
         )}
       </div>
@@ -56,7 +56,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             {technologies.map((tech) => (
               <span
                 key={tech}
-                className="inline-block bg-blue-500 text-light-mode rounded-full px-2 py-1 text-xs font-bold font-monospace"
+                className="inline-block bg-sky-600 dark:bg-sky-700 text-white rounded px-2 py-0.5 text-xs font-bold font-monospace transition-colors duration-150 hover:bg-sky-500 dark:hover:bg-sky-600 cursor-default"
               >
                 {tech}
               </span>
@@ -111,13 +111,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     </div>
   );
 
-  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(
-    theme,
-  )}`;
+  const hoverClasses = "transition-all duration-200 hover:-translate-y-1 hover:shadow-xl";
 
-  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${getFeaturedProjectCardClasses(
-    theme,
-  )} font-raleway`;
+  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(theme)} ${hoverClasses}`;
+
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${getFeaturedProjectCardClasses(theme)} font-raleway ${hoverClasses} cursor-pointer`;
 
   const wrapperClasses = featured ? featuredClasses : regularClasses;
 
