@@ -5,7 +5,10 @@ import { getThemeClasses } from "../utils/themeUtils";
 import { projects, type ProjectProps } from "../data/projects";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 
-const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, index }) => {
+const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
+  proj,
+  index,
+}) => {
   const { theme } = useTheme();
   const ref = useScrollReveal();
   const isActive = proj.dateRange.includes("Present");
@@ -17,13 +20,16 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, in
       style={{ transitionDelay: `${Math.min(index * 70, 350)}ms` }}
     >
       {/* Timeline node */}
-      <div className={`absolute left-[0.85rem] top-2 w-7 h-7 rounded-full z-10 flex items-center justify-center shadow-md font-bold text-xs
-        ${proj.featured
-          ? "bg-emerald-500 ring-2 ring-emerald-400/60 shadow-emerald-500/30 text-white"
-          : theme === "light"
-            ? "bg-slate-300 ring-1 ring-neutral-400/40 text-neutral-600"
-            : "bg-neutral-700 ring-1 ring-neutral-500/40 text-neutral-300"
-        }`}>
+      <div
+        className={`absolute left-[0.85rem] top-2 w-7 h-7 rounded-full z-10 flex items-center justify-center shadow-md font-bold text-xs
+        ${
+          proj.featured
+            ? "bg-emerald-500 ring-2 ring-emerald-400/60 shadow-emerald-500/30 text-white"
+            : theme === "light"
+              ? "bg-slate-300 ring-1 ring-neutral-400/40 text-neutral-600"
+              : "bg-neutral-700 ring-1 ring-neutral-500/40 text-neutral-300"
+        }`}
+      >
         {proj.title[0]}
       </div>
 
@@ -39,15 +45,20 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, in
       </p>
 
       {/* Card */}
-      <div className={`p-4 rounded-lg border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg
-        ${proj.featured
-          ? "border-emerald-500/30 dark:border-emerald-500/25 bg-emerald-500/[0.03] dark:bg-emerald-500/[0.06]"
-          : theme === "light"
-            ? "border-slate-300/80 bg-white/75 shadow-sm"
-            : "border-neutral-700/50 bg-neutral-800/20"
-        }`}>
+      <div
+        className={`p-4 rounded-lg border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg
+        ${
+          proj.featured
+            ? "border-emerald-500/30 dark:border-emerald-500/25 bg-emerald-500/[0.03] dark:bg-emerald-500/[0.06]"
+            : theme === "light"
+              ? "border-slate-300/80 bg-white/75 shadow-sm"
+              : "border-neutral-700/50 bg-neutral-800/20"
+        }`}
+      >
         <div className="flex items-start justify-between gap-3 mb-2">
-          <h3 className="text-lg font-bold font-jost leading-tight">{proj.title}</h3>
+          <h3 className="text-lg font-bold font-jost leading-tight">
+            {proj.title}
+          </h3>
           {proj.featured && (
             <span className="text-[10px] font-monospace px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
               FEATURED
@@ -59,13 +70,17 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, in
           <ul className="space-y-1.5 text-sm font-raleway mb-3">
             {proj.description.map((item, j) => (
               <li key={j} className="flex gap-2">
-                <span className="text-emerald-600 dark:text-emerald-400 shrink-0 font-monospace mt-0.5 text-xs">›</span>
+                <span className="text-emerald-600 dark:text-emerald-400 shrink-0 font-monospace mt-0.5 text-xs">
+                  ›
+                </span>
                 <span className="text-muted-foreground">{item}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-sm font-raleway text-muted-foreground mb-3">{proj.description}</p>
+          <p className="text-sm font-raleway text-muted-foreground mb-3">
+            {proj.description}
+          </p>
         )}
 
         <div className="flex flex-wrap gap-1.5 mb-3">
@@ -90,9 +105,12 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, in
               GitHub →
             </a>
           )}
-          {proj.demoLink && (
-            proj.demoLink.startsWith("/") ? (
-              <Link to={proj.demoLink} className="text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+          {proj.demoLink &&
+            (proj.demoLink.startsWith("/") ? (
+              <Link
+                to={proj.demoLink}
+                className="text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
                 Demo →
               </Link>
             ) : (
@@ -104,10 +122,12 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, in
               >
                 Demo →
               </a>
-            )
-          )}
+            ))}
           {proj.diagrams && proj.diagrams.length > 0 && (
-            <Link to="/projects/homelab" className="text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+            <Link
+              to="/projects/homelab"
+              className="text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            >
               Diagrams →
             </Link>
           )}
@@ -124,14 +144,21 @@ const Projects: React.FC = () => {
     document.title = "Projects - Sean Finch • SoCal";
   }, []);
 
-  const sorted = [...projects].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  const sorted = [...projects].sort(
+    (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0),
+  );
 
   return (
     <div className={`flex flex-col items-center ${getThemeClasses(theme)}`}>
       {/* Hero */}
       <div className="relative w-full py-14 px-4 text-center overflow-hidden mb-2">
-        <div className="absolute inset-0 dot-grid-bg text-gray-200 dark:text-gray-700 opacity-40 pointer-events-none" aria-hidden="true" />
-        <p className="relative font-monospace text-xs tracking-[0.4em] uppercase text-muted-foreground mb-3">Work</p>
+        <div
+          className="absolute inset-0 dot-grid-bg text-gray-200 dark:text-gray-700 opacity-40 pointer-events-none"
+          aria-hidden="true"
+        />
+        <p className="relative font-monospace text-xs tracking-[0.4em] uppercase text-muted-foreground mb-3">
+          Work
+        </p>
         <h1 className="relative text-5xl md:text-6xl font-jost font-extrabold bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 bg-clip-text text-transparent animate-gradient mb-3">
           Projects
         </h1>

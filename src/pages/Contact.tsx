@@ -17,9 +17,7 @@ const Contact: React.FC = () => {
   const buttonClass = `flex items-center justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg cursor-pointer transition-colors duration-200`;
 
   return (
-    <div
-      className={`flex justify-center ${getThemeClasses(theme)}`}
-    >
+    <div className={`flex justify-center ${getThemeClasses(theme)}`}>
       <div className="w-full mx-4 md:mx-0">
         <div className="flex flex-col items-center text-center mt-16">
           <h1 className="text-4xl font-bold mb-4 font-jost">Contact Me</h1>
