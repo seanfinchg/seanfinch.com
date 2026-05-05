@@ -97,6 +97,6 @@ export const experiences: ExperienceProps[] = [
     ],
     dateRange: "January 2020 – January 2023",
     logo: cyberpatriotLogo,
-    linkedinUrl: "https://www.linkedin.com/company/afacyberpatriot/",
+    linkedinUrl: "https://www.linkedin.com/company/cyberpatriot/",
   },
 ];
