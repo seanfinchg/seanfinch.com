@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm outdated *)",
+      "Bash(del .eslintrc.cjs)",
+      "Bash(del tailwind.config.js)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\seanf\\\\Documents\\\\websites\\\\seanfinch.com\" -Recurse -Force)",
+      "Bash(Select-Object FullName, Mode)",
+      "Bash(Sort-Object FullName)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\seanf\\\\Documents\\\\websites\\\\seanfinch.com\" -Force)",
+      "Bash(Select-Object Name, PSIsContainer)"
+    ]
+  }
+}

@@ -1,40 +1,24 @@
 import React from "react";
-import { useTheme } from "../contexts/themeContext";
 
-const Footer: React.FC = () => {
-  const { theme } = useTheme();
-
-  const openLinkInNewTab = (url: string): void => {
-    window.open(url, "_blank");
-  };
-
-  const getLinkElement = (url: string, text: string) => (
-    <span
-      className="font-medium text-indigo-500 hover:text-indigo-600"
-      onClick={() => openLinkInNewTab(url)}
-    >
-      {text}
-    </span>
-  );
-
-  return (
-    <footer
-      className={`relative bottom-0 py-4 w-full text-center ${theme === "light" ? "bg-light-mode text-dark-mode" : "bg-dark-mode text-light-mode"}`}
-    >
-      <p>
-        {getLinkElement("https://seanfinch.com", "seanfinch.com")}
-        {/* <div className="flex justify-center mt-4">
-          <a href="https://www.buymeacoffee.com/seanfinch">
-            <img
-              src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee!&emoji=☕&slug=seanfinch&button_colour=FF5F5F&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00"
-              width="200"
-              height="auto"
-            />
-          </a>
-        </div> */}
+const Footer: React.FC = () => (
+  <footer className="w-full border-t border-slate-200/60 dark:border-white/[0.07]
+    bg-white/60 dark:bg-neutral-900/70 backdrop-blur-md py-4 px-6">
+    <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+      <span
+        className="font-monospace text-xs text-muted-foreground hover:text-sky-500 dark:hover:text-sky-400
+          transition-colors cursor-pointer"
+        onClick={() => window.open("https://seanfinch.com", "_blank")}
+      >
+        ❯ seanfinch.com
+      </span>
+      <p className="font-monospace text-xs text-muted-foreground">
+        © 2025 Sean Finch · Orange County, CA
       </p>
-    </footer>
-  );
-};
+      <p className="font-monospace text-[10px] text-muted-foreground opacity-50">
+        React · TypeScript · Tailwind CSS
+      </p>
+    </div>
+  </footer>
+);
 
 export default Footer;

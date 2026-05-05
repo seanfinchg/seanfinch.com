@@ -1,13 +1,79 @@
-@import "../node_modules/@fontsource/roboto-slab/index.css";
-@import "../node_modules/@fontsource/raleway/index.css";
-@import "../node_modules/@fontsource/jost/index.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@fontsource/roboto-slab";
+@import "@fontsource/raleway";
+@import "@fontsource/jost";
 
-/* Custom utilities for cipher tools */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-raleway: "Raleway", monospace;
+  --font-roboto-slab: "Roboto Slab", monospace;
+  --font-jost: "Jost", monospace;
+
+  --color-dark-mode: #242424;
+  --color-ultra-dark-mode: #1a1a1a;
+  --color-light-mode: #ffffff;
+  --color-ultra-light-mode: #d2d3db;
+  --color-linkedin: #0077b5;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
 @layer utilities {
   .text-muted-foreground {
     @apply text-gray-600 dark:text-gray-400;
+  }
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+  }
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .animate-pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  .animate-fade-up {
+    animation: fade-up 0.5s ease-out both;
+  }
+  .animate-page-in {
+    animation: page-in 0.22s ease-out both;
+  }
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 5s ease infinite;
+  }
+  .animate-cursor-blink {
+    animation: cursor-blink 1s step-end infinite;
+  }
+  .dot-grid-bg {
+    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 }

@@ -23,6 +23,8 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 }) => {
   const { theme } = useTheme();
 
+  const isActive = dateRange.includes("Present");
+
   const cardContent = (
     <div className="w-full mb-4 font-raleway">
       <div className="flex items-center justify-between mb-1 gap-4">
@@ -34,23 +36,30 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           aria-label={`${company} on LinkedIn`}
         >
           {logo && (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={logo}
               alt={`${company} logo`}
-              className="w-12 h-12 object-contain rounded"
+              className="w-16 h-16 object-contain rounded"
             />
           )}
           <h3 className="text-2xl font-semibold font-jost">{company}</h3>
         </a>
-        {hideContent && (
-          <button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded font-monospace text-base font-bold transition-colors whitespace-nowrap">
-            Click for details
-          </button>
-        )}
       </div>
       <div className="flex items-start justify-between mb-1 gap-4">
         <h2 className="text-2xl font-bold font-jost">{title}</h2>
+        <div className="flex items-center gap-2 shrink-0">
+          {isActive && (
+            <span className="flex items-center gap-1.5 text-xs font-monospace text-green-600 dark:text-green-400 whitespace-nowrap">
+              <span className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse-dot inline-block" />
+              Active
+            </span>
+          )}
+          {hideContent && (
+            <button className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded font-monospace text-sm font-bold transition-colors whitespace-nowrap">
+              Details →
+            </button>
+          )}
+        </div>
       </div>
       <p className="text-sm italic mb-2 font-monospace">
         {location} | {dateRange}
@@ -65,13 +74,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     </div>
   );
 
-  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(
-    theme,
-  )}`;
+  const hoverClasses = "transition-all duration-200 hover:-translate-y-1 hover:shadow-xl";
 
-  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${getFeaturedCardClasses(
-    theme,
-  )} font-raleway`;
+  const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(theme)} ${hoverClasses}`;
+
+  const featuredClasses = `relative w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-2xl border-4 ${getFeaturedCardClasses(theme)} font-raleway ${hoverClasses} cursor-pointer`;
 
   const wrapperClasses = featured ? featuredClasses : regularClasses;
 

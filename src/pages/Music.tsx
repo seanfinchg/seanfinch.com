@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
+import { getThemeClasses } from "../utils/themeUtils";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -41,7 +42,7 @@ const Music: React.FC = () => {
 
   return (
     <div
-      className={`flex justify-center ${theme === "light" ? "bg-light-mode text-ultra-dark-mode" : "bg-dark-mode text-light-mode"}`}
+      className={`flex justify-center ${getThemeClasses(theme)}`}
     >
       <div className="w-full mx-4 md:mx-0">
         <div className="flex flex-col items-center text-center mt-16">
@@ -57,11 +58,11 @@ const Music: React.FC = () => {
               Video Gallery
             </SocialMediaButton>
           </div>
-          <div className="p-4 flex flex-col md:flex-row justify-center items-center md:space-x-8 md:items-center">
+          <div className="p-4 flex flex-col md:flex-row justify-center items-start md:space-x-8">
             <img
               src="/SeanAcademyPoster.jpg"
               alt="Sean Finch Academy of the Arts Poster"
-              className="w-3/4 md:w-96 h-full md:h-120 object-cover mb-8 md:mb-0 rounded-xl"
+              className="w-3/4 md:w-72 h-auto object-contain mb-8 md:mb-0 rounded-xl self-center md:self-start"
             />
             <div
               className={`w-full md:w-1/2 mb-8 p-4 border-${theme === "light" ? "border-ultra-light-mode" : "border-ultra-dark-mode"} border-2 rounded-lg text-${theme === "light" ? "text-ultra-light-mode" : "text-ultra-dark-mode"} m-4 font-raleway shadow-lg`}
