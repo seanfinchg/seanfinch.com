@@ -34,7 +34,7 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Home - Sean Finch • SoCal";
+    document.title = "Home - Sean Finch";
   }, []);
 
   return (
@@ -82,9 +82,9 @@ const Home: React.FC = () => {
                 height="auto"
               />
             </a> */}
-            <SocialMediaButton url="/music_resume.pdf">
+            {/* <SocialMediaButton url="/music/music_resume.pdf">
               Music Resume
-            </SocialMediaButton>
+            </SocialMediaButton> */}
           </div>
           {/* Windows Vista Aero terminal widget */}
           <div className="w-full flex justify-center px-4 mb-8">
@@ -237,10 +237,7 @@ const Home: React.FC = () => {
                 </p>
                 <p>
                   <span style={{ color: "#98d898" }}>7605</span>
-                  <span style={{ color: "#a8c8f0" }}>
-                    {" "}
-                    days · Orange County → Boston → now: SoCal
-                  </span>
+                  <span style={{ color: "#a8c8f0" }}> days online</span>
                 </p>
                 <p>
                   <span style={{ color: "#8bb4f8" }}>
@@ -256,6 +253,58 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
+          {/* About Me card */}
+          <div className="w-full flex justify-center px-4 mb-10">
+            <div
+              onClick={() => { navigate("/about"); window.scrollTo(0, 0); }}
+              className={`group w-full max-w-xl overflow-hidden rounded-2xl border cursor-pointer
+                transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl
+                ${theme === "light"
+                  ? "border-slate-200 bg-white/60 hover:border-sky-300 hover:shadow-sky-100/70"
+                  : "border-white/10 bg-white/[0.05] hover:border-sky-500/40 hover:shadow-sky-900/30"}`}
+            >
+              {/* accent bar */}
+              <div className="h-[3px] w-full bg-gradient-to-r from-sky-400 via-indigo-500 to-transparent" />
+
+              <div className="flex items-center gap-5 p-6">
+                <img
+                  src="/pfp.webp"
+                  alt="Sean Finch"
+                  className="w-[88px] h-[88px] rounded-full object-cover shrink-0
+                    ring-2 ring-sky-400/40 group-hover:ring-sky-400/80
+                    shadow-lg transition-all duration-200"
+                />
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="font-monospace text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-1">
+                    About Me
+                  </p>
+                  <p className="font-jost font-extrabold text-lg leading-tight mb-2">
+                    Sean Finch
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 mb-2.5">
+                    {["Cybersecurity", "Music", "Homelab", "Photography"].map((tag) => (
+                      <span
+                        key={tag}
+                        className={`text-[10px] font-monospace px-2 py-0.5 rounded-full border
+                          ${theme === "light"
+                            ? "border-slate-200 bg-slate-100 text-slate-600"
+                            : "border-white/10 bg-white/5 text-slate-400"}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="font-raleway text-sm text-muted-foreground line-clamp-1">
+                    Cybersecurity student &amp; Systems Engineer Intern at Neuralink.
+                  </p>
+                </div>
+                <span className="shrink-0 font-monospace text-xs text-sky-500 dark:text-sky-400 group-hover:translate-x-1 transition-transform duration-200">
+                  View →
+                </span>
+              </div>
+            </div>
+          </div>
+
           <div className="w-full flex flex-col items-center px-4">
             <div className="relative mb-6">
               <h2 className="text-3xl font-bold font-jost">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
+import { getThemeClasses } from "../utils/themeUtils";
 import { projects } from "../data/projects";
 
 const DiagramViewer: React.FC = () => {
@@ -45,18 +46,12 @@ const DiagramViewer: React.FC = () => {
   )}&url=${encodedUrl}${darkModeParam}`;
 
   return (
-    <div
-      className={`min-h-screen ${
-        theme === "light"
-          ? "bg-light-mode text-dark-mode"
-          : "bg-dark-mode text-light-mode"
-      }`}
-    >
+    <div className={`min-h-screen ${getThemeClasses(theme)}`}>
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <button
             onClick={() => navigate("/projects/homelab")}
-            className="text-blue-500 hover:text-blue-600 underline font-monospace mb-2"
+            className="text-sky-500 hover:text-sky-400 font-monospace mb-2 transition-colors"
           >
             ← Back to Homelab
           </button>
@@ -68,8 +63,8 @@ const DiagramViewer: React.FC = () => {
 
         {/* Diagram iframe container */}
         <div
-          className={`relative w-full rounded-lg border-2 ${
-            theme === "light" ? "border-dark-mode" : "border-light-mode"
+          className={`relative w-full rounded-xl border ${
+            theme === "light" ? "border-slate-200" : "border-white/10"
           }`}
           style={{ height: "calc(100vh - 250px)", minHeight: "600px" }}
         >
@@ -101,7 +96,7 @@ const DiagramViewer: React.FC = () => {
                   <button
                     key={d.name}
                     onClick={() => navigate(`/projects/homelab/${d.name}`)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-monospace transition-colors"
+                    className="bg-sky-500 hover:bg-sky-400 text-white px-4 py-2 rounded-lg font-monospace transition-colors"
                   >
                     {d.label}
                   </button>

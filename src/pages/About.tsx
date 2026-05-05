@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useTheme } from "../contexts/themeContext";
 import SocialMediaButton from "../components/SocialMediaButton";
 import { getThemeClasses } from "../utils/themeUtils";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const skillGroups = [
   {
@@ -109,8 +110,12 @@ const About: React.FC = () => {
               className="w-3/4 md:w-80 h-full md:h-auto object-cover mb-8 md:mb-0 rounded-xl shadow-lg"
             />
             <div
-              className={`w-full md:w-1/2 mb-8 p-5 border-2 rounded-lg font-raleway shadow-lg text-left
-                ${theme === "light" ? "border-ultra-light-mode" : "border-ultra-dark-mode"}`}
+              className={`w-full md:w-1/2 mb-8 p-5 border rounded-xl font-raleway shadow-lg text-left backdrop-blur-sm
+                ${
+                  theme === "light"
+                    ? "border-slate-200 bg-white/50"
+                    : "border-white/10 bg-white/[0.04]"
+                }`}
             >
               <p className="mb-4">
                 I'm Sean Finch, from Orange County, California, and am pursuing
@@ -232,9 +237,18 @@ const About: React.FC = () => {
                   A
                 </div>
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
-                  <h3 className="text-xl font-bold font-jost">
+                  <a
+                    href="https://www.northeasternapo.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-1.5 text-xl font-bold font-jost hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                  >
                     Alpha Phi Omega
-                  </h3>
+                    <FaExternalLinkAlt
+                      size={11}
+                      className="opacity-40 group-hover:opacity-80 transition-opacity"
+                    />
+                  </a>
                   <span className="text-[11px] font-monospace px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30">
                     Incoming President
                   </span>
@@ -269,9 +283,18 @@ const About: React.FC = () => {
                   N
                 </div>
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
-                  <h3 className="text-xl font-bold font-jost">
+                  <a
+                    href="https://www.nuchorus.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-1.5 text-xl font-bold font-jost hover:text-purple-500 dark:hover:text-purple-400 transition-colors"
+                  >
                     NU Choral Society
-                  </h3>
+                    <FaExternalLinkAlt
+                      size={11}
+                      className="opacity-40 group-hover:opacity-80 transition-opacity"
+                    />
+                  </a>
                   <span className="text-[11px] font-monospace px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/30">
                     Past President
                   </span>
