@@ -1,3 +1,5 @@
+import type { Theme } from "../contexts/themeContext";
+
 /**
  * Utility functions for consistent styling across the application
  */
@@ -7,7 +9,7 @@
  * @param theme - The current theme ("light" or "dark")
  * @returns Tailwind CSS classes for background and text
  */
-export const getThemeClasses = (theme: "light" | "dark"): string => {
+export const getThemeClasses = (theme: Theme): string => {
   return theme === "light"
     ? "bg-light-mode text-ultra-dark-mode"
     : "bg-dark-mode text-light-mode";
@@ -18,7 +20,7 @@ export const getThemeClasses = (theme: "light" | "dark"): string => {
  * @param theme - The current theme ("light" or "dark")
  * @returns Tailwind CSS classes for ultra contrast background and text
  */
-export const getUltraThemeClasses = (theme: "light" | "dark"): string => {
+export const getUltraThemeClasses = (theme: Theme): string => {
   return theme === "light"
     ? "bg-ultra-light-mode text-ultra-dark-mode"
     : "bg-ultra-dark-mode text-light-mode";
@@ -29,7 +31,7 @@ export const getUltraThemeClasses = (theme: "light" | "dark"): string => {
  * @param theme - The current theme ("light" or "dark")
  * @returns Tailwind CSS border color classes
  */
-export const getThemeBorderClasses = (theme: "light" | "dark"): string => {
+export const getThemeBorderClasses = (theme: Theme): string => {
   return theme === "light" ? "border-dark-mode" : "border-light-mode";
 };
 
@@ -38,7 +40,7 @@ export const getThemeBorderClasses = (theme: "light" | "dark"): string => {
  * @param theme - The current theme ("light" or "dark")
  * @returns Complete card styling classes
  */
-export const getCardClasses = (theme: "light" | "dark"): string => {
+export const getCardClasses = (theme: Theme): string => {
   return theme === "light"
     ? "border-dark-mode text-dark-mode bg-light-mode"
     : "border-light-mode text-light-mode bg-dark-mode";
@@ -49,7 +51,7 @@ export const getCardClasses = (theme: "light" | "dark"): string => {
  * @param theme - The current theme ("light" or "dark")
  * @returns Complete featured card styling classes
  */
-export const getFeaturedCardClasses = (theme: "light" | "dark"): string => {
+export const getFeaturedCardClasses = (theme: Theme): string => {
   return theme === "light"
     ? "border-blue-500 bg-blue-50 text-dark-mode"
     : "border-blue-400 bg-blue-900/20 text-light-mode";
@@ -60,9 +62,7 @@ export const getFeaturedCardClasses = (theme: "light" | "dark"): string => {
  * @param theme - The current theme ("light" or "dark")
  * @returns Complete featured project card styling classes
  */
-export const getFeaturedProjectCardClasses = (
-  theme: "light" | "dark",
-): string => {
+export const getFeaturedProjectCardClasses = (theme: Theme): string => {
   return theme === "light"
     ? "border-green-700 bg-green-100 text-dark-mode"
     : "border-green-700 bg-green-950/40 text-light-mode";

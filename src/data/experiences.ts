@@ -4,6 +4,7 @@ export interface ExperienceProps {
   location: string;
   description: string[];
   logo?: string;
+  linkedinUrl: string;
   dateRange: string;
   featured?: boolean;
 }
@@ -28,6 +29,7 @@ export const experiences: ExperienceProps[] = [
     dateRange: "June 2026 – September 2026",
     featured: true,
     logo: paloLogo,
+    linkedinUrl: "https://www.linkedin.com/company/palo-alto-networks/",
   },
   {
     title: "Systems Engineer Intern",
@@ -42,6 +44,7 @@ export const experiences: ExperienceProps[] = [
     dateRange: "April 2026 – June 2026",
     featured: true,
     logo: neuralinkLogo,
+    linkedinUrl: "https://www.linkedin.com/company/neuralink/",
   },
   {
     title: "IT Operations Co-op — Security Operations",
@@ -57,6 +60,7 @@ export const experiences: ExperienceProps[] = [
     dateRange: "May 2025 – April 2026",
     featured: false,
     logo: audaxLogo,
+    linkedinUrl: "https://www.linkedin.com/company/audax-group/",
   },
   {
     title: "Mechanical and Industrial Engineering IT Support",
@@ -68,6 +72,7 @@ export const experiences: ExperienceProps[] = [
     ],
     dateRange: "September 2024 – April 2025",
     logo: northeasternLogo,
+    linkedinUrl: "https://www.linkedin.com/school/northeastern-university/",
   },
   {
     title: "Cybersecurity Intern",
@@ -80,6 +85,7 @@ export const experiences: ExperienceProps[] = [
     ],
     dateRange: "May 2024 – August 2024",
     logo: cenicLogo,
+    linkedinUrl: "https://www.linkedin.com/company/cenic/",
   },
   {
     title: "Team Commander",
@@ -91,5 +97,6 @@ export const experiences: ExperienceProps[] = [
     ],
     dateRange: "January 2020 – January 2023",
     logo: cyberpatriotLogo,
+    linkedinUrl: "https://www.linkedin.com/company/afacyberpatriot/",
   },
 ];

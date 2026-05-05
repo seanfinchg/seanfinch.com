@@ -1,10 +1,10 @@
-import React from "react";
+import type { ReactNode } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { getUltraThemeClasses } from "../utils/themeUtils";
 
 interface SocialMediaButtonProps {
   url: string;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }
 
@@ -18,7 +18,7 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
     theme,
   )} ${className}`;
 
-  const openLinkInNewTab = () => {
+  const openLinkInNewTab = (): void => {
     window.open(url, "_blank");
   };
 

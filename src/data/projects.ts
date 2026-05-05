@@ -8,8 +8,8 @@ export interface ProjectProps {
   title: string;
   description: string | string[];
   technologies: string[];
-  githubLink: string;
-  demoLink: string;
+  githubLink?: string;
+  demoLink?: string;
   dateRange: string;
   featured?: boolean;
   diagrams?: DiagramInfo[];
@@ -25,7 +25,6 @@ export const projects: ProjectProps[] = [
       "All encryption happens locally in the browser, ensuring complete privacy with no external data transmission",
     ],
     technologies: ["React.js", "TypeScript", "Tailwind CSS"],
-    githubLink: "",
     demoLink: "/projects/cipher-tools",
     dateRange: "March 2026 – Present",
   },
@@ -56,8 +55,6 @@ export const projects: ProjectProps[] = [
       "Performed continuous vulnerability scanning with OpenVAS across 10+ self-hosted services and endpoints, while hardening remote access with Nginx reverse proxy, Tailscale, and Pi-hole to enforce security and monitor DNS/web traffic",
     ],
     technologies: ["TrueNAS SCALE", "Docker", "Tailscale", "Nginx"],
-    githubLink: "",
-    demoLink: "",
     dateRange: "June 2022 – Present",
     featured: true,
     diagrams: [
@@ -78,8 +75,6 @@ export const projects: ProjectProps[] = [
     description:
       "Engineered an in-memory filesystem using the FUSE API, supporting over 20 file operations. Designed modular components for efficient bitmap, block, and storage management, facilitating streamlined file allocation and system performance.",
     technologies: ["C", "FUSE"],
-    githubLink: "",
-    demoLink: "",
     dateRange: "December 2024 – December 2024",
   },
   {
@@ -87,8 +82,6 @@ export const projects: ProjectProps[] = [
     description:
       "ThreeTrios is a strategic card game developed with a focus on Object-Oriented Design principles, leveraging abstraction and polymorphism to enhance code reusability and user engagement. The project features a modular MVC architecture built with encapsulation, ensuring scalability and simplifying the integration of new features. Comprehensive unit and integration tests were implemented to validate game logic, delivering a robust and error-free gameplay experience while maintaining high development standards.",
     technologies: ["Java", "JUnit", "Swing"],
-    githubLink: "",
-    demoLink: "",
     dateRange: "December 2024 – December 2024",
   },
   {
@@ -96,8 +89,6 @@ export const projects: ProjectProps[] = [
     description:
       "Developed a custom Linux shell in C, supporting built-in commands, piping, and input tokenization with advanced features like quoted strings and special characters. Integrated POSIX system calls for process execution and inter-process communication, ensuring robust functionality.",
     technologies: ["C", "Python", "POSIX"],
-    githubLink: "",
-    demoLink: "",
     dateRange: "October 2024 – October 2024",
   },
   {
@@ -122,8 +113,6 @@ export const projects: ProjectProps[] = [
     description:
       "Developed a basic FTP Client to interface with a server to send, receive, and transfer files between the server and the client.",
     technologies: ["Python"],
-    githubLink: "",
-    demoLink: "",
     dateRange: "January 2024 – January 2024",
   },
   {
@@ -131,8 +120,6 @@ export const projects: ProjectProps[] = [
     description:
       "Developed a basic TCP Client to interface with a server to solve a Worldle-like word game.",
     technologies: ["Python"],
-    githubLink: "",
-    demoLink: "",
     dateRange: "January 2024 – January 2024",
   },
 ];

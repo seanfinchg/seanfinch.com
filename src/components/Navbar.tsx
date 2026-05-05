@@ -5,7 +5,12 @@ import { useTheme } from "../contexts/themeContext";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { getUltraThemeClasses } from "../utils/themeUtils";
 
-const links = [
+interface NavLink {
+  to: string;
+  text: string;
+}
+
+const links: NavLink[] = [
   { to: "/", text: "Home" },
   { to: "/projects", text: "Projects" },
   { to: "/experience", text: "Experience" },
@@ -44,7 +49,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => {
+  const toggleTheme = (): void => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 

@@ -9,7 +9,7 @@ const Contact: React.FC = () => {
     document.title = "Contact - Sean Finch • SoCal";
   }, []);
 
-  const openLinkInNewTab = (url: string) => {
+  const openLinkInNewTab = (url: string): void => {
     window.open(url, "_blank");
   };
 

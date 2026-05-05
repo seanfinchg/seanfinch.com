@@ -3,7 +3,7 @@ import { useTheme } from "../contexts/themeContext";
 import SocialMediaButton from "../components/SocialMediaButton";
 import { getThemeClasses } from "../utils/themeUtils";
 
-function About() {
+const About: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -95,6 +95,6 @@ function About() {
       </div>
     </div>
   );
-}
+};
 
 export default About;

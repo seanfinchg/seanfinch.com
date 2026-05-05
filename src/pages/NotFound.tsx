@@ -17,7 +17,7 @@ const HomeButton: React.FC<ButtonProps> = ({ children }) => {
       : "bg-ultra-dark-mode text-light-mode"
   }`;
 
-  const goToHomePage = () => {
+  const goToHomePage = (): void => {
     navigate("/");
   };
 

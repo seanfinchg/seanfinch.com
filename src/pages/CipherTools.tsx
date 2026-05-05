@@ -41,7 +41,7 @@ const cipherTools: CipherTool[] = [
   },
 ];
 
-function CipherTools() {
+const CipherTools: React.FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
 
@@ -150,6 +150,6 @@ function CipherTools() {
       </div>
     </div>
   );
-}
+};
 
 export default CipherTools;
