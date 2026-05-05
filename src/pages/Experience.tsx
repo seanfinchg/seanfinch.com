@@ -4,14 +4,34 @@ import { getThemeClasses } from "../utils/themeUtils";
 import { experiences, type ExperienceProps } from "../data/experiences";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 
+const MONTH_MAP: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+};
+const parseMonthYear = (s: string): Date => {
+  const parts = s.trim().split(/\s+/);
+  const month = MONTH_MAP[parts[0].toLowerCase().slice(0, 3)] ?? 0;
+  return new Date(parseInt(parts[1]), month, 1);
+};
+const isCurrentlyActive = (dateRange: string): boolean => {
+  const parts = dateRange.split(/\s*[–—-]\s*/);
+  if (parts.length < 2) return false;
+  const [startStr, endStr] = parts;
+  const now = new Date();
+  const start = parseMonthYear(startStr);
+  const isPresent = endStr.trim().toLowerCase() === "present";
+  const endBase = isPresent ? now : parseMonthYear(endStr);
+  const end = new Date(endBase.getFullYear(), endBase.getMonth() + 1, 0);
+  return now >= start && now <= end;
+};
+
 const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
   exp,
   index,
 }) => {
   const { theme } = useTheme();
   const ref = useScrollReveal();
-  const isActive =
-    exp.dateRange.includes("Present") || exp.dateRange.match(/202[6-9]/);
+  const isActive = isCurrentlyActive(exp.dateRange);
 
   return (
     <div
@@ -91,10 +111,10 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
             </p>
           </div>
         </div>
-        <ul className="space-y-1.5 text-sm font-raleway mb-3">
+        <ul className="space-y-1.5 text-base leading-relaxed font-raleway mb-3">
           {exp.description.map((item, j) => (
             <li key={j} className="flex gap-2">
-              <span className="text-sky-500 dark:text-sky-400 shrink-0 font-monospace mt-0.5 text-xs">
+              <span className="text-sky-500 dark:text-sky-400 shrink-0 font-monospace mt-0.5 text-sm">
                 ›
               </span>
               <span className="text-muted-foreground">{item}</span>
@@ -105,7 +125,10 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
           href={exp.linkedinUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block text-[11px] font-monospace text-muted-foreground hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
+            ${theme === "light"
+              ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
+              : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40"}`}
         >
           LinkedIn →
         </a>

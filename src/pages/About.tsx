@@ -97,7 +97,10 @@ const About: React.FC = () => {
     <div className={`flex justify-center ${getThemeClasses(theme)}`}>
       <div className="w-full mx-4 md:mx-0">
         <div className="flex flex-col items-center text-center mt-16">
-          <h1 className="text-4xl font-bold mb-6 font-jost">About Me</h1>
+          <h1 className="text-4xl font-bold mb-4 font-jost">About Me</h1>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 rounded-full border border-indigo-400/40 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-sm font-monospace">
+            B.S. Cybersecurity · Music Minor · Anticipated May 2027
+          </div>
           <div className="flex justify-center flex-wrap mb-6">
             <SocialMediaButton url="/resume.pdf" className="mb-4 md:mb-0">
               Resume

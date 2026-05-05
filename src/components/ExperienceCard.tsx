@@ -9,6 +9,29 @@ interface ExperienceCardProps extends ExperienceProps {
   badgeLabel?: string;
 }
 
+const MONTH_MAP: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+};
+
+const parseMonthYear = (s: string): Date => {
+  const parts = s.trim().split(/\s+/);
+  const month = MONTH_MAP[parts[0].toLowerCase().slice(0, 3)] ?? 0;
+  return new Date(parseInt(parts[1]), month, 1);
+};
+
+const isCurrentlyActive = (dateRange: string): boolean => {
+  const parts = dateRange.split(/\s*[–—]\s*/);
+  if (parts.length < 2) return false;
+  const [startStr, endStr] = parts;
+  const now = new Date();
+  const start = parseMonthYear(startStr);
+  const isPresent = endStr.trim().toLowerCase() === "present";
+  const endBase = isPresent ? now : parseMonthYear(endStr);
+  const end = new Date(endBase.getFullYear(), endBase.getMonth() + 1, 0);
+  return now >= start && now <= end;
+};
+
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
   title,
   company,
@@ -23,7 +46,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 }) => {
   const { theme } = useTheme();
 
-  const isActive = dateRange.includes("Present");
+  const isActive = isCurrentlyActive(dateRange);
 
   const cardContent = (
     <div className="w-full mb-4 font-raleway">
@@ -61,11 +84,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           )}
         </div>
       </div>
-      <p className="text-sm italic mb-2 font-monospace">
+      <p className="text-sm italic mb-3 font-monospace">
         {location} | {dateRange}
       </p>
       {!hideContent && (
-        <ul className="list-disc pl-5 space-y-2">
+        <ul className="list-disc pl-5 space-y-2 text-base leading-relaxed">
           {description.map((item, i) => (
             <li key={i}>{item}</li>
           ))}

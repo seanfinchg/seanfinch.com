@@ -233,12 +233,12 @@ const Home: React.FC = () => {
                   <span style={{ color: "#8bb4f8" }}>
                     C:\Users\seanf<span style={{ color: "#6888cc" }}>&gt;</span>
                   </span>{" "}
-                  <span style={{ color: "#fff" }}>uptime</span>
+                  <span style={{ color: "#fff" }}>ping</span>{" "}
+                  <span style={{ color: "#98d898" }}>seanfinch.com</span>
                 </p>
-                <p>
-                  <span style={{ color: "#98d898" }}>7605</span>
-                  <span style={{ color: "#a8c8f0" }}> days online</span>
-                </p>
+                <p style={{ color: "#a8c8f0" }}>Reply from 104.21.8.12: bytes=32 time=12ms TTL=55</p>
+                <p style={{ color: "#a8c8f0" }}>Reply from 104.21.8.12: bytes=32 time=11ms TTL=55</p>
+                <p><span style={{ color: "#98d898" }}>Packets: Sent=2, Received=2, Lost=0</span><span style={{ color: "#a8c8f0" }}> (0% loss)</span></p>
                 <p>
                   <span style={{ color: "#8bb4f8" }}>
                     C:\Users\seanf<span style={{ color: "#6888cc" }}>&gt;</span>
@@ -294,9 +294,6 @@ const Home: React.FC = () => {
                       </span>
                     ))}
                   </div>
-                  <p className="font-raleway text-sm text-muted-foreground line-clamp-1">
-                    Cybersecurity student &amp; Systems Engineer Intern at Neuralink.
-                  </p>
                 </div>
                 <span className="shrink-0 font-monospace text-xs text-sky-500 dark:text-sky-400 group-hover:translate-x-1 transition-transform duration-200">
                   View →
