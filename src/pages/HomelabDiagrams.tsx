@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
+import { getThemeClasses } from "../utils/themeUtils";
 import { projects } from "../data/projects";
 
 const HomelabDiagrams: React.FC = () => {
@@ -52,11 +53,7 @@ const HomelabDiagrams: React.FC = () => {
         }
       `}</style>
       <div
-        className={`homelab-container flex flex-col ${
-          theme === "light"
-            ? "bg-light-mode text-dark-mode"
-            : "bg-dark-mode text-light-mode"
-        }`}
+        className={`homelab-container flex flex-col ${getThemeClasses(theme)}`}
       >
         <div className="container mx-auto px-4 md:px-4 pt-6 pb-2 md:pt-4 md:pb-1.5 flex-shrink-0">
           <div className="mb-2 md:mb-1">
@@ -81,11 +78,7 @@ const HomelabDiagrams: React.FC = () => {
                     e.target.value !== "networking" &&
                     setSelectedDiagram(e.target.value)
                   }
-                  className={`w-full px-4 py-2.5 rounded-lg font-monospace text-base font-semibold border-2 transition-all shadow-sm ${
-                    theme === "light"
-                      ? "bg-blue-500 border-blue-500 text-white hover:bg-blue-600"
-                      : "bg-blue-600 border-blue-600 text-white hover:bg-blue-700"
-                  }`}
+                  className="w-full px-4 py-2.5 rounded-lg font-monospace text-base font-semibold border-2 transition-all shadow-sm bg-sky-500 border-sky-500 text-white hover:bg-sky-600"
                   style={{
                     WebkitAppearance: "none",
                     MozAppearance: "none",
@@ -121,14 +114,12 @@ const HomelabDiagrams: React.FC = () => {
                     disabled={diagram.name === "networking"}
                     className={`px-5 py-2 rounded-lg font-monospace text-sm transition-all ${
                       diagram.name === "networking"
-                        ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-50"
+                        ? "opacity-40 cursor-not-allowed border border-current"
                         : selectedDiagram === diagram.name
-                          ? theme === "light"
-                            ? "bg-blue-500 text-white shadow-lg font-bold underline decoration-2 underline-offset-4"
-                            : "bg-blue-600 text-white shadow-lg font-bold underline decoration-2 underline-offset-4"
+                          ? "bg-sky-500 text-white shadow-lg font-bold"
                           : theme === "light"
-                            ? "bg-gray-200 text-dark-mode hover:bg-gray-300 font-semibold"
-                            : "bg-gray-700 text-light-mode hover:bg-gray-600 font-semibold"
+                            ? "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 font-medium"
+                            : "bg-white/8 text-slate-300 hover:bg-white/12 border border-white/10 font-medium"
                     }`}
                   >
                     {diagram.label}
@@ -145,12 +136,14 @@ const HomelabDiagrams: React.FC = () => {
         {/* Diagram Viewer */}
         <div className="w-full md:container md:mx-auto px-0 md:px-4 pb-1 md:pb-2 flex-1 min-h-0">
           <div
-            className={`h-full md:rounded-lg overflow-hidden border-2 ${
-              theme === "light" ? "border-gray-400" : "border-gray-500"
+            className={`h-full md:rounded-lg overflow-hidden border ${
+              theme === "light" ? "border-slate-200" : "border-white/10"
             }`}
           >
             {loading && (
-              <div className="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-800">
+              <div
+                className={`flex items-center justify-center h-full ${theme === "light" ? "bg-slate-50" : "bg-neutral-900"}`}
+              >
                 <p className="text-xl font-raleway">Loading diagram...</p>
               </div>
             )}

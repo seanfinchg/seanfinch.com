@@ -46,7 +46,10 @@ const Music: React.FC = () => {
         <div className="flex flex-col items-center text-center mt-16">
           <h1 className="text-4xl font-bold mb-8 font-jost">Music</h1>
           <div className="flex justify-center flex-wrap">
-            <SocialMediaButton url="/music_resume.pdf" className="mb-4 md:mb-0">
+            <SocialMediaButton
+              url="/music/music_resume.pdf"
+              className="mb-4 md:mb-0"
+            >
               Music Resume
             </SocialMediaButton>
             <SocialMediaButton
@@ -58,12 +61,17 @@ const Music: React.FC = () => {
           </div>
           <div className="p-4 flex flex-col md:flex-row justify-center items-start md:space-x-8">
             <img
-              src="/SeanAcademyPoster.jpg"
+              src="/music/SeanAcademyPoster.jpg"
               alt="Sean Finch Academy of the Arts Poster"
               className="w-3/4 md:w-72 h-auto object-contain mb-8 md:mb-0 rounded-xl self-center md:self-start"
             />
             <div
-              className={`w-full md:w-1/2 mb-8 p-4 border-${theme === "light" ? "border-ultra-light-mode" : "border-ultra-dark-mode"} border-2 rounded-lg text-${theme === "light" ? "text-ultra-light-mode" : "text-ultra-dark-mode"} m-4 font-raleway shadow-lg`}
+              className={`w-full md:w-1/2 mb-8 p-4 border rounded-xl m-4 font-raleway shadow-lg backdrop-blur-sm
+                ${
+                  theme === "light"
+                    ? "border-slate-200 bg-white/50"
+                    : "border-white/10 bg-white/[0.04]"
+                }`}
             >
               <p className="mb-4">
                 My name is Sean Finch, and I'm currently a third-year
@@ -114,7 +122,7 @@ const Music: React.FC = () => {
           <Carousel>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_10.jpg"
+                src="/music/music_image_10.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -122,7 +130,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_9.jpg"
+                src="/music/music_image_9.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -130,7 +138,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_8.jpg"
+                src="/music/music_image_8.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -138,7 +146,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_7.jpg"
+                src="/music/music_image_7.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -146,7 +154,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_6.jpg"
+                src="/music/music_image_6.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -154,7 +162,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_5.jpg"
+                src="/music/music_image_5.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -162,7 +170,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_4.jpg"
+                src="/music/music_image_4.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -170,7 +178,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_3.jpg"
+                src="/music/music_image_3.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -178,7 +186,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_2.jpg"
+                src="/music/music_image_2.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -186,7 +194,7 @@ const Music: React.FC = () => {
             </div>
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
-                src="/music_image_1.jpg"
+                src="/music/music_image_1.jpg"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />

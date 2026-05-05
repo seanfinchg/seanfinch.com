@@ -12,7 +12,11 @@
       "Bash(Sort-Object FullName)",
       "Bash(Format-Table -AutoSize)",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\seanf\\\\Documents\\\\websites\\\\seanfinch.com\" -Force)",
-      "Bash(Select-Object Name, PSIsContainer)"
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(cd \"c:\\\\Users\\\\seanf\\\\Documents\\\\websites\\\\seanfinch.com\" && mkdir -p public/music public/photography && mv public/music_image_*.jpg public/music/ && mv public/SeanAcademyPoster.jpg public/music/ && mv public/music_resume.pdf public/music/ && echo \"Done\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\seanf\\Documents\\websites\\seanfinch.com\\public"
     ]
   }
 }

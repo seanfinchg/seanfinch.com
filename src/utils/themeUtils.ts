@@ -1,9 +1,15 @@
 import type { Theme } from "../contexts/themeContext";
 
-export const getThemeClasses = (theme: Theme): string => {
+// Background only — used exclusively in Layout so the glow shows through every page
+export const getThemeBgClasses = (theme: Theme): string => {
   return theme === "light"
-    ? "bg-gradient-to-br from-slate-200 via-blue-50 to-slate-100 text-ultra-dark-mode"
-    : "bg-gradient-to-br from-neutral-900 via-slate-900 to-neutral-950 text-light-mode";
+    ? "bg-gradient-to-br from-white via-sky-50/60 to-violet-50/30"
+    : "bg-gradient-to-br from-[#0d1117] via-[#0f1829] to-[#0d1117]";
+};
+
+// Text color only — page wrappers stay transparent so the glow bleeds through
+export const getThemeClasses = (theme: Theme): string => {
+  return theme === "light" ? "text-ultra-dark-mode" : "text-light-mode";
 };
 
 export const getUltraThemeClasses = (theme: Theme): string => {
