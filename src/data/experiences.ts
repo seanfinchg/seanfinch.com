@@ -3,22 +3,46 @@ export interface ExperienceProps {
   company: string;
   location: string;
   description: string[];
+  logo?: string;
   dateRange: string;
   featured?: boolean;
 }
 
+import paloLogo from "../assets/palo-alto-networks.jpeg";
+import neuralinkLogo from "../assets/neuralink.jpeg";
+import audaxLogo from "../assets/audax-group.jpeg";
+import northeasternLogo from "../assets/northeastern-university.jpeg";
+import cenicLogo from "../assets/cenic.jpeg";
+import cyberpatriotLogo from "../assets/cyberpatriot.jpeg";
+
 export const experiences: ExperienceProps[] = [
-  // {
-  //   title: "Systems Engineer Intern",
-  //   company: "Neuralink",
-  //   location: "Fremont, CA",
-  //   description: [
-  //     "Selected to fortify infrastructure across systems with custom cyber defenses, automated monitoring, and proactive mitigation",
-  //     "Responsibilities include standardizing endpoint provisioning using IaC tools like Terraform, Docker, and Ansible",
-  //   ],
-  //   dateRange: "April 2026 – July 2026",
-  //   featured: true,
-  // },
+  {
+    title: "Incoming Enterprise Security Engineer Intern",
+    company: "Palo Alto Networks",
+    location: "Santa Clara, CA",
+    description: [
+      "Develop detection content and alerts for endpoint and cloud telemetry (Cortex XDR / Prisma Cloud) to reduce mean time to detection.",
+      "Instrument and iterate on telemetry pipelines: ingest, normalize, and enrich logs for security analytics and hunting.",
+      "Automate triage and response workflows with Python and SOAR playbooks; build tooling to accelerate incident investigation.",
+    ],
+    dateRange: "June 2026 – September 2026",
+    featured: true,
+    logo: paloLogo,
+  },
+  {
+    title: "Systems Engineer Intern",
+    company: "Neuralink",
+    location: "Fremont, CA",
+    description: [
+      "Drove access lockdowns for unmanaged devices and made device registration mandatory for secure access",
+      "Built Linux MDM enrollment from the ground up to extend centralized control and hardening beyond Windows and Mac endpoints",
+      "Introduced Defender XDR and kicked off SIEM implementation to build telemetry, alerting, and incident-response foundations",
+      "Rebuilt internal security docs into a structured knowledge base with runbooks and operational guides",
+    ],
+    dateRange: "April 2026 – June 2026",
+    featured: true,
+    logo: neuralinkLogo,
+  },
   {
     title: "IT Operations Co-op — Security Operations",
     company: "Audax Group",
@@ -31,7 +55,8 @@ export const experiences: ExperienceProps[] = [
       "Automated Windows Autopilot provisioning via PowerShell and Intune Win32 applications, reducing imaging time by 20%",
     ],
     dateRange: "May 2025 – April 2026",
-    featured: true,
+    featured: false,
+    logo: audaxLogo,
   },
   {
     title: "Mechanical and Industrial Engineering IT Support",
@@ -42,6 +67,7 @@ export const experiences: ExperienceProps[] = [
       "Deployed, configured, and maintained academic and engineering software, reducing downtime and user-impacting issues",
     ],
     dateRange: "September 2024 – April 2025",
+    logo: northeasternLogo,
   },
   {
     title: "Cybersecurity Intern",
@@ -53,6 +79,7 @@ export const experiences: ExperienceProps[] = [
       "Documented security processes and gathered KPI metrics, demonstrating improvements in response times and overall posture",
     ],
     dateRange: "May 2024 – August 2024",
+    logo: cenicLogo,
   },
   {
     title: "Team Commander",
@@ -63,5 +90,6 @@ export const experiences: ExperienceProps[] = [
       "Designed and taught a cybersecurity curriculum that propelled the team to a #1 California AJROTC ranking in 2021 and 2022",
     ],
     dateRange: "January 2020 – January 2023",
+    logo: cyberpatriotLogo,
   },
 ];

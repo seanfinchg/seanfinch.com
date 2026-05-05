@@ -12,6 +12,7 @@ interface ExperienceCardProps extends ExperienceProps {
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
   title,
   company,
+  logo,
   location,
   description,
   dateRange,
@@ -23,8 +24,18 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
   const cardContent = (
     <div className="w-full mb-4 font-raleway">
-      <div className="flex items-start justify-between mb-1 gap-4">
-        <h3 className="text-2xl font-semibold font-jost">{company}</h3>
+      <div className="flex items-center justify-between mb-1 gap-4">
+        <div className="flex items-center gap-3">
+          {logo && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={logo}
+              alt={`${company} logo`}
+              className="w-10 h-10 object-contain rounded"
+            />
+          )}
+          <h3 className="text-2xl font-semibold font-jost">{company}</h3>
+        </div>
         {hideContent && (
           <button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded font-monospace text-base font-bold transition-colors whitespace-nowrap">
             Click for details

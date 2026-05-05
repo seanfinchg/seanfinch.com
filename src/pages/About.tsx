@@ -37,12 +37,19 @@ function About() {
                 IT.
               </p>
               <p className="mb-4">
-                I'm currently working part-time as an IT Operations Co-op at
-                Audax Group, where I advise on cybersecurity strategy, automate
-                infrastructure provisioning, and optimize workflows. Previously,
-                I interned at CENIC, performing vulnerability management with
-                Tenable, Qualys, and SIEM tools while analyzing DDoS attacks and
-                strengthening IAM practices.
+                I'm currently a Systems Engineer Intern at Neuralink, where I'm
+                helping build core security operations capabilities from the
+                ground up. Current focus areas include endpoint security, access
+                control for managed devices, Linux MDM adoption, Defender XDR
+                rollout, early SIEM implementation, and creating a structured
+                internal security knowledge base.
+              </p>
+              <p className="mb-4">
+                Previously, I worked as an IT Operations Co-op (Security
+                Operations) at Audax Group and as a Cybersecurity Intern at
+                CENIC, supporting vulnerability management, endpoint hardening,
+                and network defense workflows. I'm also an incoming Enterprise
+                Security Engineer Intern at Palo Alto Networks.
               </p>
               <p className="mb-4">
                 In my homelab, I run a virtualized environment with TrueNAS
@@ -52,11 +59,12 @@ function About() {
               <p className="mb-4">
                 Beyond tech, I'm deeply involved in music and service
                 leadership. I served as Vice President of Northeastern
-                University Choral Society (NUCS) in Spring 2025 and currently
-                serve as President (Fall 2025 - Spring 2026). In Alpha Phi
-                Omega, I currently serve on the Service Committee (Fall 2025 -
-                Spring 2026) and as Standards Chair (Spring 2026). I'm also a
-                vocalist and outdoor enthusiast.
+                University Choral Society (NUCS) in Spring 2025 and served as
+                President from Fall 2025 through Spring 2026. In Alpha Phi
+                Omega, I served on the Service Committee (Fall 2025 - Spring
+                2026), served as Standards Chair (Spring 2026), and will serve
+                as President in Fall 2026. I'm also a vocalist and outdoor
+                enthusiast.
               </p>
               <div>
                 <h2 className="text-3xl font-bold mb-4">Technical Skills</h2>
