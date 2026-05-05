@@ -18,29 +18,57 @@
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes page-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes gradient-shift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 @layer utilities {
@@ -50,7 +78,9 @@
   .scroll-reveal {
     opacity: 0;
     transform: translateY(18px);
-    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+    transition:
+      opacity 0.45s ease-out,
+      transform 0.45s ease-out;
   }
   .scroll-reveal.is-visible {
     opacity: 1;
@@ -73,7 +103,11 @@
     animation: cursor-blink 1s step-end infinite;
   }
   .dot-grid-bg {
-    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+    background-image: radial-gradient(
+      circle,
+      currentColor 1px,
+      transparent 1px
+    );
     background-size: 24px 24px;
   }
 }

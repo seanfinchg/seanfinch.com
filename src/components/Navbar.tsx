@@ -33,9 +33,10 @@ const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
             className={`font-monospace py-4 px-3 text-3xl md:text-sm tracking-wide transition-all duration-200 relative
               after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-sky-400
               after:transition-all after:duration-200
-              ${isActive
-                ? "font-bold after:w-full text-sky-500 dark:text-sky-400"
-                : "font-normal after:w-0 hover:after:w-full opacity-70 hover:opacity-100"
+              ${
+                isActive
+                  ? "font-bold after:w-full text-sky-500 dark:text-sky-400"
+                  : "font-normal after:w-0 hover:after:w-full opacity-70 hover:opacity-100"
               } text-center`}
             onClick={onClick}
           >
@@ -62,9 +63,11 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="w-full text-center flex justify-between px-4 h-20 md:h-12 items-center sticky top-0 z-50
+    <div
+      className="w-full text-center flex justify-between px-4 h-20 md:h-12 items-center sticky top-0 z-50
       bg-white/70 dark:bg-neutral-900/80 backdrop-blur-md
-      border-b border-slate-200/70 dark:border-white/[0.07]">
+      border-b border-slate-200/70 dark:border-white/[0.07]"
+    >
       <div className="flex items-center w-full">
         <button
           className="text-5xl md:invisible opacity-60 hover:opacity-90 transition-opacity"

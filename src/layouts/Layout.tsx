@@ -16,12 +16,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const hideFooter = location.pathname === "/projects/homelab";
 
   const themeClass = getThemeClasses(theme);
-  const toggleTheme = () => setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
   return (
     <div className={`flex flex-col min-h-screen justify-between ${themeClass}`}>
       <Navbar />
-      <div key={location.pathname} className="animate-page-in">{children}</div>
+      <div key={location.pathname} className="animate-page-in">
+        {children}
+      </div>
       {!hideFooter && <Footer />}
 
       {/* Floating theme toggle */}

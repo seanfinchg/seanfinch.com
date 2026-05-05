@@ -41,9 +41,7 @@ const Music: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className={`flex justify-center ${getThemeClasses(theme)}`}
-    >
+    <div className={`flex justify-center ${getThemeClasses(theme)}`}>
       <div className="w-full mx-4 md:mx-0">
         <div className="flex flex-col items-center text-center mt-16">
           <h1 className="text-4xl font-bold mb-8 font-jost">Music</h1>

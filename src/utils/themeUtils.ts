@@ -34,7 +34,10 @@ export const getFeaturedProjectCardClasses = (theme: Theme): string => {
     : "border-green-700 bg-green-950/40 text-light-mode";
 };
 
-export const getActivityCardClasses = (theme: Theme, accent: "blue-gold" | "purple"): string => {
+export const getActivityCardClasses = (
+  theme: Theme,
+  accent: "blue-gold" | "purple",
+): string => {
   if (accent === "blue-gold") {
     return theme === "light"
       ? "border-blue-600 bg-blue-50 text-dark-mode"
