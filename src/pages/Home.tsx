@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useTheme } from "../contexts/themeContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -16,33 +16,26 @@ import ProjectCard from "../components/ProjectCard";
 import SocialMediaButton from "../components/SocialMediaButton";
 import { getThemeClasses } from "../utils/themeUtils";
 
-function Home() {
+interface SocialMediaLink {
+  url: string;
+  icon: ReactNode;
+}
+
+const socialMediaLinks: SocialMediaLink[] = [
+  { url: "https://github.com/seanfinchg", icon: <FaGithub size={30} /> },
+  {
+    url: "https://www.linkedin.com/in/sean-finch-g",
+    icon: <FaLinkedin size={30} />,
+  },
+];
+
+const Home: React.FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Home - Sean Finch • SoCal";
   }, []);
-
-  const socialMediaLinks = [
-    { url: "https://github.com/seanfinchg", icon: <FaGithub size={30} /> },
-    // {
-    //   url: "https://www.instagram.com/seanfinchh/",
-    //   icon: <FaInstagram size={30} />,
-    // },
-    {
-      url: "https://www.linkedin.com/in/sean-finch-g",
-      icon: <FaLinkedin size={30} />,
-    },
-    // {
-    //   url: "https://open.spotify.com/user/31zrqevhky5vln3wuz3uuixspku4",
-    //   icon: <FaSpotify size={30} />,
-    // },
-    // {
-    //   url: "https://www.youtube.com/channel/UC-0Oz_dgX4-MzMO_KNH7XuA",
-    //   icon: <FaYoutube size={30} />,
-    // },
-  ];
 
   return (
     <div className={`flex justify-center ${getThemeClasses(theme)}`}>
@@ -52,7 +45,7 @@ function Home() {
             Sean Finch
           </p>
           <p className="mb-4 mx-4 text-l font-raleway font-bold">
-            Seeking Fall 2026 Cybersecurity/Infrastructure Co-op
+            Seeking New-Grad Cybersecurity Roles Starting Summer 2027
           </p>
           <p className="mb-2 mx-4 font-raleway font-bold">
             B.S. Cybersecurity | Music Minor
@@ -138,6 +131,6 @@ function Home() {
       </div>
     </div>
   );
-}
+};
 
 export default Home;

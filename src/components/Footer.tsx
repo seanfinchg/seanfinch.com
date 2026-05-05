@@ -4,7 +4,7 @@ import { useTheme } from "../contexts/themeContext";
 const Footer: React.FC = () => {
   const { theme } = useTheme();
 
-  const openLinkInNewTab = (url: string) => {
+  const openLinkInNewTab = (url: string): void => {
     window.open(url, "_blank");
   };
 

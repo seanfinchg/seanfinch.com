@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
 
-type ThemeContextProps = {
+export type ThemeContextProps = {
   theme: Theme;
   setTheme: React.Dispatch<React.SetStateAction<Theme>>;
 };
 
 export const ThemeContext = createContext<ThemeContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({

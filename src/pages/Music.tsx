@@ -21,7 +21,7 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
       : "bg-ultra-dark-mode text-light-mode"
   } ${className}`;
 
-  const openLinkInNewTab = () => {
+  const openLinkInNewTab = (): void => {
     window.open(url, "_blank");
   };
 
@@ -32,7 +32,7 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
   );
 };
 
-function Music() {
+const Music: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -198,6 +198,6 @@ function Music() {
       </div>
     </div>
   );
-}
+};
 
 export default Music;
