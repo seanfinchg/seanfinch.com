@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
-import { photos, PHOTOS_PER_PAGE, photoSrc } from "../data/photos";
+import { photoStacks, PHOTOS_PER_PAGE, photoSrc } from "../data/photos";
 import exifDb from "../data/photo-exif.json";
 
 const formatShutter = (t: number | undefined): string => {
@@ -26,6 +26,11 @@ const formatDateTime = (d: Date | string | undefined): string => {
   } catch { return "—"; }
 };
 
+const versionLabel = (filename: string, idx: number, total: number): string => {
+  if (total === 2) return filename.toLowerCase().includes("edit") ? "Edited" : "Original";
+  return String(idx + 1);
+};
+
 const ExifCell: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex flex-col gap-0.5">
     <span className="text-[9px] uppercase tracking-widest text-neutral-600">{label}</span>
@@ -33,9 +38,8 @@ const ExifCell: React.FC<{ label: string; value: string }> = ({ label, value }) 
   </div>
 );
 
-// Thumbnail tile with skeleton loading
-const PhotoTile: React.FC<{ filename: string; onClick: () => void }> = ({
-  filename, onClick,
+const PhotoTile: React.FC<{ filename: string; stackCount: number; onClick: () => void }> = ({
+  filename, stackCount, onClick,
 }) => {
   const [loaded, setLoaded] = useState(false);
   return (
@@ -55,20 +59,38 @@ const PhotoTile: React.FC<{ filename: string; onClick: () => void }> = ({
           group-hover:scale-105 ${loaded ? "opacity-100" : "opacity-0"}`}
       />
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
+
+      {stackCount > 1 && (
+        <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1
+          bg-black/70 backdrop-blur-sm rounded px-1.5 py-0.5">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="text-white/70 shrink-0">
+            <rect x="2.5" y="2.5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.5" />
+            <rect x="1.5" y="1.5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.75" />
+            <rect x="0.5" y="0.5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1" fill="none" />
+          </svg>
+          <span className="text-white text-[10px] font-monospace font-semibold leading-none">{stackCount}</span>
+        </div>
+      )}
     </button>
   );
 };
 
+type LightboxState = { s: number; v: number };
+
 const Photography: React.FC = () => {
   const { theme } = useTheme();
   const [page, setPage] = useState(0);
-  const [lightbox, setLightbox] = useState<number | null>(null);
+  const [lightbox, setLightbox] = useState<LightboxState | null>(null);
 
-  const totalPages = Math.ceil(photos.length / PHOTOS_PER_PAGE);
-  const pagePhotos = photos.slice(page * PHOTOS_PER_PAGE, (page + 1) * PHOTOS_PER_PAGE);
+  const totalPages = Math.ceil(photoStacks.length / PHOTOS_PER_PAGE);
+  const pageStacks = photoStacks.slice(page * PHOTOS_PER_PAGE, (page + 1) * PHOTOS_PER_PAGE);
+  const totalPhotos = photoStacks.reduce((sum, s) => sum + s.files.length, 0);
 
-  const exif = lightbox !== null
-    ? (exifDb[photos[lightbox] as keyof typeof exifDb] ?? {}) as Record<string, unknown>
+  const currentStack = lightbox !== null ? photoStacks[lightbox.s] : null;
+  const currentFile = currentStack ? currentStack.files[lightbox!.v] : null;
+
+  const exif = currentFile
+    ? (exifDb[currentFile as keyof typeof exifDb] ?? {}) as Record<string, unknown>
     : {};
 
   const make = exif.Make as string | undefined;
@@ -85,46 +107,45 @@ const Photography: React.FC = () => {
 
   useEffect(() => { document.title = "Photography - Sean Finch"; }, []);
 
-  // Lock body scroll when lightbox open
   useEffect(() => {
     document.body.style.overflow = lightbox !== null ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [lightbox]);
 
-  // Keyboard navigation
   useEffect(() => {
     if (lightbox === null) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLightbox(null);
       if (e.key === "ArrowLeft")
-        setLightbox((i) => (i !== null ? Math.max(0, i - 1) : null));
+        setLightbox((lb) => lb && lb.s > 0 ? { s: lb.s - 1, v: 0 } : lb);
       if (e.key === "ArrowRight")
-        setLightbox((i) => (i !== null ? Math.min(photos.length - 1, i + 1) : null));
+        setLightbox((lb) => lb && lb.s < photoStacks.length - 1 ? { s: lb.s + 1, v: 0 } : lb);
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [lightbox]);
 
-  // Preload adjacent lightbox images for instant arrow navigation
+  // Preload covers of adjacent stacks
   useEffect(() => {
     if (lightbox === null) return;
     [-2, -1, 1, 2, 3].forEach((offset) => {
-      const idx = lightbox + offset;
-      if (idx >= 0 && idx < photos.length) {
-        const img = new Image();
-        img.src = photoSrc(photos[idx]);
+      const idx = lightbox.s + offset;
+      if (idx >= 0 && idx < photoStacks.length) {
+        photoStacks[idx].files.forEach((f) => {
+          const img = new Image();
+          img.src = photoSrc(f);
+        });
       }
     });
-  }, [lightbox]);
+  }, [lightbox?.s]);
 
-  // Preload next page after current page settles
   useEffect(() => {
     const next = (page + 1) * PHOTOS_PER_PAGE;
-    if (next >= photos.length) return;
+    if (next >= photoStacks.length) return;
     const timer = setTimeout(() => {
-      photos.slice(next, next + PHOTOS_PER_PAGE).forEach((f) => {
+      photoStacks.slice(next, next + PHOTOS_PER_PAGE).forEach((stack) => {
         const img = new Image();
-        img.src = photoSrc(f);
+        img.src = photoSrc(stack.files[0]);
       });
     }, 800);
     return () => clearTimeout(timer);
@@ -154,7 +175,7 @@ const Photography: React.FC = () => {
           </p>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-monospace">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse-dot inline-block" />
-            {photos.length} photos · {totalPages} pages
+            {totalPhotos} photos · {photoStacks.length} stacks · {totalPages} pages
           </div>
         </div>
       </div>
@@ -162,16 +183,16 @@ const Photography: React.FC = () => {
       {/* Gallery grid */}
       <div className="max-w-5xl mx-auto px-4 py-10">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {pagePhotos.map((filename, i) => (
+          {pageStacks.map((stack, i) => (
             <PhotoTile
-              key={filename}
-              filename={filename}
-              onClick={() => setLightbox(page * PHOTOS_PER_PAGE + i)}
+              key={stack.files[0]}
+              filename={stack.files[0]}
+              stackCount={stack.files.length}
+              onClick={() => setLightbox({ s: page * PHOTOS_PER_PAGE + i, v: 0 })}
             />
           ))}
         </div>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 mt-10">
             <button
@@ -209,10 +230,9 @@ const Photography: React.FC = () => {
         )}
 
         <p className="text-center font-monospace text-xs text-neutral-500 mt-3">
-          Page {page + 1} of {totalPages} · {photos.length} photos
+          Page {page + 1} of {totalPages} · {photoStacks.length} stacks · {totalPhotos} photos
         </p>
 
-        {/* Camera specs */}
         <div className="mt-10 pt-6 border-t border-neutral-800">
           <div className="flex flex-wrap justify-center gap-6 font-monospace text-xs text-muted-foreground">
             {[
@@ -231,8 +251,7 @@ const Photography: React.FC = () => {
         </div>
       </div>
 
-      {/* Lightbox — portal escapes page-in transform stacking context */}
-      {lightbox !== null && createPortal(
+      {lightbox !== null && currentStack && currentFile && createPortal(
         <div
           className="fixed inset-0 z-50 bg-black/96 flex flex-col"
           onClick={() => setLightbox(null)}
@@ -240,10 +259,10 @@ const Photography: React.FC = () => {
           {/* Top bar */}
           <div className="flex items-center justify-between px-5 py-3 shrink-0">
             <p className="font-monospace text-xs text-neutral-500">
-              {lightbox + 1} / {photos.length}
+              {lightbox.s + 1} / {photoStacks.length}
             </p>
             <p className="font-monospace text-[10px] text-neutral-600 truncate max-w-[40vw] text-center">
-              {photos[lightbox].replace(".webp", "")}
+              {currentFile.replace(".webp", "")}
             </p>
             <button
               onClick={() => setLightbox(null)}
@@ -257,25 +276,26 @@ const Photography: React.FC = () => {
           {/* Main content row */}
           <div className="flex items-center flex-1 min-h-0 px-4 gap-3">
 
-            {/* Prev */}
+            {/* Prev stack */}
             <button
-              onClick={(e) => { e.stopPropagation(); setLightbox((i) => Math.max(0, i! - 1)); }}
-              disabled={lightbox === 0}
+              onClick={(e) => { e.stopPropagation(); setLightbox((lb) => lb && lb.s > 0 ? { s: lb.s - 1, v: 0 } : lb); }}
+              disabled={lightbox.s === 0}
               className="shrink-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center
                 justify-center text-white transition-colors duration-150 disabled:opacity-20 disabled:cursor-not-allowed"
             >
               <FaChevronLeft size={15} />
             </button>
 
-            {/* Image + EXIF panel */}
+            {/* Image + EXIF */}
             <div
-              className="flex items-center justify-center gap-4 flex-1 min-w-0 min-h-0"
+              className="flex items-center justify-center gap-4 flex-1 min-w-0 min-h-0 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={photoSrc(photos[lightbox])}
+                key={currentFile}
+                src={photoSrc(currentFile)}
                 alt=""
-                className="max-h-[80vh] w-auto max-w-full md:max-w-[calc(100%-240px)] object-contain rounded shadow-2xl"
+                className="max-h-[85vh] min-w-0 w-auto max-w-full object-contain rounded shadow-2xl"
               />
 
               {/* EXIF panel — desktop only */}
@@ -313,16 +333,39 @@ const Photography: React.FC = () => {
               </div>
             </div>
 
-            {/* Next */}
+            {/* Next stack */}
             <button
-              onClick={(e) => { e.stopPropagation(); setLightbox((i) => Math.min(photos.length - 1, i! + 1)); }}
-              disabled={lightbox === photos.length - 1}
+              onClick={(e) => { e.stopPropagation(); setLightbox((lb) => lb && lb.s < photoStacks.length - 1 ? { s: lb.s + 1, v: 0 } : lb); }}
+              disabled={lightbox.s === photoStacks.length - 1}
               className="shrink-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center
                 justify-center text-white transition-colors duration-150 disabled:opacity-20 disabled:cursor-not-allowed"
             >
               <FaChevronRight size={15} />
             </button>
           </div>
+
+          {/* Version filmstrip — sits below image row, doesn't compete for height */}
+          {currentStack.files.length > 1 && (
+            <div
+              className="shrink-0 flex items-center justify-center gap-2 py-2 border-t border-neutral-800/60"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {currentStack.files.map((f, vi) => (
+                <button
+                  key={f}
+                  onClick={() => setLightbox((lb) => lb ? { ...lb, v: vi } : null)}
+                  className={`relative w-16 h-11 rounded overflow-hidden transition-all duration-150 shrink-0
+                    ${lightbox.v === vi ? "ring-2 ring-amber-400 opacity-100" : "opacity-40 hover:opacity-70"}`}
+                >
+                  <img src={photoSrc(f)} className="w-full h-full object-cover" alt="" />
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white
+                    text-[8px] font-monospace text-center py-0.5 leading-none">
+                    {versionLabel(f, vi, currentStack.files.length)}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Mobile EXIF strip */}
           <div className="md:hidden flex items-center justify-center gap-6 px-5 py-3 shrink-0
