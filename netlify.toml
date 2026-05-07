@@ -4,3 +4,53 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+# Vite build output — content-hashed filenames, safe to cache forever
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Photography — camera filenames never change, cache for 1 year
+[[headers]]
+  for = "/photography/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Music assets — rarely change, cache for 1 week
+[[headers]]
+  for = "/music/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Root-level images and media — cache for 1 week
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# HTML — never cache, always fetch latest
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

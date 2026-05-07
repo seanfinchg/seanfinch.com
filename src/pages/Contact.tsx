@@ -7,10 +7,16 @@ const Contact: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    document.title = "Contact - Sean Finch • SoCal";
+    document.title = "Contact - Sean Finch";
   }, []);
 
-  const open = (url: string) => window.open(url, "_blank");
+  // Assembled at click time — never a plain harvestable string in the DOM
+  const openEmail = () => {
+    const addr = ["contact", "seanfinch", "com"].join("@").replace("@seanfinch@", "@seanfinch.");
+    window.location.href = "mailto:" + addr;
+  };
+  const openLinkedIn = () =>
+    window.open("https://www." + "linkedin" + ".com/in/" + "sean-finch-g", "_blank");
 
   const cardBase = `flex-1 group flex flex-col items-center p-8 rounded-2xl border backdrop-blur-sm
     cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl`;
@@ -34,7 +40,7 @@ const Contact: React.FC = () => {
 
           <div className="w-full flex flex-col sm:flex-row gap-4">
             <button
-              onClick={() => open("mailto:contact@seanfinch.com")}
+              onClick={openEmail}
               className={`${cardBase} ${theme === "light" ? cardLight : cardDark}`}
             >
               <FaEnvelope
@@ -44,13 +50,13 @@ const Contact: React.FC = () => {
               <span className="font-monospace text-[10px] font-bold tracking-[0.3em] uppercase text-muted-foreground mb-2">
                 Email
               </span>
-              <span className="font-monospace text-sm">
-                contact@seanfinch.com
+              <span className="font-monospace text-sm text-center leading-relaxed">
+                contact [at] seanfinch [dot] com
               </span>
             </button>
 
             <button
-              onClick={() => open("https://www.linkedin.com/in/sean-finch-g")}
+              onClick={openLinkedIn}
               className={`${cardBase} ${theme === "light" ? cardLight : cardDark}`}
             >
               <FaLinkedin
@@ -60,7 +66,9 @@ const Contact: React.FC = () => {
               <span className="font-monospace text-[10px] font-bold tracking-[0.3em] uppercase text-muted-foreground mb-2">
                 LinkedIn
               </span>
-              <span className="font-monospace text-sm">/in/sean-finch-g</span>
+              <span className="font-monospace text-sm text-center leading-relaxed">
+                linkedin [dot] com/in/sean-finch-g
+              </span>
             </button>
           </div>
         </div>

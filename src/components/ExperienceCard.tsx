@@ -36,7 +36,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   title,
   company,
   logo,
-  linkedinUrl,
+  companyUrl,
   location,
   description,
   dateRange,
@@ -52,11 +52,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     <div className="w-full mb-4 font-raleway">
       <div className="flex items-center justify-between mb-1 gap-4">
         <a
-          href={linkedinUrl}
+          href={companyUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-          aria-label={`${company} on LinkedIn`}
+          aria-label={`${company} website`}
         >
           {logo && (
             <img

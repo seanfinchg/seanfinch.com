@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/themeContext";
+import { photos, PHOTOS_PER_PAGE, photoSrc } from "./data/photos";
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
@@ -33,6 +34,17 @@ const AppRoutes = () => (
 );
 
 const App: React.FC = () => {
+  // Background-preload page 1 photos 3s after app load so Photography feels instant
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
+        const img = new Image();
+        img.src = photoSrc(f);
+      });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <ThemeProvider>
       <Router>

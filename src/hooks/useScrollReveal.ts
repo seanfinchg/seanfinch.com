@@ -6,19 +6,13 @@ export function useScrollReveal() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("is-visible");
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.08 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
+    // Double RAF ensures the browser has painted the initial opacity:0 state
+    // before the transition starts, so the animation always plays on mount.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.classList.add("is-visible");
+      });
+    });
   }, []);
 
   return ref;

@@ -14,6 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
   const hideFooter = location.pathname === "/projects/homelab";
+  const disableGlow = location.pathname.startsWith("/photography");
   const cursorGlowRef = useRef<HTMLDivElement>(null);
   const ambientGlowRef = useRef<HTMLDivElement>(null);
 
@@ -22,6 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
   useEffect(() => {
+    if (disableGlow) return;
     const onMouse = (e: MouseEvent) => {
       const x = e.clientX;
       const y = e.clientY;
@@ -34,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
     window.addEventListener("mousemove", onMouse, { passive: true });
     return () => window.removeEventListener("mousemove", onMouse);
-  }, []);
+  }, [disableGlow]);
 
   return (
     <div
@@ -44,6 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div
         ref={cursorGlowRef}
         className="fixed pointer-events-none z-0"
+        hidden={disableGlow}
         style={{
           width: "820px",
           height: "820px",
@@ -67,6 +70,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div
         ref={ambientGlowRef}
         className="fixed pointer-events-none z-[15]"
+        hidden={disableGlow}
         style={{
           width: "320px",
           height: "320px",
