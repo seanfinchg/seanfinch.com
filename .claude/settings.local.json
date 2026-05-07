@@ -13,7 +13,17 @@
       "Bash(Format-Table -AutoSize)",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\seanf\\\\Documents\\\\websites\\\\seanfinch.com\" -Force)",
       "Bash(Select-Object Name, PSIsContainer)",
-      "Bash(cd \"c:\\\\Users\\\\seanf\\\\Documents\\\\websites\\\\seanfinch.com\" && mkdir -p public/music public/photography && mv public/music_image_*.jpg public/music/ && mv public/SeanAcademyPoster.jpg public/music/ && mv public/music_resume.pdf public/music/ && echo \"Done\")"
+      "Bash(cd \"c:\\\\Users\\\\seanf\\\\Documents\\\\websites\\\\seanfinch.com\" && mkdir -p public/music public/photography && mv public/music_image_*.jpg public/music/ && mv public/SeanAcademyPoster.jpg public/music/ && mv public/music_resume.pdf public/music/ && echo \"Done\")",
+      "Bash(ls \"C:\\\\Users\\\\seanf\\\\Downloads\\\\Portfolio Pics\" | head -20)",
+      "Read(//c/Users/seanf/Downloads/Portfolio Pics/**)",
+      "Bash(exiftool -ver)",
+      "Bash(winget --version)",
+      "Bash(winget install *)",
+      "Bash(where exiftool *)",
+      "PowerShell(exiftool -ver)",
+      "PowerShell(winget list exiftool)",
+      "PowerShell(exiftool -ver 2>&1)",
+      "PowerShell(Get-Command exiftool -ErrorAction SilentlyContinue)"
     ],
     "additionalDirectories": [
       "c:\\Users\\seanf\\Documents\\websites\\seanfinch.com\\public"

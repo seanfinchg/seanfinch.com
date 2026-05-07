@@ -122,7 +122,7 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
           ))}
         </ul>
         <a
-          href={exp.linkedinUrl}
+          href={exp.companyUrl}
           target="_blank"
           rel="noopener noreferrer"
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
@@ -130,7 +130,7 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
               ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
               : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40"}`}
         >
-          LinkedIn →
+          Website →
         </a>
       </div>
     </div>

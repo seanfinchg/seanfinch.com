@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { photos, PHOTOS_PER_PAGE, photoSrc } from "../data/photos";
 import { useMediaQuery } from "react-responsive";
 
 interface NavLink {
@@ -19,6 +20,16 @@ const links: NavLink[] = [
 const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   const location = useLocation();
   const isHomelabPage = location.pathname === "/projects/homelab";
+  const photoPreloaded = useRef(false);
+
+  const handlePhotoHover = () => {
+    if (photoPreloaded.current) return;
+    photoPreloaded.current = true;
+    photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
+      const img = new Image();
+      img.src = photoSrc(f);
+    });
+  };
 
   return (
     <>
@@ -39,6 +50,7 @@ const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
                   : "font-normal after:w-0 hover:after:w-full opacity-70 hover:opacity-100"
               } text-center`}
             onClick={onClick}
+            onMouseEnter={link.to === "/photography" ? handlePhotoHover : undefined}
           >
             {link.text}
           </Link>

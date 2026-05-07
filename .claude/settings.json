@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/copy-exif.mjs)",
+      "Bash(Get-Content \"C:\\\\Users\\\\seanf\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-seanf-Documents-websites-seanfinch-com\\\\2e03c8d9-4fe0-49a1-91b6-48eb841d85c8\\\\tasks\\\\brinuc67z.output\")",
+      "Bash(Select-Object -Last 20)",
+      "PowerShell($out = \"C:\\\\Users\\\\seanf\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-seanf-Documents-websites-seanfinch-com\\\\2e03c8d9-4fe0-49a1-91b6-48eb841d85c8\\\\tasks\\\\brinuc67z.output\"; \\(Get-Content $out | Select-String \"Done:\"\\), \\(Get-Content $out\\).Count)",
+      "Bash(node scripts/extract-exif.mjs)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}
