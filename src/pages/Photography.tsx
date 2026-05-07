@@ -233,7 +233,11 @@ const Photography: React.FC = () => {
           Page {page + 1} of {totalPages} · {photoStacks.length} stacks · {totalPhotos} photos
         </p>
 
-        <div className="mt-10 pt-6 border-t border-neutral-800">
+        <div className="mt-10 pt-6 border-t border-neutral-800 text-center">
+          <p className="font-monospace text-[11px] text-neutral-600 max-w-xl mx-auto leading-relaxed mb-8">
+            © {new Date().getFullYear()} Sean Finch. All images are subject to copyright and may not be reproduced,
+            distributed, or used for any purpose without explicit written license from the author.
+          </p>
           <div className="flex flex-wrap justify-center gap-6 font-monospace text-xs text-muted-foreground">
             {[
               ["Camera", "Nikon D610"],
