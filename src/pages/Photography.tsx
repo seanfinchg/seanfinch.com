@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { TransformWrapper, TransformComponent, type ReactZoomPanPinchContentRef } from "react-zoom-pan-pinch";
 import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
@@ -81,6 +82,8 @@ const Photography: React.FC = () => {
   const { theme } = useTheme();
   const [page, setPage] = useState(0);
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const transformRef = useRef<ReactZoomPanPinchContentRef>(null);
+  const zoomScaleRef = useRef(1);
 
   const totalPages = Math.ceil(photoStacks.length / PHOTOS_PER_PAGE);
   const pageStacks = photoStacks.slice(page * PHOTOS_PER_PAGE, (page + 1) * PHOTOS_PER_PAGE);
@@ -116,10 +119,14 @@ const Photography: React.FC = () => {
     if (lightbox === null) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLightbox(null);
-      if (e.key === "ArrowLeft")
+      if (e.key === "ArrowLeft" && zoomScaleRef.current <= 1) {
+        transformRef.current?.resetTransform(0);
         setLightbox((lb) => lb && lb.s > 0 ? { s: lb.s - 1, v: 0 } : lb);
-      if (e.key === "ArrowRight")
+      }
+      if (e.key === "ArrowRight" && zoomScaleRef.current <= 1) {
+        transformRef.current?.resetTransform(0);
         setLightbox((lb) => lb && lb.s < photoStacks.length - 1 ? { s: lb.s + 1, v: 0 } : lb);
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
@@ -295,12 +302,24 @@ const Photography: React.FC = () => {
               className="flex items-center justify-center gap-4 flex-1 min-w-0 min-h-0 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                key={currentFile}
-                src={photoSrc(currentFile)}
-                alt=""
-                className="max-h-[85vh] min-w-0 w-auto max-w-full object-contain rounded shadow-2xl"
-              />
+              <TransformWrapper
+                ref={transformRef}
+                minScale={1}
+                maxScale={6}
+                limitToBounds={false}
+                doubleClick={{ mode: "zoomIn" }}
+                wheel={{ step: 0.15 }}
+                onTransform={(ref) => { zoomScaleRef.current = ref.state.scale; }}
+              >
+                <TransformComponent wrapperStyle={{ overflow: "visible" }}>
+                  <img
+                    key={currentFile}
+                    src={photoSrc(currentFile)}
+                    alt=""
+                    className="max-h-[85vh] min-w-0 w-auto max-w-full object-contain rounded shadow-2xl select-none cursor-zoom-in"
+                  />
+                </TransformComponent>
+              </TransformWrapper>
 
               {/* EXIF panel — desktop only */}
               <div className="hidden md:flex flex-col w-52 shrink-0 bg-neutral-900/80 border border-neutral-800
