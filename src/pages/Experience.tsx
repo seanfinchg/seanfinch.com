@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { experiences, type ExperienceProps } from "../data/experiences";
@@ -120,9 +121,10 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
 const Experience: React.FC = () => {
   const { theme } = useTheme();
 
-  useEffect(() => {
-    document.title = "Experience - Sean Finch • SoCal";
-  }, []);
+  usePageMeta(
+    "Experience",
+    "Cybersecurity internships and co-ops — Palo Alto Networks, Neuralink, Audax Group, CENIC, and more.",
+  );
 
   const sorted = [...experiences].sort(
     (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0),

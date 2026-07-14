@@ -14,6 +14,7 @@ import {
 } from "../data/photos";
 import exifDb from "../data/photo-exif.json";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const isEditedFile = (f: string): boolean =>
   /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
@@ -183,7 +184,10 @@ const Photography: React.FC = () => {
   const focal = exif.FocalLength != null ? `${exif.FocalLength}mm` : "—";
   const dateTaken = formatDateTime(exif.DateTimeOriginal);
 
-  useEffect(() => { document.title = "Photography - Sean Finch"; }, []);
+  usePageMeta(
+    "Photography",
+    "Street, portrait, and wildlife photography by Sean Finch, shot on a Nikon D610.",
+  );
 
   useEffect(() => {
     document.body.style.overflow = lightbox !== null ? "hidden" : "";

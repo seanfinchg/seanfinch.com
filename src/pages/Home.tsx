@@ -1,4 +1,5 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { useTheme } from "../contexts/themeContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -37,9 +38,10 @@ const Home: React.FC = () => {
   const currentRole = getCurrentExperience();
   const isActive = hasActiveExperience();
 
-  useEffect(() => {
-    document.title = "Home - Sean Finch";
-  }, []);
+  usePageMeta(
+    "Home",
+    "B.S. Cybersecurity at Northeastern University (Class of 2027) — security engineering, homelab, music, and photography.",
+  );
 
   return (
     <div className={`flex justify-center ${getThemeClasses(theme)}`}>

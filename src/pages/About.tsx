@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { useTheme } from "../contexts/themeContext";
 import SocialMediaButton from "../components/SocialMediaButton";
 import { getThemeClasses } from "../utils/themeUtils";
@@ -89,9 +89,10 @@ const nucsRoles = [
 const About: React.FC = () => {
   const { theme } = useTheme();
 
-  useEffect(() => {
-    document.title = "About - Sean Finch • SoCal";
-  }, []);
+  usePageMeta(
+    "About",
+    "About Sean Finch — cybersecurity student, homelabber, musician, and photographer at Northeastern University.",
+  );
 
   return (
     <div className={`flex justify-center ${getThemeClasses(theme)}`}>

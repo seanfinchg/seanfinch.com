@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { useTheme } from "../contexts/themeContext";
 import { FaLinkedin, FaEnvelope } from "react-icons/fa";
 import { getThemeClasses } from "../utils/themeUtils";
@@ -6,9 +7,7 @@ import { getThemeClasses } from "../utils/themeUtils";
 const Contact: React.FC = () => {
   const { theme } = useTheme();
 
-  useEffect(() => {
-    document.title = "Contact - Sean Finch";
-  }, []);
+  usePageMeta("Contact", "Get in touch with Sean Finch.");
 
   // Assembled at click time — never a plain harvestable string in the DOM
   const openEmail = (): void => {

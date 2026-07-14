@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { Carousel } from "react-responsive-carousel";
@@ -36,9 +36,10 @@ const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
 const Music: React.FC = () => {
   const { theme } = useTheme();
 
-  useEffect(() => {
-    document.title = "Music - Sean Finch • SoCal";
-  }, []);
+  usePageMeta(
+    "Music",
+    "Sean Finch's music — performance background and a minor in music at Northeastern University.",
+  );
 
   return (
     <div className={`flex justify-center ${getThemeClasses(theme)}`}>
