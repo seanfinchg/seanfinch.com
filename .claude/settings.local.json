@@ -26,7 +26,8 @@
       "PowerShell(Get-Command exiftool -ErrorAction SilentlyContinue)",
       "Bash(npm show *)",
       "Bash(git stash *)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/@types/node/package.json'\\).version\\)\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\seanf\\Documents\\websites\\seanfinch.com\\public"

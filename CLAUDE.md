@@ -8,6 +8,7 @@ Guidance for working in this repo (seanfinch.com — Sean Finch's personal portf
 - **Tailwind CSS v4** via the `@tailwindcss/vite` plugin (not the old PostCSS flow; `tailwind.config.js` + `src/index.css`)
 - **react-router-dom v7** (client-side routing, `BrowserRouter`)
 - Deployed on **Netlify** (`netlify.toml`); auto-deploys from `main`.
+- **Node ≥ 22 required** (`package.json` `engines`). Pinned to **Node 24 LTS** via `.nvmrc`; Netlify builds on `NODE_VERSION = "24"`. `@types/node` tracks the Node 24 major. Locally, `fnm`/`nvm` auto-selects from `.nvmrc`.
 - No test framework is configured.
 
 ## Commands
