@@ -77,6 +77,29 @@ Date parsing lives in **one place**: `src/utils/experienceUtils.ts`.
 - `isCurrentlyActive(dateRange)` — used by `Experience.tsx` and `ExperienceCard.tsx` for the green "Active" badge.
 - `getCurrentExperience()` / `hasActiveExperience()` — used by the Home hero banner, which is **derived from `experiences` + today's date** (no longer hardcoded). If a role is active it reads "Currently at …"; otherwise "Most recently at …". The banner therefore self-corrects as dates pass — just keep `dateRange` values accurate in `src/data/experiences.ts` (format: `"Month YYYY – Month YYYY"` or `"Month YYYY – Present"`).
 
+## Improvement backlog (site-wide review)
+
+Prioritized list from a whole-site review. **P0 is done** (kept here for context).
+
+**P0 — done:**
+- SEO/social meta in `index.html` (description, Open Graph, Twitter, canonical, theme-color) + `public/robots.txt`, `public/sitemap.xml`, and a generated `public/og-image.jpg` (regenerate via `node scripts/gen-og-image.mjs`).
+- Per-route title + description via `src/hooks/usePageMeta.ts` (used by the content pages).
+- Security headers in `netlify.toml` (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) — aim for an A+ on securityheaders.com.
+
+**P0 — deferred:** true prerender/SSG for the SPA. Social scrapers already get real OG tags from the static `index.html`, and Google renders JS, so the practical win is mostly captured. Full per-route prerender (`react-snap`/similar) is a heavier, riskier change — do it as a focused follow-up if organic search matters.
+
+**P1 (polish/perf):**
+- Route-based code splitting (`React.lazy`) for heavy routes (Photography, cipher tools, diagram iframes) — the JS bundle is one ~440 KB chunk.
+- Trim `@fontsource` to latin-only subsets (Cyrillic/Greek/Vietnamese are being shipped unused).
+- Accessibility: real `alt` text on gallery/lightbox images; `aria-label`s on lightbox icon buttons; lightbox focus trap; light-mode contrast check.
+- `npm audit` — 6 known vulns (1 low / 2 moderate / 3 high) as of the Node-24 bump.
+
+**P2 (content/maturity):**
+- Project **case studies** (highest content ROI — see `docs/ROADMAP.md`).
+- Privacy-friendly analytics (Cloudflare/Plausible free tier).
+- A Vitest smoke test + GitHub Action running `build`/`lint`.
+- Blog (deferred; tooling noted in `docs/ROADMAP.md`).
+
 ## Known rough edges (candidates for cleanup)
 
 - `npm run lint` currently reports pre-existing `react-hooks` errors in `src/pages/HomelabDiagrams.tsx` and `src/pages/DiagramViewer.tsx` (conditional hook calls / setState-in-effect). These predate the current work; the lint gate won't pass until they're refactored.

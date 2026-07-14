@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
@@ -153,9 +154,10 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
 const Projects: React.FC = () => {
   const { theme } = useTheme();
 
-  useEffect(() => {
-    document.title = "Projects - Sean Finch • SoCal";
-  }, []);
+  usePageMeta(
+    "Projects",
+    "Cybersecurity, homelab, and software projects built by Sean Finch.",
+  );
 
   const sorted = [...projects].sort(
     (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0),
