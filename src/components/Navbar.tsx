@@ -22,7 +22,7 @@ const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   const isHomelabPage = location.pathname === "/projects/homelab";
   const photoPreloaded = useRef(false);
 
-  const handlePhotoHover = () => {
+  const handlePhotoHover = (): void => {
     if (photoPreloaded.current) return;
     photoPreloaded.current = true;
     photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
@@ -83,12 +83,12 @@ const Navbar: React.FC = () => {
       <div className="flex items-center w-full">
         <button
           className="text-5xl md:invisible opacity-60 hover:opacity-90 transition-opacity"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => { setIsOpen(!isOpen); }}
         >
           ☰
         </button>
         <div className={getStyleForMobileNavbar()}>
-          {(isOpen || !isMobile) && <Links onClick={() => setIsOpen(false)} />}
+          {(isOpen || !isMobile) && <Links onClick={() => { setIsOpen(false); }} />}
         </div>
       </div>
     </div>

@@ -21,11 +21,12 @@ const DiagramViewer: React.FC = () => {
 
   useEffect(() => {
     if (!project || !diagram) {
-      navigate("/404");
+      void navigate("/404");
     }
   }, [project, diagram, navigate]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional loader reset on theme change
     setLoading(true);
   }, [theme]);
 
@@ -50,7 +51,7 @@ const DiagramViewer: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <button
-            onClick={() => navigate("/projects/homelab")}
+            onClick={() => { void navigate("/projects/homelab"); }}
             className="text-sky-500 hover:text-sky-400 font-monospace mb-2 transition-colors"
           >
             ← Back to Homelab
@@ -78,7 +79,7 @@ const DiagramViewer: React.FC = () => {
             src={viewerUrl}
             className="w-full h-full rounded-lg"
             title={diagram.label}
-            onLoad={() => setLoading(false)}
+            onLoad={() => { setLoading(false); }}
             style={{ border: "none" }}
           />
         </div>
@@ -95,7 +96,7 @@ const DiagramViewer: React.FC = () => {
                 .map((d) => (
                   <button
                     key={d.name}
-                    onClick={() => navigate(`/projects/homelab/${d.name}`)}
+                    onClick={() => { void navigate(`/projects/homelab/${d.name}`); }}
                     className="bg-sky-500 hover:bg-sky-400 text-white px-4 py-2 rounded-lg font-monospace transition-colors"
                   >
                     {d.label}

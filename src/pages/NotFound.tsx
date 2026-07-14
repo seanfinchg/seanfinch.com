@@ -18,7 +18,7 @@ const HomeButton: React.FC<ButtonProps> = ({ children }) => {
   }`;
 
   const goToHomePage = (): void => {
-    navigate("/");
+    void navigate("/");
   };
 
   return (

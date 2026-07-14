@@ -5,7 +5,9 @@ const TabsContext = React.createContext<{
   onValueChange: (value: string) => void;
 }>({
   value: "",
-  onValueChange: () => {},
+  onValueChange: () => {
+    /* overridden by provider */
+  },
 });
 
 interface TabsProps {
@@ -14,7 +16,11 @@ interface TabsProps {
   className?: string;
 }
 
-const Tabs = ({ defaultValue, children, className = "" }: TabsProps) => {
+const Tabs = ({
+  defaultValue,
+  children,
+  className = "",
+}: TabsProps): React.JSX.Element => {
   const [value, setValue] = React.useState(defaultValue);
 
   return (
@@ -29,7 +35,10 @@ interface TabsListProps {
   className?: string;
 }
 
-const TabsList = ({ children, className = "" }: TabsListProps) => {
+const TabsList = ({
+  children,
+  className = "",
+}: TabsListProps): React.JSX.Element => {
   return (
     <div
       className={`inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 text-gray-500 dark:bg-gray-800 dark:text-gray-400 ${className}`}
@@ -45,13 +54,17 @@ interface TabsTriggerProps {
   className?: string;
 }
 
-const TabsTrigger = ({ value, children, className = "" }: TabsTriggerProps) => {
+const TabsTrigger = ({
+  value,
+  children,
+  className = "",
+}: TabsTriggerProps): React.JSX.Element => {
   const { value: selectedValue, onValueChange } = React.useContext(TabsContext);
   const isActive = selectedValue === value;
 
   return (
     <button
-      onClick={() => onValueChange(value)}
+      onClick={() => { onValueChange(value); }}
       className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
         isActive
           ? "bg-white text-gray-900 shadow-sm dark:bg-gray-900 dark:text-gray-50"
@@ -69,7 +82,11 @@ interface TabsContentProps {
   className?: string;
 }
 
-const TabsContent = ({ value, children, className = "" }: TabsContentProps) => {
+const TabsContent = ({
+  value,
+  children,
+  className = "",
+}: TabsContentProps): React.JSX.Element | null => {
   const { value: selectedValue } = React.useContext(TabsContext);
 
   if (selectedValue !== value) {

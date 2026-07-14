@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/themeContext";
-import { photos, PHOTOS_PER_PAGE, photoSrc } from "./data/photos";
+import { photos, PHOTOS_PER_PAGE, photoThumb } from "./data/photos";
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
@@ -16,7 +16,7 @@ import CaesarCipher from "./pages/CaesarCipher";
 import { Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 
-const AppRoutes = () => (
+const AppRoutes = (): React.JSX.Element => (
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/projects" element={<Projects />} />
@@ -39,10 +39,10 @@ const App: React.FC = () => {
     const timer = setTimeout(() => {
       photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
         const img = new Image();
-        img.src = photoSrc(f);
+        img.src = photoThumb(f);
       });
     }, 3000);
-    return () => clearTimeout(timer);
+    return () => { clearTimeout(timer); };
   }, []);
 
   return (

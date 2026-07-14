@@ -1,36 +1,14 @@
 import React from "react";
 import { useTheme } from "../contexts/themeContext";
-import { ExperienceProps } from "../data/experiences";
+import type { ExperienceProps } from "../data/experiences";
 import { getCardClasses, getFeaturedCardClasses } from "../utils/themeUtils";
+import { isCurrentlyActive } from "../utils/experienceUtils";
 
 interface ExperienceCardProps extends ExperienceProps {
   featured?: boolean;
   hideContent?: boolean;
   badgeLabel?: string;
 }
-
-const MONTH_MAP: Record<string, number> = {
-  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
-  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
-};
-
-const parseMonthYear = (s: string): Date => {
-  const parts = s.trim().split(/\s+/);
-  const month = MONTH_MAP[parts[0].toLowerCase().slice(0, 3)] ?? 0;
-  return new Date(parseInt(parts[1]), month, 1);
-};
-
-const isCurrentlyActive = (dateRange: string): boolean => {
-  const parts = dateRange.split(/\s*[–—]\s*/);
-  if (parts.length < 2) return false;
-  const [startStr, endStr] = parts;
-  const now = new Date();
-  const start = parseMonthYear(startStr);
-  const isPresent = endStr.trim().toLowerCase() === "present";
-  const endBase = isPresent ? now : parseMonthYear(endStr);
-  const end = new Date(endBase.getFullYear(), endBase.getMonth() + 1, 0);
-  return now >= start && now <= end;
-};
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
   title,
@@ -110,7 +88,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     <div className={wrapperClasses}>
       {featured && (
         <div className="absolute -top-4 left-4 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
-          ⭐ {badgeLabel || title}
+          ⭐ {badgeLabel ?? title}
         </div>
       )}
       <div className={featured ? "pt-4" : ""}>{cardContent}</div>

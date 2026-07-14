@@ -56,7 +56,7 @@ const CipherTools: React.FC = () => {
       <div className="w-full max-w-6xl mx-4 md:mx-8 py-16">
         <div className="mb-8">
           <button
-            onClick={() => navigate("/projects")}
+            onClick={() => { void navigate("/projects"); }}
             className="text-blue-500 hover:text-blue-600 font-monospace text-lg transition-all flex items-center gap-2"
             title="Back to Projects"
           >

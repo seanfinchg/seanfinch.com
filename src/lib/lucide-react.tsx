@@ -1,11 +1,12 @@
 // Simple icon components to replace lucide-react
 // These use emoji or Unicode symbols as a lightweight alternative
+import type { JSX } from "react";
 
 interface IconProps {
   className?: string;
 }
 
-export const Copy = ({ className = "" }: IconProps) => (
+export const Copy = ({ className = "" }: IconProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -23,7 +24,7 @@ export const Copy = ({ className = "" }: IconProps) => (
   </svg>
 );
 
-export const Check = ({ className = "" }: IconProps) => (
+export const Check = ({ className = "" }: IconProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

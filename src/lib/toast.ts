@@ -10,7 +10,7 @@ interface ToastOptions {
 class ToastManager {
   private container: HTMLDivElement | null = null;
 
-  private ensureContainer() {
+  private ensureContainer(): HTMLDivElement {
     if (!this.container) {
       this.container = document.createElement("div");
       this.container.id = "toast-container";
@@ -28,9 +28,13 @@ class ToastManager {
     return this.container;
   }
 
-  private show(message: string, type: ToastType, options: ToastOptions = {}) {
+  private show(
+    message: string,
+    type: ToastType,
+    options: ToastOptions = {},
+  ): void {
     const container = this.ensureContainer();
-    const duration = options.duration || 3000;
+    const duration = options.duration ?? 3000;
 
     const toast = document.createElement("div");
     toast.style.cssText = `
@@ -63,15 +67,15 @@ class ToastManager {
     }, duration);
   }
 
-  success(message: string, options?: ToastOptions) {
+  success(message: string, options?: ToastOptions): void {
     this.show(message, "success", options);
   }
 
-  error(message: string, options?: ToastOptions) {
+  error(message: string, options?: ToastOptions): void {
     this.show(message, "error", options);
   }
 
-  info(message: string, options?: ToastOptions) {
+  info(message: string, options?: ToastOptions): void {
     this.show(message, "info", options);
   }
 }

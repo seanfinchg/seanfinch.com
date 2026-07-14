@@ -3,27 +3,7 @@ import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { experiences, type ExperienceProps } from "../data/experiences";
 import { useScrollReveal } from "../hooks/useScrollReveal";
-
-const MONTH_MAP: Record<string, number> = {
-  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
-  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
-};
-const parseMonthYear = (s: string): Date => {
-  const parts = s.trim().split(/\s+/);
-  const month = MONTH_MAP[parts[0].toLowerCase().slice(0, 3)] ?? 0;
-  return new Date(parseInt(parts[1]), month, 1);
-};
-const isCurrentlyActive = (dateRange: string): boolean => {
-  const parts = dateRange.split(/\s*[–—-]\s*/);
-  if (parts.length < 2) return false;
-  const [startStr, endStr] = parts;
-  const now = new Date();
-  const start = parseMonthYear(startStr);
-  const isPresent = endStr.trim().toLowerCase() === "present";
-  const endBase = isPresent ? now : parseMonthYear(endStr);
-  const end = new Date(endBase.getFullYear(), endBase.getMonth() + 1, 0);
-  return now >= start && now <= end;
-};
+import { isCurrentlyActive } from "../utils/experienceUtils";
 
 const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
   exp,

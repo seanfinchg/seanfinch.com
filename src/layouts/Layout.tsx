@@ -6,9 +6,9 @@ import { useLocation } from "react-router-dom";
 import { getThemeClasses, getThemeBgClasses } from "../utils/themeUtils";
 import { FaMoon, FaSun } from "react-icons/fa";
 
-type LayoutProps = {
+interface LayoutProps {
   children: React.ReactNode;
-};
+}
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { theme, setTheme } = useTheme();
@@ -19,12 +19,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const ambientGlowRef = useRef<HTMLDivElement>(null);
 
   const themeClass = `${getThemeBgClasses(theme)} ${getThemeClasses(theme)}`;
-  const toggleTheme = () =>
+  const toggleTheme = (): void => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   useEffect(() => {
     if (disableGlow) return;
-    const onMouse = (e: MouseEvent) => {
+    const onMouse = (e: MouseEvent): void => {
       const x = e.clientX;
       const y = e.clientY;
       if (cursorGlowRef.current) {
@@ -35,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       }
     };
     window.addEventListener("mousemove", onMouse, { passive: true });
-    return () => window.removeEventListener("mousemove", onMouse);
+    return () => { window.removeEventListener("mousemove", onMouse); };
   }, [disableGlow]);
 
   return (

@@ -10,6 +10,7 @@ import {
   // FaYoutube,
 } from "react-icons/fa";
 import { experiences } from "../data/experiences";
+import { getCurrentExperience, hasActiveExperience } from "../utils/experienceUtils";
 import { projects } from "../data/projects";
 import ExperienceCard from "../components/ExperienceCard";
 import ProjectCard from "../components/ProjectCard";
@@ -33,6 +34,9 @@ const Home: React.FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
 
+  const currentRole = getCurrentExperience();
+  const isActive = hasActiveExperience();
+
   useEffect(() => {
     document.title = "Home - Sean Finch";
   }, []);
@@ -48,10 +52,20 @@ const Home: React.FC = () => {
           <p className="relative animate-fade-up mb-4 text-6xl md:text-7xl font-jost font-extrabold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent animate-gradient">
             Sean Finch
           </p>
-          <div className="relative animate-fade-up mb-5 flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-400/40 bg-green-500/10 text-green-600 dark:text-green-400 text-sm font-monospace">
-            <span className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse-dot inline-block" />
-            Currently at Neuralink · Systems Engineer Intern
-          </div>
+          {currentRole && (
+            <div
+              className={`relative animate-fade-up mb-5 flex items-center gap-2 px-3 py-1.5 rounded-full border text-sm font-monospace ${
+                isActive
+                  ? "border-green-400/40 bg-green-500/10 text-green-600 dark:text-green-400"
+                  : "border-sky-400/40 bg-sky-500/10 text-sky-600 dark:text-sky-400"
+              }`}
+            >
+              {isActive && (
+                <span className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse-dot inline-block" />
+              )}
+              {isActive ? "Currently at" : "Most recently at"} {currentRole.company} · {currentRole.title}
+            </div>
+          )}
           <p className="relative mb-2 mx-4 text-base font-raleway font-bold">
             Seeking New-Grad Cybersecurity Roles Starting Summer 2027
           </p>
@@ -256,7 +270,7 @@ const Home: React.FC = () => {
           {/* About Me card */}
           <div className="w-full flex justify-center px-4 mb-10">
             <div
-              onClick={() => { navigate("/about"); window.scrollTo(0, 0); }}
+              onClick={() => { void navigate("/about"); window.scrollTo(0, 0); }}
               className={`group w-full max-w-xl overflow-hidden rounded-2xl border cursor-pointer
                 transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl
                 ${theme === "light"
@@ -316,7 +330,7 @@ const Home: React.FC = () => {
                   key={i}
                   className="w-full flex justify-center cursor-pointer"
                   onClick={() => {
-                    navigate("/experience");
+                    void navigate("/experience");
                     window.scrollTo(0, 0);
                   }}
                 >
@@ -341,7 +355,7 @@ const Home: React.FC = () => {
                   key={i}
                   className="w-full flex justify-center cursor-pointer"
                   onClick={() => {
-                    navigate("/projects");
+                    void navigate("/projects");
                     window.scrollTo(0, 0);
                   }}
                 >
