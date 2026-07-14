@@ -7,6 +7,7 @@ import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import {
   photoStacks,
   PHOTOS_PER_PAGE,
+  photoSrc,
   photoThumb,
   photoLarge,
   type PhotoStack,
@@ -33,6 +34,12 @@ const exifByFile = exifDb as Record<string, ExifData>;
 /** The default-display file for a stack (edited version), never undefined. */
 const coverFile = (stack: PhotoStack): string =>
   stack.files[stack.cover] ?? stack.files[0] ?? "";
+
+// Gear shown in the hero + footer. Per-photo lens comes from EXIF (see the
+// lightbox EXIF panel); this list is the overall kit. Add lenses here as you
+// acquire them — nothing else needs to change.
+const CAMERA = "Nikon D610";
+const LENSES = ["Nikkor 35mm f/1.8G", "Tamron 75–300mm"];
 
 const formatShutter = (t: number | undefined): string => {
   if (t == null) return "—";
@@ -66,9 +73,25 @@ const ExifCell: React.FC<{ label: string; value: string }> = ({ label, value }) 
   </div>
 );
 
-const PhotoTile: React.FC<{ filename: string; stackCount: number; onClick: () => void }> = ({
-  filename, stackCount, onClick,
-}) => {
+const EditedBadge: React.FC<{ edited: boolean }> = ({ edited }) => (
+  <span
+    className={`absolute top-1.5 left-1.5 rounded px-1.5 py-0.5 text-[9px] font-monospace
+      font-semibold uppercase tracking-wide backdrop-blur-sm leading-none ${
+        edited
+          ? "bg-amber-500/85 text-black"
+          : "bg-black/60 text-neutral-200"
+      }`}
+  >
+    {edited ? "Edited" : "Original"}
+  </span>
+);
+
+const PhotoTile: React.FC<{
+  filename: string;
+  stackCount: number;
+  edited: boolean;
+  onClick: () => void;
+}> = ({ filename, stackCount, edited, onClick }) => {
   const [loaded, setLoaded] = useState(false);
   return (
     <button
@@ -87,6 +110,8 @@ const PhotoTile: React.FC<{ filename: string; stackCount: number; onClick: () =>
           group-hover:scale-105 ${loaded ? "opacity-100" : "opacity-0"}`}
       />
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
+
+      <EditedBadge edited={edited} />
 
       {stackCount > 1 && (
         <div className="absolute bottom-1.5 right-1.5 flex items-center gap-1
@@ -110,6 +135,7 @@ const Photography: React.FC = () => {
   const [page, setPage] = useState(0);
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
   const [compare, setCompare] = useState(false);
+  const [fullQuality, setFullQuality] = useState(false);
   const transformRef = useRef<ReactZoomPanPinchContentRef>(null);
   const zoomScaleRef = useRef(1);
 
@@ -171,6 +197,7 @@ const Photography: React.FC = () => {
     if (!target) return;
     transformRef.current?.resetTransform(0);
     setCompare(false);
+    setFullQuality(false);
     setLightbox({ s: targetS, v: target.cover });
   };
 
@@ -229,10 +256,10 @@ const Photography: React.FC = () => {
             Photography
           </h1>
           <p className="font-monospace text-neutral-400 text-sm tracking-[0.2em] uppercase mb-3">
-            Nikon D610 · AF-S NIKKOR 35mm f/1.8G · FX · 24.3MP
+            {CAMERA} · FX · 24.3MP · {LENSES.join(" + ")}
           </p>
           <p className="font-raleway text-neutral-500 text-sm max-w-sm mx-auto mb-6">
-            Street, portrait, and whatever catches my eye — shot on 35mm prime.
+            Street, portrait, wildlife — whatever catches my eye.
           </p>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-monospace">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse-dot inline-block" />
@@ -249,6 +276,7 @@ const Photography: React.FC = () => {
               key={coverFile(stack)}
               filename={coverFile(stack)}
               stackCount={stack.files.length}
+              edited={isEditedFile(coverFile(stack))}
               onClick={() => { setLightbox({ s: page * PHOTOS_PER_PAGE + i, v: stack.cover }); }}
             />
           ))}
@@ -301,8 +329,8 @@ const Photography: React.FC = () => {
           </p>
           <div className="flex flex-wrap justify-center gap-6 font-monospace text-xs text-muted-foreground">
             {[
-              ["Camera", "Nikon D610"],
-              ["Lens", "AF-S NIKKOR 35mm 1:1.8G"],
+              ["Camera", CAMERA],
+              ["Lenses", LENSES.join(" · ")],
               ["Format", "FX (Full Frame)"],
               ["Sensor", "24.3MP CMOS"],
               ["ISO Range", "100 – 25600"],
@@ -326,10 +354,36 @@ const Photography: React.FC = () => {
             <p className="font-monospace text-xs text-neutral-500">
               {lightbox.s + 1} / {photoStacks.length}
             </p>
-            <p className="font-monospace text-[10px] text-neutral-600 truncate max-w-[30vw] text-center">
-              {currentFile.replace(".webp", "")}
-            </p>
+            <div className="flex items-center gap-2 min-w-0">
+              <span
+                className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-monospace font-semibold
+                  uppercase tracking-wide leading-none ${
+                    isEditedFile(currentFile)
+                      ? "bg-amber-500/85 text-black"
+                      : "bg-white/15 text-neutral-200"
+                  }`}
+              >
+                {isEditedFile(currentFile) ? "Edited" : "Original"}
+              </span>
+              <p className="font-monospace text-[10px] text-neutral-600 truncate">
+                {currentFile.replace(".webp", "")}
+              </p>
+            </div>
             <div className="flex items-center gap-2">
+              {!compare && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); setFullQuality((f) => !f); }}
+                  title="Load the full-resolution original (larger download)"
+                  className={`h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-monospace
+                    font-semibold transition-colors duration-150 ${
+                      fullQuality
+                        ? "bg-amber-500 text-black"
+                        : "bg-white/10 hover:bg-white/20 text-white"
+                    }`}
+                >
+                  {fullQuality ? "Full quality ✓" : "Full quality"}
+                </button>
+              )}
               {editPair && (
                 <button
                   onClick={(e) => { e.stopPropagation(); setCompare((c) => !c); }}
@@ -380,16 +434,28 @@ const Photography: React.FC = () => {
                 <TransformWrapper
                   ref={transformRef}
                   minScale={1}
-                  maxScale={6}
-                  limitToBounds={false}
-                  doubleClick={{ mode: "zoomIn" }}
-                  wheel={{ step: 0.15 }}
+                  maxScale={8}
+                  centerOnInit
+                  centerZoomedOut
+                  doubleClick={{ mode: "toggle", step: 1.6 }}
+                  wheel={{ step: 0.2 }}
+                  pinch={{ step: 5 }}
+                  panning={{ velocityDisabled: true }}
                   onTransform={(ref) => { zoomScaleRef.current = ref.state.scale; }}
                 >
-                  <TransformComponent wrapperStyle={{ overflow: "visible" }}>
+                  <TransformComponent
+                    wrapperStyle={{ width: "100%", height: "100%" }}
+                    contentStyle={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
                     <img
                       key={currentFile}
-                      src={photoLarge(currentFile)}
+                      src={fullQuality ? photoSrc(currentFile) : photoLarge(currentFile)}
                       alt=""
                       className="max-h-[85vh] min-w-0 w-auto max-w-full object-contain rounded shadow-2xl select-none cursor-zoom-in"
                     />

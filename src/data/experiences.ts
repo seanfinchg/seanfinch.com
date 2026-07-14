@@ -18,7 +18,7 @@ import cyberpatriotLogo from "../assets/cyberpatriot.jpeg";
 
 export const experiences: ExperienceProps[] = [
   {
-    title: "Incoming Enterprise Security Engineer Intern",
+    title: "Enterprise Security Engineer Intern",
     company: "Palo Alto Networks",
     location: "Santa Clara, CA",
     description: [

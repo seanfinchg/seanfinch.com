@@ -60,11 +60,20 @@ interface Stack {
 function buildManifest(): Stack[] {
   const photoDir = resolve(__dirname, "public/photography");
   const exifPath = resolve(__dirname, "src/data/photo-exif.json");
+  const hiddenPath = resolve(__dirname, "src/data/photo-hidden.json");
 
   if (!existsSync(photoDir)) return [];
 
+  // Filenames listed in src/data/photo-hidden.json are kept in the repo but
+  // excluded from the gallery.
+  const hidden = new Set<string>(
+    existsSync(hiddenPath)
+      ? (JSON.parse(readFileSync(hiddenPath, "utf8")) as string[])
+      : [],
+  );
+
   const files = readdirSync(photoDir)
-    .filter((f) => f.toLowerCase().endsWith(".webp"))
+    .filter((f) => f.toLowerCase().endsWith(".webp") && !hidden.has(f))
     .sort();
 
   type ExifEntry = { DateTimeOriginal?: string } | undefined;
