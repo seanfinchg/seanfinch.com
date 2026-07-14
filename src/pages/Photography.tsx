@@ -4,8 +4,35 @@ import { TransformWrapper, TransformComponent, type ReactZoomPanPinchContentRef 
 import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
-import { photoStacks, PHOTOS_PER_PAGE, photoSrc } from "../data/photos";
+import {
+  photoStacks,
+  PHOTOS_PER_PAGE,
+  photoThumb,
+  photoLarge,
+  type PhotoStack,
+} from "../data/photos";
 import exifDb from "../data/photo-exif.json";
+import BeforeAfterSlider from "../components/BeforeAfterSlider";
+
+const isEditedFile = (f: string): boolean =>
+  /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
+
+interface ExifData {
+  Make?: string;
+  Model?: string;
+  LensModel?: string;
+  FNumber?: number;
+  ExposureTime?: number;
+  ISO?: number;
+  FocalLength?: number;
+  DateTimeOriginal?: string;
+}
+
+const exifByFile = exifDb as Record<string, ExifData>;
+
+/** The default-display file for a stack (edited version), never undefined. */
+const coverFile = (stack: PhotoStack): string =>
+  stack.files[stack.cover] ?? stack.files[0] ?? "";
 
 const formatShutter = (t: number | undefined): string => {
   if (t == null) return "—";
@@ -51,11 +78,11 @@ const PhotoTile: React.FC<{ filename: string; stackCount: number; onClick: () =>
     >
       {!loaded && <div className="absolute inset-0 animate-pulse bg-neutral-800" />}
       <img
-        src={photoSrc(filename)}
+        src={photoThumb(filename)}
         alt=""
         loading="lazy"
         decoding="async"
-        onLoad={() => setLoaded(true)}
+        onLoad={() => { setLoaded(true); }}
         className={`w-full h-full object-cover transition-all duration-300
           group-hover:scale-105 ${loaded ? "opacity-100" : "opacity-0"}`}
       />
@@ -76,12 +103,13 @@ const PhotoTile: React.FC<{ filename: string; stackCount: number; onClick: () =>
   );
 };
 
-type LightboxState = { s: number; v: number };
+interface LightboxState { s: number; v: number }
 
 const Photography: React.FC = () => {
   const { theme } = useTheme();
   const [page, setPage] = useState(0);
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const [compare, setCompare] = useState(false);
   const transformRef = useRef<ReactZoomPanPinchContentRef>(null);
   const zoomScaleRef = useRef(1);
 
@@ -89,24 +117,45 @@ const Photography: React.FC = () => {
   const pageStacks = photoStacks.slice(page * PHOTOS_PER_PAGE, (page + 1) * PHOTOS_PER_PAGE);
   const totalPhotos = photoStacks.reduce((sum, s) => sum + s.files.length, 0);
 
-  const currentStack = lightbox !== null ? photoStacks[lightbox.s] : null;
-  const currentFile = currentStack ? currentStack.files[lightbox!.v] : null;
+  const currentStack =
+    lightbox !== null ? (photoStacks[lightbox.s] ?? null) : null;
+  const currentFile =
+    currentStack && lightbox !== null
+      ? (currentStack.files[lightbox.v] ?? null)
+      : null;
 
-  const exif = currentFile
-    ? (exifDb[currentFile as keyof typeof exifDb] ?? {}) as Record<string, unknown>
-    : {};
+  // A stack with exactly one original + one edited version supports before/after.
+  const editFiles =
+    currentStack?.files.length === 2 && currentStack.files.some(isEditedFile)
+      ? currentStack.files
+      : null;
+  const editPair = editFiles
+    ? {
+        before: editFiles.find((f) => !isEditedFile(f)) ?? editFiles[0] ?? "",
+        after: editFiles.find(isEditedFile) ?? editFiles[1] ?? "",
+      }
+    : null;
 
-  const make = exif.Make as string | undefined;
-  const model = exif.Model as string | undefined;
-  const cameraLabel = make && model
-    ? `${make.replace("NIKON CORPORATION", "Nikon")} ${model.replace("NIKON ", "")}`
-    : "";
-  const lensLabel = (exif.LensModel as string | undefined) ?? "";
+  // Edited exports may lack EXIF — fall back to the stack's original file,
+  // since both versions describe the same shot.
+  const exifFile =
+    currentFile && currentFile in exifByFile
+      ? currentFile
+      : (currentStack?.files[0] ?? null);
+  const exif: ExifData = exifFile ? (exifByFile[exifFile] ?? {}) : {};
+
+  const make = exif.Make;
+  const model = exif.Model;
+  const cameraLabel =
+    make && model
+      ? `${make.replace("NIKON CORPORATION", "Nikon")} ${model.replace("NIKON ", "")}`
+      : "";
+  const lensLabel = exif.LensModel ?? "";
   const aperture = exif.FNumber != null ? `f/${exif.FNumber}` : "—";
-  const shutter = formatShutter(exif.ExposureTime as number | undefined);
+  const shutter = formatShutter(exif.ExposureTime);
   const iso = exif.ISO != null ? String(exif.ISO) : "—";
   const focal = exif.FocalLength != null ? `${exif.FocalLength}mm` : "—";
-  const dateTaken = formatDateTime(exif.DateTimeOriginal as Date | string | undefined);
+  const dateTaken = formatDateTime(exif.DateTimeOriginal);
 
   useEffect(() => { document.title = "Photography - Sean Finch"; }, []);
 
@@ -115,35 +164,40 @@ const Photography: React.FC = () => {
     return () => { document.body.style.overflow = ""; };
   }, [lightbox]);
 
+  // Move to another stack, defaulting to its edited version and leaving
+  // compare mode. Reset here (in the handler) rather than in an effect.
+  const navStack = (targetS: number): void => {
+    const target = photoStacks[targetS];
+    if (!target) return;
+    transformRef.current?.resetTransform(0);
+    setCompare(false);
+    setLightbox({ s: targetS, v: target.cover });
+  };
+
   useEffect(() => {
     if (lightbox === null) return;
-    const handler = (e: KeyboardEvent) => {
+    const handler = (e: KeyboardEvent): void => {
       if (e.key === "Escape") setLightbox(null);
-      if (e.key === "ArrowLeft" && zoomScaleRef.current <= 1) {
-        transformRef.current?.resetTransform(0);
-        setLightbox((lb) => lb && lb.s > 0 ? { s: lb.s - 1, v: 0 } : lb);
-      }
-      if (e.key === "ArrowRight" && zoomScaleRef.current <= 1) {
-        transformRef.current?.resetTransform(0);
-        setLightbox((lb) => lb && lb.s < photoStacks.length - 1 ? { s: lb.s + 1, v: 0 } : lb);
-      }
+      if (e.key === "ArrowLeft" && zoomScaleRef.current <= 1) navStack(lightbox.s - 1);
+      if (e.key === "ArrowRight" && zoomScaleRef.current <= 1) navStack(lightbox.s + 1);
     };
     window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    return () => { window.removeEventListener("keydown", handler); };
   }, [lightbox]);
 
   // Preload covers of adjacent stacks
   useEffect(() => {
     if (lightbox === null) return;
     [-2, -1, 1, 2, 3].forEach((offset) => {
-      const idx = lightbox.s + offset;
-      if (idx >= 0 && idx < photoStacks.length) {
-        photoStacks[idx].files.forEach((f) => {
-          const img = new Image();
-          img.src = photoSrc(f);
-        });
-      }
+      const stack = photoStacks[lightbox.s + offset];
+      if (!stack) return;
+      stack.files.forEach((f) => {
+        const img = new Image();
+        img.src = photoLarge(f);
+      });
     });
+    // Intentionally keyed only on the active stack index.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightbox?.s]);
 
   useEffect(() => {
@@ -152,13 +206,13 @@ const Photography: React.FC = () => {
     const timer = setTimeout(() => {
       photoStacks.slice(next, next + PHOTOS_PER_PAGE).forEach((stack) => {
         const img = new Image();
-        img.src = photoSrc(stack.files[0]);
+        img.src = photoThumb(coverFile(stack));
       });
     }, 800);
-    return () => clearTimeout(timer);
+    return () => { clearTimeout(timer); };
   }, [page]);
 
-  const goToPage = (newPage: number) => {
+  const goToPage = (newPage: number): void => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -192,10 +246,10 @@ const Photography: React.FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {pageStacks.map((stack, i) => (
             <PhotoTile
-              key={stack.files[0]}
-              filename={stack.files[0]}
+              key={coverFile(stack)}
+              filename={coverFile(stack)}
               stackCount={stack.files.length}
-              onClick={() => setLightbox({ s: page * PHOTOS_PER_PAGE + i, v: 0 })}
+              onClick={() => { setLightbox({ s: page * PHOTOS_PER_PAGE + i, v: stack.cover }); }}
             />
           ))}
         </div>
@@ -203,7 +257,7 @@ const Photography: React.FC = () => {
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 mt-10">
             <button
-              onClick={() => goToPage(page - 1)}
+              onClick={() => { goToPage(page - 1); }}
               disabled={page === 0}
               className="w-9 h-9 rounded-lg flex items-center justify-center disabled:opacity-30
                 disabled:cursor-not-allowed border border-neutral-600 text-neutral-400
@@ -214,7 +268,7 @@ const Photography: React.FC = () => {
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i}
-                onClick={() => goToPage(i)}
+                onClick={() => { goToPage(i); }}
                 className={`w-9 h-9 rounded-lg text-sm font-monospace font-semibold transition-colors duration-150
                   ${page === i
                     ? "bg-amber-500 text-black border border-amber-400"
@@ -225,7 +279,7 @@ const Photography: React.FC = () => {
               </button>
             ))}
             <button
-              onClick={() => goToPage(page + 1)}
+              onClick={() => { goToPage(page + 1); }}
               disabled={page === totalPages - 1}
               className="w-9 h-9 rounded-lg flex items-center justify-center disabled:opacity-30
                 disabled:cursor-not-allowed border border-neutral-600 text-neutral-400
@@ -265,23 +319,38 @@ const Photography: React.FC = () => {
       {lightbox !== null && currentStack && currentFile && createPortal(
         <div
           className="fixed inset-0 z-50 bg-black/96 flex flex-col"
-          onClick={() => setLightbox(null)}
+          onClick={() => { setLightbox(null); }}
         >
           {/* Top bar */}
           <div className="flex items-center justify-between px-5 py-3 shrink-0">
             <p className="font-monospace text-xs text-neutral-500">
               {lightbox.s + 1} / {photoStacks.length}
             </p>
-            <p className="font-monospace text-[10px] text-neutral-600 truncate max-w-[40vw] text-center">
+            <p className="font-monospace text-[10px] text-neutral-600 truncate max-w-[30vw] text-center">
               {currentFile.replace(".webp", "")}
             </p>
-            <button
-              onClick={() => setLightbox(null)}
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center
-                justify-center text-white transition-colors duration-150"
-            >
-              <FaTimes size={14} />
-            </button>
+            <div className="flex items-center gap-2">
+              {editPair && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); setCompare((c) => !c); }}
+                  className={`h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-monospace
+                    font-semibold transition-colors duration-150 ${
+                      compare
+                        ? "bg-amber-500 text-black"
+                        : "bg-white/10 hover:bg-white/20 text-white"
+                    }`}
+                >
+                  ⇄ {compare ? "Exit compare" : "Compare"}
+                </button>
+              )}
+              <button
+                onClick={() => { setLightbox(null); }}
+                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center
+                  justify-center text-white transition-colors duration-150"
+              >
+                <FaTimes size={14} />
+              </button>
+            </div>
           </div>
 
           {/* Main content row */}
@@ -289,7 +358,7 @@ const Photography: React.FC = () => {
 
             {/* Prev stack */}
             <button
-              onClick={(e) => { e.stopPropagation(); setLightbox((lb) => lb && lb.s > 0 ? { s: lb.s - 1, v: 0 } : lb); }}
+              onClick={(e) => { e.stopPropagation(); navStack(lightbox.s - 1); }}
               disabled={lightbox.s === 0}
               className="shrink-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center
                 justify-center text-white transition-colors duration-150 disabled:opacity-20 disabled:cursor-not-allowed"
@@ -300,26 +369,33 @@ const Photography: React.FC = () => {
             {/* Image + EXIF */}
             <div
               className="flex items-center justify-center gap-4 flex-1 min-w-0 min-h-0 overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => { e.stopPropagation(); }}
             >
-              <TransformWrapper
-                ref={transformRef}
-                minScale={1}
-                maxScale={6}
-                limitToBounds={false}
-                doubleClick={{ mode: "zoomIn" }}
-                wheel={{ step: 0.15 }}
-                onTransform={(ref) => { zoomScaleRef.current = ref.state.scale; }}
-              >
-                <TransformComponent wrapperStyle={{ overflow: "visible" }}>
-                  <img
-                    key={currentFile}
-                    src={photoSrc(currentFile)}
-                    alt=""
-                    className="max-h-[85vh] min-w-0 w-auto max-w-full object-contain rounded shadow-2xl select-none cursor-zoom-in"
-                  />
-                </TransformComponent>
-              </TransformWrapper>
+              {compare && editPair ? (
+                <BeforeAfterSlider
+                  beforeSrc={photoLarge(editPair.before)}
+                  afterSrc={photoLarge(editPair.after)}
+                />
+              ) : (
+                <TransformWrapper
+                  ref={transformRef}
+                  minScale={1}
+                  maxScale={6}
+                  limitToBounds={false}
+                  doubleClick={{ mode: "zoomIn" }}
+                  wheel={{ step: 0.15 }}
+                  onTransform={(ref) => { zoomScaleRef.current = ref.state.scale; }}
+                >
+                  <TransformComponent wrapperStyle={{ overflow: "visible" }}>
+                    <img
+                      key={currentFile}
+                      src={photoLarge(currentFile)}
+                      alt=""
+                      className="max-h-[85vh] min-w-0 w-auto max-w-full object-contain rounded shadow-2xl select-none cursor-zoom-in"
+                    />
+                  </TransformComponent>
+                </TransformWrapper>
+              )}
 
               {/* EXIF panel — desktop only */}
               <div className="hidden md:flex flex-col w-52 shrink-0 bg-neutral-900/80 border border-neutral-800
@@ -358,7 +434,7 @@ const Photography: React.FC = () => {
 
             {/* Next stack */}
             <button
-              onClick={(e) => { e.stopPropagation(); setLightbox((lb) => lb && lb.s < photoStacks.length - 1 ? { s: lb.s + 1, v: 0 } : lb); }}
+              onClick={(e) => { e.stopPropagation(); navStack(lightbox.s + 1); }}
               disabled={lightbox.s === photoStacks.length - 1}
               className="shrink-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center
                 justify-center text-white transition-colors duration-150 disabled:opacity-20 disabled:cursor-not-allowed"
@@ -368,19 +444,19 @@ const Photography: React.FC = () => {
           </div>
 
           {/* Version filmstrip — sits below image row, doesn't compete for height */}
-          {currentStack.files.length > 1 && (
+          {!compare && currentStack.files.length > 1 && (
             <div
               className="shrink-0 flex items-center justify-center gap-2 py-2 border-t border-neutral-800/60"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => { e.stopPropagation(); }}
             >
               {currentStack.files.map((f, vi) => (
                 <button
                   key={f}
-                  onClick={() => setLightbox((lb) => lb ? { ...lb, v: vi } : null)}
+                  onClick={() => { setLightbox((lb) => lb ? { ...lb, v: vi } : null); }}
                   className={`relative w-16 h-11 rounded overflow-hidden transition-all duration-150 shrink-0
                     ${lightbox.v === vi ? "ring-2 ring-amber-400 opacity-100" : "opacity-40 hover:opacity-70"}`}
                 >
-                  <img src={photoSrc(f)} className="w-full h-full object-cover" alt="" />
+                  <img src={photoThumb(f)} className="w-full h-full object-cover" alt="" />
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white
                     text-[8px] font-monospace text-center py-0.5 leading-none">
                     {versionLabel(f, vi, currentStack.files.length)}

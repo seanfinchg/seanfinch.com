@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, type JSX } from "react";
 import { Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
@@ -15,7 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ToolsWrapper from "@/components/wrappers/ToolsWrapper";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export default function CaesarCipher() {
+export default function CaesarCipher(): JSX.Element {
   const [inputText, setInputText] = useState("");
   const [shift, setShift] = useState(3);
   const [copiedEncoded, setCopiedEncoded] = useState(false);
@@ -24,12 +24,13 @@ export default function CaesarCipher() {
   const [keepPunctuation, setKeepPunctuation] = useState(true);
 
   // Caesar cipher encoding function
-  const caesarShift = (text: string, shiftAmount: number): string => {
-    if (!text) return "";
+  const caesarShift = useCallback(
+    (text: string, shiftAmount: number): string => {
+      if (!text) return "";
 
-    return text
-      .split("")
-      .map((char) => {
+      return text
+        .split("")
+        .map((char) => {
         // Only shift letters
         if (/[a-zA-Z]/.test(char)) {
           const isUpper = char === char.toUpperCase();
@@ -46,21 +47,25 @@ export default function CaesarCipher() {
 
           return result;
         }
-        // Keep or remove non-letters based on option
-        return keepPunctuation ? char : "";
-      })
-      .join("");
-  };
+          // Keep or remove non-letters based on option
+          return keepPunctuation ? char : "";
+        })
+        .join("");
+    },
+    [keepCapitalization, keepPunctuation],
+  );
 
   // Compute encoded text
-  const encoded = useMemo(() => {
-    return caesarShift(inputText, shift);
-  }, [inputText, shift, caesarShift]);
+  const encoded = useMemo(
+    () => caesarShift(inputText, shift),
+    [inputText, shift, caesarShift],
+  );
 
   // Compute decoded text (negative shift)
-  const decoded = useMemo(() => {
-    return caesarShift(inputText, -shift);
-  }, [inputText, shift, caesarShift]);
+  const decoded = useMemo(
+    () => caesarShift(inputText, -shift),
+    [inputText, shift, caesarShift],
+  );
 
   // Brute force - generate all possible shifts
   const bruteForceResults = useMemo(() => {
@@ -81,13 +86,13 @@ export default function CaesarCipher() {
         await navigator.clipboard.writeText(text);
         if (type === "encoded") {
           setCopiedEncoded(true);
-          setTimeout(() => setCopiedEncoded(false), 2000);
+          setTimeout(() => { setCopiedEncoded(false); }, 2000);
         } else if (type === "decoded") {
           setCopiedDecoded(true);
-          setTimeout(() => setCopiedDecoded(false), 2000);
+          setTimeout(() => { setCopiedDecoded(false); }, 2000);
         }
         toast.success("Copied to clipboard");
-      } catch (err) {
+      } catch {
         toast.error("Failed to copy to clipboard");
       }
     },
@@ -121,7 +126,7 @@ export default function CaesarCipher() {
                   id="input-text"
                   placeholder="Enter your text here..."
                   value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
+                  onChange={(e) => { setInputText(e.target.value); }}
                   rows={8}
                   className="font-mono"
                 />
@@ -141,7 +146,7 @@ export default function CaesarCipher() {
                   max={25}
                   step={1}
                   value={[shift]}
-                  onValueChange={(value) => setShift(value[0])}
+                  onValueChange={(value) => { if (value[0] !== undefined) setShift(value[0]); }}
                   className="w-full"
                 />
                 <Input
@@ -164,7 +169,7 @@ export default function CaesarCipher() {
                     id="keep-caps"
                     checked={keepCapitalization}
                     onCheckedChange={(checked) =>
-                      setKeepCapitalization(checked === true)
+                      { setKeepCapitalization(checked); }
                     }
                   />
                   <Label
@@ -179,7 +184,7 @@ export default function CaesarCipher() {
                     id="keep-punct"
                     checked={keepPunctuation}
                     onCheckedChange={(checked) =>
-                      setKeepPunctuation(checked === true)
+                      { setKeepPunctuation(checked); }
                     }
                   />
                   <Label
@@ -210,7 +215,7 @@ export default function CaesarCipher() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => copyToClipboard(encoded, "encoded")}
+                    onClick={() => { void copyToClipboard(encoded, "encoded"); }}
                     disabled={!encoded}
                   >
                     {copiedEncoded ? (
@@ -246,7 +251,7 @@ export default function CaesarCipher() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => copyToClipboard(decoded, "decoded")}
+                    onClick={() => { void copyToClipboard(decoded, "decoded"); }}
                     disabled={!decoded}
                   >
                     {copiedDecoded ? (
@@ -307,7 +312,7 @@ export default function CaesarCipher() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => copyToClipboard(result, "brute")}
+                            onClick={() => { void copyToClipboard(result, "brute"); }}
                           >
                             <Copy className="h-4 w-4" />
                           </Button>

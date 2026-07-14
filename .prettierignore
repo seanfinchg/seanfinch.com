@@ -1,0 +1,25 @@
+node_modules
+dist
+dist-ssr
+package-lock.json
+public/photography/_derived
+
+# Binary / media assets
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.avif
+*.ico
+*.svg
+*.woff
+*.woff2
+*.ttf
+*.otf
+*.eot
+*.mp3
+*.wav
+*.mp4
+*.mov

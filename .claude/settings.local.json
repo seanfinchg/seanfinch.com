@@ -24,7 +24,9 @@
       "PowerShell(winget list exiftool)",
       "PowerShell(exiftool -ver 2>&1)",
       "PowerShell(Get-Command exiftool -ErrorAction SilentlyContinue)",
-      "Bash(npm show *)"
+      "Bash(npm show *)",
+      "Bash(git stash *)",
+      "Bash(npx eslint *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\seanf\\Documents\\websites\\seanfinch.com\\public"

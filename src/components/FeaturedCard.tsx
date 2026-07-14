@@ -13,7 +13,7 @@ export default function FeaturedCard({
   type,
   label,
   children,
-}: FeaturedCardProps) {
+}: FeaturedCardProps): React.JSX.Element {
   const { theme } = useTheme();
 
   const styles = {

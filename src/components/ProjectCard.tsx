@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
-import { ProjectProps } from "../data/projects";
+import type { ProjectProps } from "../data/projects";
 import { FaGithub, FaExternalLinkAlt, FaSitemap } from "react-icons/fa";
 import {
   getCardClasses,
@@ -126,7 +126,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     <div className={wrapperClasses}>
       {featured && (
         <div className="absolute -top-4 left-4 bg-green-700 text-white px-4 py-1 rounded-full text-sm font-bold font-monospace">
-          ⭐ {badgeLabel || title}
+          ⭐ {badgeLabel ?? title}
         </div>
       )}
       <div className={featured ? "pt-4" : ""}>{cardContent}</div>

@@ -11,12 +11,13 @@ const Contact: React.FC = () => {
   }, []);
 
   // Assembled at click time — never a plain harvestable string in the DOM
-  const openEmail = () => {
+  const openEmail = (): void => {
     const addr = ["contact", "seanfinch", "com"].join("@").replace("@seanfinch@", "@seanfinch.");
     window.location.href = "mailto:" + addr;
   };
-  const openLinkedIn = () =>
+  const openLinkedIn = (): void => {
     window.open("https://www." + "linkedin" + ".com/in/" + "sean-finch-g", "_blank");
+  };
 
   const cardBase = `flex-1 group flex flex-col items-center p-8 rounded-2xl border backdrop-blur-sm
     cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl`;

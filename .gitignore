@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Generated photo derivatives (thumb/large) — regenerated at build time
+public/photography/_derived
+
 # Claude
 .claude/
 

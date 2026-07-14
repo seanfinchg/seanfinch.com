@@ -14,21 +14,22 @@ const HomelabDiagrams: React.FC = () => {
   const homelabProject = projects.find((p) =>
     p.title.toLowerCase().includes("homelab"),
   );
-
-  if (!homelabProject || !homelabProject.diagrams) {
-    navigate("/404");
-    return null;
-  }
-
-  const currentDiagram = homelabProject.diagrams.find(
+  const currentDiagram = homelabProject?.diagrams?.find(
     (d) => d.name === selectedDiagram,
   );
 
+  // Redirect out if the project/diagrams are missing (side effect, not render).
   useEffect(() => {
+    if (!homelabProject?.diagrams) void navigate("/404");
+  }, [homelabProject, navigate]);
+
+  // Re-show the loader whenever the active diagram or theme changes.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional loader reset on input change
     setLoading(true);
   }, [theme, selectedDiagram]);
 
-  if (!currentDiagram) {
+  if (!homelabProject?.diagrams || !currentDiagram) {
     return null;
   }
 
@@ -60,7 +61,7 @@ const HomelabDiagrams: React.FC = () => {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-1">
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => navigate("/projects")}
+                  onClick={() => { void navigate("/projects"); }}
                   className="text-blue-500 hover:text-blue-600 font-monospace text-lg md:text-base transition-all"
                   title="Back to Projects"
                 >
@@ -74,10 +75,10 @@ const HomelabDiagrams: React.FC = () => {
               <div className="md:hidden">
                 <select
                   value={selectedDiagram}
-                  onChange={(e) =>
-                    e.target.value !== "networking" &&
-                    setSelectedDiagram(e.target.value)
-                  }
+                  onChange={(e) => {
+                    if (e.target.value !== "networking")
+                      setSelectedDiagram(e.target.value);
+                  }}
                   className="w-full px-4 py-2.5 rounded-lg font-monospace text-base font-semibold border-2 transition-all shadow-sm bg-sky-500 border-sky-500 text-white hover:bg-sky-600"
                   style={{
                     WebkitAppearance: "none",
@@ -107,10 +108,10 @@ const HomelabDiagrams: React.FC = () => {
                 {homelabProject.diagrams.map((diagram) => (
                   <button
                     key={diagram.name}
-                    onClick={() =>
-                      diagram.name !== "networking" &&
-                      setSelectedDiagram(diagram.name)
-                    }
+                    onClick={() => {
+                      if (diagram.name !== "networking")
+                        setSelectedDiagram(diagram.name);
+                    }}
                     disabled={diagram.name === "networking"}
                     className={`px-5 py-2 rounded-lg font-monospace text-sm transition-all ${
                       diagram.name === "networking"
@@ -150,7 +151,7 @@ const HomelabDiagrams: React.FC = () => {
             <iframe
               src={viewerUrl}
               className="w-full h-full"
-              onLoad={() => setLoading(false)}
+              onLoad={() => { setLoading(false); }}
               title={currentDiagram.label}
               style={{ border: "none" }}
             />
