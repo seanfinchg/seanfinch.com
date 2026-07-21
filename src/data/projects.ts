@@ -49,10 +49,10 @@ export const projects: ProjectProps[] = [
   {
     title: "Homelab Infrastructure",
     description: [
-      "Built controlled CTF labs for adversary emulation with Metasploit, Burp Suite, and Wireshark to test alerts and security controls",
-      "Monitored live and simulated network traffic using Suricata and Zeek, inspecting flows, port scans, and brute-force attempts",
-      "Deployed Wazuh across multiple endpoints to centralize logs, monitor activity, and tune alerts while hardening a live environment",
-      "Performed continuous vulnerability scanning with OpenVAS across 10+ self-hosted services and endpoints, while hardening remote access with Nginx reverse proxy, Tailscale, and Pi-hole to enforce security and monitor DNS/web traffic",
+      "Built and maintain a production-grade home server on TrueNAS and Kubernetes, self-hosting 15+ services for 10+ users",
+      "Deployed Wazuh (XDR/SIEM) agents on endpoints feeding a self-hosted manager to centralize logs, tune detections, and alert",
+      "Scanned 15+ self-hosted services and 10+ endpoints continuously with OpenVAS, plus Pi-hole DNS filtering and monitoring",
+      "Secured external access to self-hosted apps with Nginx reverse proxy, Tailscale (WireGuard mesh VPN), and identity-based access",
     ],
     technologies: ["TrueNAS SCALE", "Docker", "Tailscale", "Nginx"],
     dateRange: "June 2022 – Present",
