@@ -18,13 +18,15 @@ import cyberpatriotLogo from "../assets/cyberpatriot.jpeg";
 
 export const experiences: ExperienceProps[] = [
   {
-    title: "Enterprise Security Engineer Intern",
+    title: "Security Engineer Intern",
     company: "Palo Alto Networks",
     location: "Santa Clara, CA",
     description: [
-      "Develop detection content and alerts for endpoint and cloud telemetry (Cortex XDR / Prisma Cloud) to reduce mean time to detection.",
-      "Instrument and iterate on telemetry pipelines: ingest, normalize, and enrich logs for security analytics and hunting.",
-      "Automate triage and response workflows with Python and SOAR playbooks; build tooling to accelerate incident investigation.",
+      "Owned end-to-end design and implementation of Application Control Posture Check, a first-of-its-kind internal DAST compliance tool, cutting manual review from 3 hrs to 5 min; presented the model at a local OWASP chapter",
+      "Engineered a modular, strictly-typed Python engine with pluggable auto-discovered rules, swappable identity providers (Okta, Idira) via a vendor-agnostic factory, and typed REST/SQL/DNS clients behind Pydantic boundaries, running daily GRC checks",
+      "Automated 16 GRC controls across 10+ apps: SSO, privileged access, service accounts, X.509, DMARC (ISO 27001/NIST CSF)",
+      "Exposed structured findings through a REST API to the risk dashboard, surfacing posture/control-drift to the CISO and Board",
+      "Owned the risk dashboard's RBAC end-to-end (least-privilege); audited and remediated 10+ flaws including SQL injection",
     ],
     dateRange: "June 2026 – September 2026",
     featured: true,
@@ -32,14 +34,14 @@ export const experiences: ExperienceProps[] = [
     companyUrl: "https://www.paloaltonetworks.com/",
   },
   {
-    title: "Systems Engineer Intern",
+    title: "Systems Engineer Intern (Security Operations)",
     company: "Neuralink",
     location: "Fremont, CA",
     description: [
-      "Drove access lockdowns for unmanaged devices and made device registration mandatory for secure access",
-      "Built Linux MDM enrollment from the ground up to extend centralized control and hardening beyond Windows and Mac endpoints",
-      "Introduced Defender XDR and kicked off SIEM implementation to build telemetry, alerting, and incident-response foundations",
-      "Rebuilt internal security docs into a structured knowledge base with runbooks and operational guides",
+      "Overhauled endpoint, identity, and cloud security during rapid growth, earning executive buy-in for a dedicated security team",
+      "Tested and deployed Microsoft Defender XDR and Sentinel (SIEM) across 500+ endpoints for alerting and incident response",
+      "Managed the Intune MDM fleet across macOS and Windows, aligning device baselines to CIS Benchmarks and enforcing Conditional Access lockdowns, registration, and OS update rings that moved 20%+ of devices off outdated versions",
+      "Automated provisioning with 10+ Terraform modules (IaC) and attribute-based Entra dynamic groups, auto-assigning 500+ users",
     ],
     dateRange: "April 2026 – June 2026",
     featured: true,
