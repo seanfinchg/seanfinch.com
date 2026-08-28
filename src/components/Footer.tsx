@@ -14,7 +14,7 @@ const Footer: React.FC = () => (
         ❯ seanfinch.com
       </span>
       <p className="font-monospace text-xs text-muted-foreground">
-        © 2025 Sean Finch · Orange County, CA
+        © {new Date().getFullYear()} Sean Finch · Orange County, CA
       </p>
       <p className="font-monospace text-[10px] text-muted-foreground opacity-50">
         React · TypeScript · Tailwind CSS

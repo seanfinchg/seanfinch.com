@@ -3,35 +3,7 @@ import { useTheme } from "../contexts/themeContext";
 import { getThemeClasses } from "../utils/themeUtils";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
-interface SocialMediaButtonProps {
-  url: string;
-  children: React.ReactNode;
-  className?: string;
-}
-
-const SocialMediaButton: React.FC<SocialMediaButtonProps> = ({
-  url,
-  children,
-  className = "",
-}) => {
-  const { theme } = useTheme();
-  const buttonClass = `flex justify-center mx-2 my-1 px-4 py-2 text-base font-jost font-medium border border-transparent rounded-lg hover:border-indigo-600 cursor-pointer transition-colors duration-200 ${
-    theme === "light"
-      ? "bg-ultra-light-mode text-ultra-dark-mode"
-      : "bg-ultra-dark-mode text-light-mode"
-  } ${className}`;
-
-  const openLinkInNewTab = (): void => {
-    window.open(url, "_blank");
-  };
-
-  return (
-    <button className={buttonClass} onClick={openLinkInNewTab}>
-      {children}
-    </button>
-  );
-};
+import SocialMediaButton from "../components/SocialMediaButton";
 
 const Music: React.FC = () => {
   const { theme } = useTheme();
@@ -124,6 +96,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_10.jpg"
+                alt="Music Portrait"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -132,6 +105,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_9.jpg"
+                alt="CASMEC Honor Choir Concert 2023"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -140,6 +114,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_8.jpg"
+                alt="Winter Concert 2022"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -148,6 +123,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_7.jpg"
+                alt="SCVA Honor Choir Concert 2022"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -156,6 +132,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_6.jpg"
+                alt="Spring Concert 2022"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -164,6 +141,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_5.jpg"
+                alt="Spring Concert 2022 Poster"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -172,6 +150,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_4.jpg"
+                alt="CASMEC Honor Choir Concert 2022"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -180,6 +159,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_3.jpg"
+                alt="SCVA Honor Choir Concert 2021"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -188,6 +168,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_2.jpg"
+                alt="Winter Concert 2019"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
@@ -196,6 +177,7 @@ const Music: React.FC = () => {
             <div className="w-full h-full flex flex-col justify-center items-center">
               <img
                 src="/music/music_image_1.jpg"
+                alt="Fall Concert 2019"
                 className="object-cover h-full rounded-lg"
                 style={{ maxHeight: "400px", width: "auto" }}
               />
