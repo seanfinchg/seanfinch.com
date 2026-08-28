@@ -29,6 +29,24 @@ export const projects: ProjectProps[] = [
     dateRange: "March 2026 – Present",
   },
   {
+    title: "Port Scanner",
+    description: [
+      "Built a concurrent Python port scanner that enumerated 25+ lab hosts, cutting manual port checks from 2+ hours to a few minutes",
+      "Added banner grabbing and JSON output to surface exposed services and make results easy to review or extend",
+    ],
+    technologies: ["Python", "Sockets", "Concurrency", "JSON"],
+    dateRange: "2026",
+  },
+  {
+    title: "Attack Surface Mapper",
+    description: [
+      "Built a Go attack-surface mapper that discovered 20+ subdomains, 30+ live hosts, and 100+ open ports across a lab target set",
+      "Added concurrent probing, banner grabbing, and TLS checks to flag 10+ exposures across 25+ lab targets and output JSON daily",
+    ],
+    technologies: ["Go", "Concurrency", "TLS", "JSON"],
+    dateRange: "2026",
+  },
+  {
     title: "Storefront Website",
     description:
       "This responsive website was designed and developed to showcase baked goods and ensure accessibility across devices. Dynamic features were implemented to enhance user engagement and provide seamless navigation, creating a user-friendly shopping experience. Additionally, a robust checkout system was integrated to streamline order tracking and facilitate efficient product delivery, ensuring a smooth and satisfying experience for customers.",
@@ -50,11 +68,18 @@ export const projects: ProjectProps[] = [
     title: "Homelab Infrastructure",
     description: [
       "Built and maintain a production-grade home server on TrueNAS and Kubernetes, self-hosting 15+ services for 10+ users",
-      "Deployed Wazuh (XDR/SIEM) agents on endpoints feeding a self-hosted manager to centralize logs, tune detections, and alert",
-      "Scanned 15+ self-hosted services and 10+ endpoints continuously with OpenVAS, plus Pi-hole DNS filtering and monitoring",
-      "Secured external access to self-hosted apps with Nginx reverse proxy, Tailscale (WireGuard mesh VPN), and identity-based access",
+      "Deployed Wazuh agents for security logging and alerting on suspicious activity across the lab",
+      "Continuously scan 15+ services and 15+ endpoints for exposure with OpenVAS, securing access via Tailscale and Nginx",
     ],
-    technologies: ["TrueNAS SCALE", "Docker", "Tailscale", "Nginx"],
+    technologies: [
+      "TrueNAS SCALE",
+      "RAIDZ1",
+      "Proxmox",
+      "Kubernetes",
+      "Docker",
+      "Tailscale",
+      "Nginx",
+    ],
     dateRange: "June 2022 – Present",
     featured: true,
     diagrams: [

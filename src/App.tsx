@@ -11,8 +11,12 @@ import Photography from "./pages/Photography";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import HomelabDiagrams from "./pages/HomelabDiagrams";
+import DiagramViewer from "./pages/DiagramViewer";
 import CipherTools from "./pages/CipherTools";
 import CaesarCipher from "./pages/CaesarCipher";
+import VigenereCipher from "./pages/VigenereCipher";
+import AtbashCipher from "./pages/AtbashCipher";
+import Rot13Cipher from "./pages/Rot13Cipher";
 import { Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 
@@ -21,8 +25,12 @@ const AppRoutes = (): React.JSX.Element => (
     <Route path="/" element={<Home />} />
     <Route path="/projects" element={<Projects />} />
     <Route path="/projects/homelab" element={<HomelabDiagrams />} />
+    <Route path="/projects/homelab/:diagramName" element={<DiagramViewer />} />
     <Route path="/projects/cipher-tools" element={<CipherTools />} />
     <Route path="/projects/cipher-tools/caesar" element={<CaesarCipher />} />
+    <Route path="/projects/cipher-tools/vigenere" element={<VigenereCipher />} />
+    <Route path="/projects/cipher-tools/atbash" element={<AtbashCipher />} />
+    <Route path="/projects/cipher-tools/rot13" element={<Rot13Cipher />} />
     <Route path="/experience" element={<Experience />} />
     <Route path="/music" element={<Music />} />
     <Route path="/photography" element={<Photography />} />

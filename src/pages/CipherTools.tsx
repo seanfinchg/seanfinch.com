@@ -20,24 +20,24 @@ const cipherTools: CipherTool[] = [
   },
   {
     name: "Vigenère Cipher",
-    path: "#",
+    path: "/projects/cipher-tools/vigenere",
     description:
       "Advanced polyalphabetic substitution cipher using a keyword for encryption and decryption.",
-    status: "coming-soon",
+    status: "available",
   },
   {
-    name: "Playfair Cipher",
-    path: "#",
+    name: "Atbash Cipher",
+    path: "/projects/cipher-tools/atbash",
     description:
-      "Digraph substitution cipher that encrypts pairs of letters using a 5×5 key table.",
-    status: "coming-soon",
+      "Ancient reversed-alphabet substitution cipher where A ↔ Z, B ↔ Y, and so on.",
+    status: "available",
   },
   {
-    name: "Rail Fence Cipher",
-    path: "#",
+    name: "ROT13",
+    path: "/projects/cipher-tools/rot13",
     description:
-      "Transposition cipher that writes the message in a zigzag pattern across multiple rails.",
-    status: "coming-soon",
+      "The famous fixed-shift Caesar cipher used to hide spoilers and puzzle answers online.",
+    status: "available",
   },
 ];
 
