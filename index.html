@@ -10,7 +10,7 @@
     <title>Sean Finch — Cybersecurity | Northeastern '27</title>
     <meta
       name="description"
-      content="Sean Finch — B.S. Cybersecurity at Northeastern University (Class of 2027). Security engineering, homelab, and photography. Seeking new-grad cybersecurity roles."
+      content="Sean Finch — Security Engineer Intern at Palo Alto Networks, previously Neuralink. B.S. Cybersecurity at Northeastern University (Class of 2027). Security engineering, homelab, and photography. Seeking new-grad cybersecurity roles."
     />
     <meta name="author" content="Sean Finch" />
     <link rel="canonical" href="https://seanfinch.com/" />
@@ -18,10 +18,13 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sean Finch" />
-    <meta property="og:title" content="Sean Finch — Cybersecurity | Northeastern '27" />
+    <meta
+      property="og:title"
+      content="Sean Finch — Cybersecurity | Northeastern '27"
+    />
     <meta
       property="og:description"
-      content="B.S. Cybersecurity at Northeastern. Security engineering, homelab, and photography. Seeking new-grad cybersecurity roles."
+      content="Security Engineer Intern at Palo Alto Networks, previously Neuralink. B.S. Cybersecurity at Northeastern — security engineering, homelab, and photography. Seeking new-grad cybersecurity roles."
     />
     <meta property="og:url" content="https://seanfinch.com/" />
     <meta property="og:image" content="https://seanfinch.com/og-image.jpg" />
@@ -31,15 +34,123 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sean Finch — Cybersecurity | Northeastern '27" />
+    <meta
+      name="twitter:title"
+      content="Sean Finch — Cybersecurity | Northeastern '27"
+    />
     <meta
       name="twitter:description"
-      content="B.S. Cybersecurity at Northeastern. Security engineering, homelab, and photography. Seeking new-grad cybersecurity roles."
+      content="Security Engineer Intern at Palo Alto Networks, previously Neuralink. B.S. Cybersecurity at Northeastern — security engineering, homelab, and photography. Seeking new-grad cybersecurity roles."
     />
     <meta name="twitter:image" content="https://seanfinch.com/og-image.jpg" />
+
+    <!--
+      Structured data for search engines and AI assistants. This is a data
+      block, not executable JS, so `script-src 'self'` in the CSP does not
+      apply. It matters because this site is a client-side SPA: crawlers that
+      do not run JavaScript (GPTBot, ClaudeBot, PerplexityBot) see only this
+      static shell, so the profile has to live here to be readable at all.
+      Keep in sync with src/data/experiences.ts.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Sean Finch",
+        "url": "https://seanfinch.com/",
+        "image": "https://seanfinch.com/SeanPortrait.jpg",
+        "jobTitle": "Security Engineer",
+        "description": "Security engineer focused on security operations, vulnerability management, identity, and GRC automation. B.S. Cybersecurity with a Music Minor at Northeastern University, graduating May 2027. Seeking new-grad cybersecurity roles starting Summer 2027.",
+        "sameAs": [
+          "https://www.linkedin.com/in/sean-finch-g",
+          "https://github.com/seanfinchg"
+        ],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Palo Alto Networks",
+          "url": "https://www.paloaltonetworks.com/"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Northeastern University",
+          "url": "https://www.northeastern.edu/"
+        },
+        "knowsAbout": [
+          "Security Engineering",
+          "Security Operations",
+          "Vulnerability Management",
+          "Identity and Access Management",
+          "SIEM and Detection Engineering",
+          "Endpoint Security",
+          "Cloud Security",
+          "Governance, Risk and Compliance",
+          "Python",
+          "Terraform"
+        ],
+        "seeks": {
+          "@type": "Demand",
+          "name": "New-grad cybersecurity roles starting Summer 2027"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <!--
+      Static fallback. Served to anyone without JS, which includes most AI
+      crawlers (GPTBot, ClaudeBot, PerplexityBot do not execute JavaScript).
+      Without this they would index an empty shell. Mirrors the summary on
+      /about and /experience - keep the two in step when roles change.
+    -->
+    <noscript>
+      <h1>Sean Finch</h1>
+      <p>
+        Security Engineer Intern at Palo Alto Networks. B.S. Cybersecurity with
+        a Music Minor at Northeastern University, graduating May 2027. Seeking
+        new-grad cybersecurity roles starting Summer 2027.
+      </p>
+      <h2>Experience</h2>
+      <ul>
+        <li>
+          <strong>Palo Alto Networks</strong> &mdash; Security Engineer Intern
+          (June 2026 &ndash; September 2026), Santa Clara, CA. Built Application
+          Control Posture Check, an internal DAST tool that cut compliance
+          review from 3 hours to a 5-minute automated scan across 16 NIST CSF
+          controls; architected its RBAC system and shipped the risk dashboard
+          data flow giving the CISO and Board live posture visibility.
+        </li>
+        <li>
+          <strong>Neuralink</strong> &mdash; Systems Engineer Intern, Security
+          Operations (April 2026 &ndash; June 2026), Fremont, CA. Deployed
+          Microsoft Defender XDR and Sentinel across 500+ endpoints and
+          overhauled endpoint, identity, and cloud baselines, earning executive
+          buy-in for a dedicated security team.
+        </li>
+        <li>
+          <strong>Audax Group</strong> &mdash; IT Operations Co-op, Security
+          Operations (May 2025 &ndash; April 2026), Boston, MA. Ran Nessus
+          vulnerability scans and hardened 700+ endpoints to CIS Benchmarks.
+        </li>
+        <li>
+          <strong>CENIC</strong> &mdash; Cybersecurity Intern (May 2024 &ndash;
+          August 2024), La Mirada, CA. DDoS analysis on the CalREN network
+          safeguarding 20M+ students across California K&ndash;20 schools.
+        </li>
+      </ul>
+      <h2>Skills</h2>
+      <p>
+        Microsoft Defender XDR, Microsoft Sentinel, Tenable Nessus, Qualys,
+        OpenVAS, Wazuh, Burp Suite, MITRE ATT&amp;CK, CIS Benchmarks, NIST CSF,
+        Okta, Entra ID, Intune, Terraform, GCP/BigQuery, Kubernetes, Docker,
+        Python, Go, Java, TypeScript, PowerShell, Bash, SQL.
+      </p>
+      <h2>Links</h2>
+      <ul>
+        <li><a href="https://www.linkedin.com/in/sean-finch-g">LinkedIn</a></li>
+        <li><a href="https://github.com/seanfinchg">GitHub</a></li>
+        <li><a href="/resume.pdf">Resume (PDF)</a></li>
+      </ul>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
