@@ -10,7 +10,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "photos:sanitize": "node scripts/strip-exif.mjs"
   },
   "dependencies": {
     "@fontsource/jost": "^5.0.16",
