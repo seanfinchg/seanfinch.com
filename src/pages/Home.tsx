@@ -40,7 +40,7 @@ const Home: React.FC = () => {
 
   usePageMeta(
     "Home",
-    "B.S. Cybersecurity at Northeastern University (Class of 2027) — security engineering, homelab, music, and photography.",
+    "Security Engineer Intern at Palo Alto Networks, previously Neuralink. B.S. Cybersecurity at Northeastern University (Class of 2027) — security engineering, homelab, music, and photography.",
   );
 
   return (
@@ -213,7 +213,7 @@ const Home: React.FC = () => {
                   <span style={{ color: "#fff" }}>whoami</span>
                 </p>
                 <p style={{ color: "#a8c8f0" }}>
-                  sean_finch · systems engineer intern · student · homelabber
+                  sean_finch · security engineer intern · student · homelabber
                 </p>
                 <p>
                   <span style={{ color: "#8bb4f8" }}>
