@@ -44,6 +44,15 @@ for (const file of srcFiles) {
 
 console.log(`\nDone: ${converted} converted, ${skipped} skipped, ${failed} failed`);
 
+// .withMetadata() above preserves EVERY source tag, including camera/lens
+// serials, Nikon MakerNotes (ShutterCount, PowerUpTime) and the Adobe XMP
+// block (RawFileName, document UUIDs, editing OS). Sanitize before committing.
+if (converted > 0) {
+  console.log("");
+  console.log("NEXT: run `npm run photos:sanitize` before committing.");
+  console.log("      Strips identifying metadata; keeps camera/lens/exposure.");
+}
+
 // Spot-check: verify EXIF is readable in first output file
 console.log("\n--- EXIF spot-check on first output file ---");
 import exifr from "exifr";
