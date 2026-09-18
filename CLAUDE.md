@@ -100,6 +100,82 @@ Prioritized list from a whole-site review. **P0 is done** (kept here for context
 - A Vitest smoke test + GitHub Action running `build`/`lint`.
 - Blog (deferred; tooling noted in `docs/ROADMAP.md`).
 
+## Crawler policy (robots.txt + AI)
+
+`public/robots.txt` runs **three deliberately different tiers**. Two mechanics
+it depends on, both easy to get wrong:
+
+- **Rules are not inherited.** A crawler matching a named `User-agent` group
+  ignores `User-agent: *` entirely, so each group must be self-contained.
+- **Longest matching path wins**, not first match. That is why `Disallow: /`
+  can sit *below* a list of `Allow:` lines and still behave.
+
+| Tier | Who | Access |
+| --- | --- | --- |
+| 1 | Search engines (`*`) | Everything, but images limited to `_derived/thumb/` |
+| 2 | `ChatGPT-User`, `Claude-User`, `Perplexity-User`, `Applebot` | Everything |
+| 3 | `GPTBot`, `ClaudeBot`, `PerplexityBot`, `CCBot`, `Google-Extended`, ... | Professional pages only |
+
+Tier 2 is user-triggered fetches (a human asked an assistant to read the site,
+often a recruiter) so it gets full access on purpose. Tier 3 is training and
+answer-engine indexing: the resume surface is open so AI answers about Sean are
+accurate, photography is excluded. `/assets/` is allowed in tier 3 so any
+JS-rendering crawler can boot the SPA.
+
+**Verify changes** before shipping — a longest-match checker over the real file
+beats reasoning about it. `Disallow: /photography/` (trailing slash) does *not*
+match the `/photography` page itself; that asymmetry is load-bearing.
+
+**AI crawlers do not run JavaScript.** GPTBot/ClaudeBot/PerplexityBot fetch HTML
+only, and this is a client-side SPA, so they would otherwise see an empty
+shell. Two things in `index.html` carry the profile for them, and both must be
+kept in sync with `src/data/experiences.ts` when roles change:
+- a **JSON-LD `Person` block** (a data block, so `script-src 'self'` does not
+  apply to it), and
+- a **`<noscript>` fallback** with the experience summary and skills.
+
+Full per-route prerendering is still the deferred P0 and remains the real fix.
+
+## Photo metadata hygiene
+
+`scripts/copy-exif.mjs` calls sharp's `.withMetadata()`, which preserves **every**
+source tag. `scripts/strip-exif.mjs` (`npm run photos:sanitize`) removes the
+identifying ones via exiftool and **must be run after adding photos**, before
+committing. It is idempotent and self-verifying (exits non-zero on any leak).
+
+Stripped: camera/lens serials, vendor **MakerNotes** (Nikon `ShutterCount` and
+`PowerUpTime` fingerprint a body as well as a serial), and the whole **XMP**
+block (Adobe `RawFileName`, `ImageNumber`, persistent `DocumentID`/`InstanceID`
+UUIDs that correlate reposted copies, `CreatorTool` leaking editing OS and
+local timezone, plus ~200 Camera Raw sliders).
+
+Kept: `Make`, `Model`, `LensModel`, `FNumber`, `ExposureTime`, `ISO`,
+`FocalLength`, `DateTimeOriginal`, plus `Artist`/`Copyright` added for
+attribution. No GPS was ever present.
+
+exiftool rewrites only the metadata chunks, so this is **lossless** — verified
+by comparing `VP8`/`ICCP` chunk hashes against git. The gallery is unaffected
+either way: it reads `src/data/photo-exif.json`, built separately from the
+source JPGs. `_derived/*` is already metadata-free (sharp strips by default
+when `.withMetadata()` is not called).
+
+## Retired routes
+
+- **`/music`** (retired Sept 2026) — hidden, not deleted. `src/pages/Music.tsx` and
+  `public/music/` are still in the repo; the page is simply unrouted, so Vite
+  tree-shakes it out of the bundle. To bring it back, re-add the import + the
+  `<Route path="/music">` line in `src/App.tsx`, restore the `sitemap.xml`
+  entry, and drop the `/music` rules from `_redirects` + `netlify.toml`.
+- Hiding is enforced in four places, all of which must agree: the missing route
+  in `App.tsx`, a hard `404` rule in `public/_redirects` (kept **above** the SPA
+  catch-all — Netlify matches in order), `X-Robots-Tag: noindex` headers on
+  `/music` and `/music/*` in `netlify.toml`, and the removed `sitemap.xml` entry.
+- **Open follow-up:** `public/robots.txt` has a `# Disallow: /music` line left
+  commented out on purpose. `/music` was already indexed, and disallowing it
+  would block the crawl that Google needs in order to see the 404/noindex and
+  de-index the URL. Uncomment it only after Search Console confirms `/music` and
+  `/music/*` have dropped out of the index.
+
 ## Known rough edges (candidates for cleanup)
 
 - `npm run lint` currently reports pre-existing `react-hooks` errors in `src/pages/HomelabDiagrams.tsx` and `src/pages/DiagramViewer.tsx` (conditional hook calls / setState-in-effect). These predate the current work; the lint gate won't pass until they're refactored.

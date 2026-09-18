@@ -6,7 +6,6 @@ import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Experience from "./pages/Experience";
-import Music from "./pages/Music";
 import Photography from "./pages/Photography";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
@@ -32,7 +31,6 @@ const AppRoutes = (): React.JSX.Element => (
     <Route path="/projects/cipher-tools/atbash" element={<AtbashCipher />} />
     <Route path="/projects/cipher-tools/rot13" element={<Rot13Cipher />} />
     <Route path="/experience" element={<Experience />} />
-    <Route path="/music" element={<Music />} />
     <Route path="/photography" element={<Photography />} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/about" element={<About />} />
