@@ -24,17 +24,32 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Photography — camera filenames never change, cache for 1 year
+# Photography — camera filenames never change, cache for 1 year.
+# X-Robots-Tag carries the AI-reuse opt-out. noai/noimageai are non-standard
+# (DeviantArt-originated) and only honored by a subset of platforms; Google
+# ignores directives it does not recognize, so Google Images still indexes the
+# thumbnails as intended. Real enforcement for AI crawlers is the scoped
+# User-agent groups in public/robots.txt.
 [[headers]]
   for = "/photography/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+    X-Robots-Tag = "noai, noimageai"
 
-# Music assets — rarely change, cache for 1 week
+# Retired /music page — hard 404 via _redirects, plus an explicit noindex so
+# crawlers that already have the URL drop it from the index.
+[[headers]]
+  for = "/music"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+# Music assets — orphaned with the page, but still reachable by direct link.
+# noindex keeps the images out of Google Images and the PDF out of web results.
 [[headers]]
   for = "/music/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
 
 # Root-level images and media — cache for 1 week
 [[headers]]

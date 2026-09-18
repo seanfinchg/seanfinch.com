@@ -1,2 +1,8 @@
+# /music is retired. Serve the SPA shell (which renders NotFound) but with a
+# real 404 status so crawlers see a hard 404, not a soft one. Must stay above
+# the catch-all below -- Netlify matches _redirects rules in order.
+/music  /index.html  404
+/music/  /index.html  404
+
 /*    /index.html   200
 /resume /resume.pdf 200
