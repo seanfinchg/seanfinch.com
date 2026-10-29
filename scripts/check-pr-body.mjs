@@ -20,6 +20,7 @@ const allowed = [
   /^\s*\d+\. /, // numbered steps
   /^\|/, // table rows
   /^!?\[.*\]\(.*\)$/, // a lone image or link
+  /^🤖 Generated with \[[^\]]+\]\([^)]+\)$/u, // tool attribution footer, like a commit trailer
 ];
 
 const problems = [];
