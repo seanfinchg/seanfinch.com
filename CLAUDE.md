@@ -7,7 +7,7 @@ Guidance for working in this repo (seanfinch.com — Sean Finch's personal portf
 - **React 19** + **TypeScript** + **Vite 8**
 - **Tailwind CSS v4** via the `@tailwindcss/vite` plugin (not the old PostCSS flow; `tailwind.config.js` + `src/index.css`)
 - **react-router-dom v7** (client-side routing, `BrowserRouter`)
-- Hosted on **Netlify** (`netlify.toml`). Target model: `dev` → `stage` → `prod`, where `prod` is the production branch (seanfinch.com) and `dev`/`stage` are noindex branch deploys. Until the cutover in `docs/plans/branch-workflow.md` is finished, production still auto-deploys from `main`.
+- Hosted on **Netlify** (`netlify.toml`). Branches: `dev` → `stage` → `prod`. `prod` is the production branch (seanfinch.com); `dev`/`stage` are noindex branch deploys (dev.seanfinch.com, stage.seanfinch.com). There is no `main`.
 - **Node ≥ 22 required** (`package.json` `engines`). Pinned to **Node 24 LTS** via `.nvmrc`; Netlify builds on `NODE_VERSION = "24"`. `@types/node` tracks the Node 24 major. Locally, `fnm`/`nvm` auto-selects from `.nvmrc`.
 - No app test framework; `npm test` runs `node:test` unit tests for the `scripts/` helpers only.
 
