@@ -1,0 +1,45 @@
+name: Release
+
+# Every merge into prod is a release: tag it YYYY.MM.N (N counts releases within the month)
+# and publish a GitHub Release with notes listing the merged PRs since the last release.
+# dev and stage are not numbered.
+on:
+  push:
+    branches: [prod]
+
+permissions: {}
+
+# One release at a time, so two quick merges can't claim the same number.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: release (tag YYYY.MM.N)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: Tag and publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+        run: |
+          existing="$(git tag --points-at "$SHA" | grep -E '^[0-9]{4}\.[0-9]{2}\.[1-9][0-9]*$' || true)"
+          if [ -n "$existing" ]; then
+            echo "Commit already released as $existing"
+            exit 0
+          fi
+          version="$(node scripts/release-version.mjs)"
+          gh release create "$version" --target "$SHA" --title "$version" --generate-notes
+          echo "Released $version" >> "$GITHUB_STEP_SUMMARY"

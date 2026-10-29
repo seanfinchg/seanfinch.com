@@ -1,0 +1,161 @@
+name: CI
+
+on:
+  pull_request:
+    # `main` is here until the dev/stage/prod cutover; remove it afterwards.
+    branches: [dev, stage, prod, main]
+  push:
+    branches: [dev, stage, prod, main]
+
+# Read-only token. Jobs that need more must ask for it explicitly.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Don't install git hooks during `npm ci` (the `prepare` script runs lefthook).
+  LEFTHOOK: "0"
+  # Security scans (Semgrep, OSV-Scanner) only warn on dev, so findings don't block
+  # day-to-day work. Anything headed for stage or prod must pass them. On `main`
+  # (pre-cutover) this is false, so the scans block.
+  SECURITY_WARN_ONLY: ${{ github.base_ref == 'dev' || github.ref == 'refs/heads/dev' }}
+
+# Every step runs a command you can run locally, so `npm run check` passing on your
+# machine means the check job passes too. Actions are pinned to full commit SHAs.
+jobs:
+  check:
+    name: check (lint, types, build, tests, headers)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run security:headers
+      - name: Whitespace errors in this PR
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: git diff --check "origin/$BASE_REF...HEAD"
+
+  branch-flow:
+    name: branch-flow (dev → stage → prod)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Only dev may merge into stage, and only stage into prod
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+        run: |
+          if [ "$BASE" = "stage" ] && [ "$HEAD" != "dev" ]; then
+            echo "PRs into stage must come from dev (this one is from $HEAD)." >&2; exit 1
+          fi
+          if [ "$BASE" = "prod" ] && [ "$HEAD" != "stage" ]; then
+            echo "PRs into prod must come from stage (this one is from $HEAD)." >&2; exit 1
+          fi
+          echo "OK: $HEAD -> $BASE"
+
+  secrets:
+    name: secrets (gitleaks)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      # Always blocking. Full history; runs as the runner's user so git trusts the checkout.
+      # Image: zricethezav/gitleaks v8.30.1, pinned by digest.
+      - name: Scan the full history for secrets
+        run: |
+          docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/repo" -w /repo \
+            zricethezav/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
+            git --redact --no-banner .
+
+  # Always blocking. Personal and employer-private information (addresses, phone
+  # numbers, personal emails, secrecy markers, private terms, GPS in photos) in every
+  # commit this run adds. Same script as the local hooks; rules in CONTRIBUTING.md.
+  content:
+    name: content (personal info policy)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      # exifr (a devDependency) reads image GPS.
+      - run: npm ci
+      - name: Check new commits
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            range="origin/$BASE_REF..HEAD"
+          elif [ -z "$BEFORE" ] || echo "$BEFORE" | grep -qE '^0+$'; then
+            range="$AFTER^!"
+          else
+            range="$BEFORE..$AFTER"
+          fi
+          node scripts/check-content.mjs range "$range"
+
+  # Static analysis of our own code (injection, XSS, unsafe patterns, secrets).
+  security-code:
+    name: security-code (Semgrep)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Scan src, scripts and config
+        id: semgrep
+        continue-on-error: ${{ env.SECURITY_WARN_ONLY == 'true' }}
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src \
+            semgrep/semgrep:1.181.0@sha256:81474464c1f07483ba0682a44787fd93c91397419762a04abe2bafaae396304b \
+            semgrep scan --metrics=off --disable-version-check --error \
+              --config p/typescript --config p/react --config p/javascript \
+              --config p/owasp-top-ten --config p/secrets \
+              src scripts vite.config.ts
+      - if: steps.semgrep.outcome == 'failure'
+        run: echo "::warning title=Semgrep::Findings above. Warning only on dev; this blocks stage and prod."
+
+  # Known vulnerabilities in every locked dependency. Accepted exceptions, each with
+  # a reason and an expiry date, live in osv-scanner.toml.
+  security-deps:
+    name: security-deps (OSV-Scanner)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Image: ghcr.io/google/osv-scanner v2.7.0, pinned by digest.
+      - id: osv
+        continue-on-error: ${{ env.SECURITY_WARN_ONLY == 'true' }}
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src \
+            ghcr.io/google/osv-scanner:v2.7.0@sha256:4f3b7e2c64b9d38a5febc5a7e4a3dfef1d1362f726dea7a2ef4762b46469fcd0 \
+            scan source --lockfile package-lock.json --config osv-scanner.toml
+      - if: steps.osv.outcome == 'failure'
+        run: echo "::warning title=OSV-Scanner::Findings above. Warning only on dev; this blocks stage and prod."

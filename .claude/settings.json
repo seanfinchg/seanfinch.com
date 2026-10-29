@@ -8,5 +8,20 @@
       "Bash(node scripts/extract-exif.mjs)",
       "Bash(node -e ' *)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && node scripts/agent-guard.mjs",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
   }
 }

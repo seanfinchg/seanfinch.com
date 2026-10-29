@@ -1,0 +1,38 @@
+name: PR description
+
+# Separate from CI so that editing a PR description re-runs only this check.
+on:
+  pull_request:
+    branches: [dev, stage, prod, main] # remove main after the branch cutover
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-description-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  description:
+    name: description (short and bulleted)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      # Passed through an environment variable, never interpolated into the script.
+      # Dependabot writes long release notes, so its PRs skip the length check.
+      - if: github.event.pull_request.user.login != 'dependabot[bot]'
+        run: node scripts/check-pr-body.mjs
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+      - name: Content policy on the title and description
+        run: printf '%s\n%s\n' "$PR_TITLE" "$PR_BODY" | node scripts/check-content.mjs text
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
