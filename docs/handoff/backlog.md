@@ -34,8 +34,6 @@ Priority: **P1** visible to recruiters now · **P2** quality/consistency · **P3
 - **SF-6 (P2) Home undersells the work.** Three role cards duplicate Experience;
   one featured project; no photography or security tools. Consider a featured
   photo strip and featuring the security projects.
-- **SF-7 (P2) About is a wall of monospace prose.** Body copy should use the
-  reading font; keep monospace for labels/chips.
 - **SF-8 (P2) Contact is two small cards in an empty screen.**
 
 ## Performance and accessibility
@@ -45,8 +43,6 @@ Priority: **P1** visible to recruiters now · **P2** quality/consistency · **P3
 - **SF-10 (P2) `prefers-reduced-motion`.** Not respected by `.scroll-reveal`,
   `animate-pulse-dot`, or hover transforms (`src/index.css`).
 - **SF-11 (P3) Trim `@fontsource` to latin subsets.**
-- **SF-12 (P2) `npm audit`**: 6 known vulns (1 low / 2 moderate / 3 high) as of the
-  Node 24 bump. Blocks the stage/prod security gate in the branch plan.
 
 ## Photo pipeline
 
@@ -69,13 +65,24 @@ Priority: **P1** visible to recruiters now · **P2** quality/consistency · **P3
 - **SF-15 (P3) Gear list is incomplete.** Four photos are from a Fujifilm X-T4; the
   hero/footer `CAMERA`/`LENSES` consts in `src/pages/Photography.tsx` list only the D610.
 
+## Privacy (needs Sean)
+
+- **SF-21 (P1) `public/resume.pdf` publishes a personal phone number and Gmail.** Re-export
+  with `contact@seanfinch.com` and no phone. The old file stays in git history unless
+  history is rewritten.
+- **SF-22 (P1) Hidden photo `DSC_9001.webp` is still public** at its URL. If it shows
+  Sean's home, delete the file rather than hiding it.
+
 ## Tooling and process
 
-- **SF-16 (P1) Branch + PR workflow.** Plan in `docs/plans/branch-workflow.md`
-  (dev → stage → prod, modelled on KashmirLivingArchive). **Needs Sean:** the six
-  open questions at the end of that file. Then write Sonnet 5.5 briefs per phase.
-- **SF-17 (P3) `CLAUDE.md` "Known rough edges" is stale.** The `HomelabDiagrams`/
-  `DiagramViewer` lint errors it lists are gone (lint passes, Oct 2026).
+- **SF-16 (P1) Finish the dev → stage → prod cutover.** Done: `dev`/`stage` branches,
+  CI + security gates, rulesets (PR + required checks; stage/prod also need Semgrep
+  and OSV), merge-commit only, auto-merge, default branch `dev`. Left, in order:
+  force-push the rewritten `stage` (ruleset 26089364 off → `git push
+  --force-with-lease=stage:6173586 origin stage` → on); Netlify production branch →
+  `prod`, branch deploys `dev`+`stage`, branch subdomains on `seanfinch.com`; rename
+  `main` → `prod`; first `dev` → `stage` → `prod` promotion; drop `main` from the
+  workflow triggers; check `dev.`/`stage.seanfinch.com` send `noindex`.
 - **SF-19 (P3) Machine-specific Claude settings are committed.** `.claude/settings.json`
   and `.claude/settings.local.json` are tracked despite the ignore rule. They hold
   permission allowlists with old `Documents\websites\` paths, no secrets.
