@@ -29,8 +29,9 @@ Every commit is kept, so history shows what changed and when, and promotion PRs 
 Every PR also gets a Deploy Preview (noindex). Force-pushing and deleting `dev`, `stage`
 and `prod` are blocked once the rulesets are on.
 
-Until the cutover described in `docs/plans/branch-workflow.md` is done, `main` is still
-the production branch and CI also runs on it. After the cutover `main` no longer exists.
+`prod` is Netlify's production branch (seanfinch.com); `dev` and `stage` are branch
+deploys at dev.seanfinch.com and stage.seanfinch.com, served with `noindex`. There is no
+`main` branch: it was renamed to `prod` at the cutover.
 
 ## Making a change
 
