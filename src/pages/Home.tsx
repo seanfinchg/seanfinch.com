@@ -117,7 +117,12 @@ const Home: React.FC = () => {
 
               <div className="flex items-center gap-5 p-6">
                 <img
-                  src="/pfp.webp"
+                  src="/pfp-176.webp"
+                  srcSet="/pfp-88.webp 88w, /pfp-176.webp 176w, /pfp-264.webp 264w"
+                  sizes="88px"
+                  width={88}
+                  height={88}
+                  decoding="async"
                   alt="Sean Finch"
                   className="w-[88px] h-[88px] rounded-full object-cover shrink-0
                     ring-2 ring-sky-400/40 group-hover:ring-sky-400/80

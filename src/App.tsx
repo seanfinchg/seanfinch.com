@@ -1,23 +1,68 @@
-import React, { useEffect } from "react";
+import React, { lazy, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/themeContext";
-import { photos, PHOTOS_PER_PAGE, photoThumb } from "./data/photos";
+import { featuredStack, photoLarge, photos, PHOTOS_PER_PAGE, photoThumb } from "./data/photos";
 import Layout from "./layouts/Layout";
+import { canPrefetch, whenIdle } from "./utils/idle";
 import Home from "./pages/Home";
+import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Experience from "./pages/Experience";
-import Photography from "./pages/Photography";
 import Contact from "./pages/Contact";
-import About from "./pages/About";
-import HomelabDiagrams from "./pages/HomelabDiagrams";
-import DiagramViewer from "./pages/DiagramViewer";
-import CipherTools from "./pages/CipherTools";
-import CaesarCipher from "./pages/CaesarCipher";
-import VigenereCipher from "./pages/VigenereCipher";
-import AtbashCipher from "./pages/AtbashCipher";
-import Rot13Cipher from "./pages/Rot13Cipher";
-import { Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
+import { Navigate } from "react-router-dom";
+
+// The small content pages (5-9 KB each) stay in the main bundle: splitting
+// them saved almost nothing and added a network round trip when landing on
+// them directly. The heavy or rarely visited pages are their own chunks;
+// Photography alone pulls in react-zoom-pan-pinch.
+const pages = {
+  photography: () => import("./pages/Photography"),
+  homelab: () => import("./pages/HomelabDiagrams"),
+  diagram: () => import("./pages/DiagramViewer"),
+  cipherTools: () => import("./pages/CipherTools"),
+  caesar: () => import("./pages/CaesarCipher"),
+  vigenere: () => import("./pages/VigenereCipher"),
+  atbash: () => import("./pages/AtbashCipher"),
+  rot13: () => import("./pages/Rot13Cipher"),
+};
+
+const Photography = lazy(pages.photography);
+const HomelabDiagrams = lazy(pages.homelab);
+const DiagramViewer = lazy(pages.diagram);
+const CipherTools = lazy(pages.cipherTools);
+const CaesarCipher = lazy(pages.caesar);
+const VigenereCipher = lazy(pages.vigenere);
+const AtbashCipher = lazy(pages.atbash);
+const Rot13Cipher = lazy(pages.rot13);
+
+// Start fetching the landing route's chunk now, in parallel with React's first
+// render, instead of waiting for <Suspense> to discover it.
+const initialPage = ((): (() => Promise<unknown>) | undefined => {
+  const path = window.location.pathname.replace(/\/+$/, "");
+  if (path === "/photography") return pages.photography;
+  if (path === "/projects/homelab") return pages.homelab;
+  if (path.startsWith("/projects/homelab/")) return pages.diagram;
+  if (path === "/projects/cipher-tools") return pages.cipherTools;
+  if (path.startsWith("/projects/cipher-tools/")) {
+    const name = path.slice("/projects/cipher-tools/".length);
+    if (name === "caesar" || name === "vigenere" || name === "atbash" || name === "rot13") return pages[name];
+  }
+  return undefined;
+})();
+void initialPage?.();
+
+// The Photography hero is its LCP image, but its <img> only exists once that
+// page's chunk has loaded and rendered. Preload it now so the two download in
+// parallel. Same URL as the hero's src, so the browser reuses the response.
+if (initialPage === pages.photography && featuredStack) {
+  const link = document.createElement("link");
+  link.rel = "preload";
+  link.as = "image";
+  link.href = photoLarge(featuredStack.files[featuredStack.cover] ?? featuredStack.files[0] ?? "");
+  link.fetchPriority = "high";
+  document.head.appendChild(link);
+}
 
 const AppRoutes = (): React.JSX.Element => (
   <Routes>
@@ -40,15 +85,34 @@ const AppRoutes = (): React.JSX.Element => (
 );
 
 const App: React.FC = () => {
-  // Background-preload page 1 photos 3s after app load so Photography feels instant
+  // Once the landing page has fully loaded and settled, warm the other page
+  // chunks (so navigation never waits on the network) and page 1 of the
+  // gallery thumbnails (so Photography feels instant). Waiting for `load` plus
+  // 3s keeps these bytes from competing with fonts and the LCP element; idle
+  // callbacks alone fire too early, while the network is still busy. Skipped
+  // on Save-Data or slow connections.
   useEffect(() => {
-    const timer = setTimeout(() => {
-      photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
-        const img = new Image();
-        img.src = photoThumb(f);
-      });
-    }, 3000);
-    return () => { clearTimeout(timer); };
+    if (!canPrefetch()) return;
+    let timer: number | undefined;
+    let cancelIdle: (() => void) | undefined;
+    const warm = (): void => {
+      timer = window.setTimeout(() => {
+        cancelIdle = whenIdle(() => {
+          Object.values(pages).forEach((load) => { void load(); });
+          photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
+            const img = new Image();
+            img.src = photoThumb(f);
+          });
+        });
+      }, 3000);
+    };
+    if (document.readyState === "complete") warm();
+    else window.addEventListener("load", warm, { once: true });
+    return () => {
+      window.removeEventListener("load", warm);
+      window.clearTimeout(timer);
+      cancelIdle?.();
+    };
   }, []);
 
   return (

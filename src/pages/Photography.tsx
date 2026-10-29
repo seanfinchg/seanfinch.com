@@ -21,6 +21,7 @@ import {
   PHOTOS_PER_PAGE,
   photoSrc,
   photoThumb,
+  photoMedium,
   photoLarge,
   photoTitle,
   type PhotoStack,
@@ -48,6 +49,12 @@ const exifByFile = exifDb as Record<string, ExifData>;
 /** The default-display file for a stack (edited version), never undefined. */
 const coverFile = (stack: PhotoStack): string =>
   stack.files[stack.cover] ?? stack.files[0] ?? "";
+
+// Lightbox image candidates. The image is at most the viewport wide (less the
+// details panel on md+), so phones and 1x laptops get the 1200px derivative
+// and high-DPI screens still get 2000px. Zooming in switches to `large`.
+const lightboxSrcSet = (f: string): string => `${photoMedium(f)} 1200w, ${photoLarge(f)} 2000w`;
+const LIGHTBOX_SIZES = "(min-width: 768px) calc(100vw - 18rem), 100vw";
 
 const tagLabels = new Map(PHOTO_TAGS);
 const stackTags = (stack: PhotoStack): string[] => photoMeta(stack.id).tags ?? [];
@@ -207,6 +214,8 @@ const Photography: React.FC = () => {
   const [version, setVersion] = useState<PerPhoto<number> | null>(null);
   const [compareFor, setCompareFor] = useState<string | null>(null);
   const [fullQualityFor, setFullQualityFor] = useState<string | null>(null);
+  // File the viewer has zoomed into; it switches to the 2000px derivative.
+  const [zoomedFile, setZoomedFile] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const zoomScaleRef = useRef(1);
@@ -373,7 +382,10 @@ const Photography: React.FC = () => {
     [-1, 1, 2].forEach((offset) => {
       const stack = navList[lbIndex + offset];
       if (!stack) return;
+      // Same candidates as the lightbox <img>, so the preload is the one it uses.
       const img = new Image();
+      img.sizes = LIGHTBOX_SIZES;
+      img.srcset = lightboxSrcSet(coverFile(stack));
       img.src = photoLarge(coverFile(stack));
     });
     // Keyed on the active photo only.
@@ -678,7 +690,10 @@ const Photography: React.FC = () => {
                   pinch={{ step: 5 }}
                   panning={{ velocityDisabled: true }}
                   onInit={() => { zoomScaleRef.current = 1; }}
-                  onTransform={(ref) => { zoomScaleRef.current = ref.state.scale; }}
+                  onTransform={(ref) => {
+                    zoomScaleRef.current = ref.state.scale;
+                    if (ref.state.scale > 1.05 && zoomedFile !== currentFile) setZoomedFile(currentFile);
+                  }}
                 >
                   <TransformComponent
                     wrapperStyle={{ width: "100%", height: "100%" }}
@@ -692,6 +707,9 @@ const Photography: React.FC = () => {
                   >
                     <img
                       src={fullQuality ? photoSrc(currentFile) : photoLarge(currentFile)}
+                      {...(fullQuality || zoomedFile === currentFile
+                        ? {}
+                        : { srcSet: lightboxSrcSet(currentFile), sizes: LIGHTBOX_SIZES })}
                       alt={photoAlt(currentStack.id)}
                       // Cover dimensions reserve the box so the blurred thumb
                       // placeholder shows while the large image streams in.

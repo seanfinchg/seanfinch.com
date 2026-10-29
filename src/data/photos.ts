@@ -9,6 +9,7 @@ export {
   PHOTOS_PER_PAGE,
   photoSrc,
   photoThumb,
+  photoMedium,
   photoLarge,
 } from "virtual:photo-manifest";
 
