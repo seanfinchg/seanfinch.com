@@ -1,7 +1,15 @@
 /// <reference types="vite/client" />
 
 declare module "virtual:photo-manifest" {
-  export interface PhotoStack { files: string[]; cover: number }
+  export interface PhotoStack {
+    /** Shared base filename — stable key for URLs and photo-meta.json. */
+    id: string;
+    files: string[];
+    cover: number;
+    /** Cover file pixel dimensions. */
+    w: number;
+    h: number;
+  }
   export const photoStacks: PhotoStack[];
   export const PHOTOS_PER_PAGE: number;
   /** Full-resolution original (only load on explicit request). */

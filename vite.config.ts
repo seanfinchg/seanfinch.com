@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import { readdirSync, readFileSync, existsSync, statSync, mkdirSync, renameSync } from "fs";
+import { readdirSync, readFileSync, writeFileSync, existsSync, statSync, mkdirSync, renameSync } from "fs";
 import sharp from "sharp";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -22,12 +22,43 @@ const DERIVATIVES = [
 ] as const;
 const DERIVED_DIR = "_derived";
 
+// Attribution embedded in every derivative. These are the files visitors
+// actually see and save, so they carry the same Artist/Copyright as the
+// originals (scripts/strip-exif.mjs) plus the IPTC fields Google Images shows
+// as "Creator" / "Copyright notice" / "Credit". Nothing identifying (serials,
+// MakerNotes, editing history) is ever written here.
+const ARTIST = "Sean Finch";
+const COPYRIGHT = "(c) Sean Finch. All rights reserved.";
+const WEB_STATEMENT = "https://seanfinch.com/photography";
+const DERIVED_EXIF = { IFD0: { Artist: ARTIST, Copyright: COPYRIGHT } };
+const DERIVED_XMP = `<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+ <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about=""
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
+    xmlns:xmpRights="http://ns.adobe.com/xap/1.0/rights/">
+   <dc:creator><rdf:Seq><rdf:li>${ARTIST}</rdf:li></rdf:Seq></dc:creator>
+   <dc:rights><rdf:Alt><rdf:li xml:lang="x-default">${COPYRIGHT}</rdf:li></rdf:Alt></dc:rights>
+   <photoshop:Credit>${ARTIST}</photoshop:Credit>
+   <xmpRights:Marked>True</xmpRights:Marked>
+   <xmpRights:WebStatement>${WEB_STATEMENT}</xmpRights:WebStatement>
+  </rdf:Description>
+ </rdf:RDF>
+</x:xmpmeta>
+<?xpacket end="w"?>`;
+// Bump when derivative settings or embedded metadata change, so existing
+// derivatives are regenerated instead of skipped as "up to date".
+const DERIVED_VERSION = "3-attribution-raw";
+
 async function generateDerivatives(photoDir: string): Promise<void> {
   if (!existsSync(photoDir)) return;
   const files = readdirSync(photoDir).filter((f) => f.toLowerCase().endsWith(".webp"));
   for (const cfg of DERIVATIVES) {
     mkdirSync(resolve(photoDir, DERIVED_DIR, cfg.dir), { recursive: true });
   }
+  const stampPath = resolve(photoDir, DERIVED_DIR, ".version");
+  const stale = !existsSync(stampPath) || readFileSync(stampPath, "utf8").trim() !== DERIVED_VERSION;
 
   let made = 0;
   for (const f of files) {
@@ -36,11 +67,19 @@ async function generateDerivatives(photoDir: string): Promise<void> {
     for (const cfg of DERIVATIVES) {
       const outPath = resolve(photoDir, DERIVED_DIR, cfg.dir, f);
       // Skip when an up-to-date derivative already exists (fast restarts).
-      if (existsSync(outPath) && statSync(outPath).mtimeMs >= srcMtime) continue;
+      if (!stale && existsSync(outPath) && statSync(outPath).mtimeMs >= srcMtime) continue;
       try {
-        await sharp(srcPath)
+        // Decode to raw pixels first so nothing from the source (notably its
+        // ~9 KB embedded EXIF preview) is carried into the output; only the
+        // attribution below is written. Still a single lossy encode.
+        const { data, info } = await sharp(srcPath)
           .resize({ width: cfg.width, withoutEnlargement: true })
+          .raw()
+          .toBuffer({ resolveWithObject: true });
+        await sharp(data, { raw: { width: info.width, height: info.height, channels: info.channels } })
           .webp({ quality: cfg.quality })
+          .withExif(DERIVED_EXIF)
+          .withXmp(DERIVED_XMP)
           .toFile(outPath + ".tmp");
         renameSync(outPath + ".tmp", outPath);
         made++;
@@ -49,15 +88,21 @@ async function generateDerivatives(photoDir: string): Promise<void> {
       }
     }
   }
+  writeFileSync(stampPath, DERIVED_VERSION);
   if (made > 0) console.log(`[photo-manifest] generated ${made} image derivative(s)`);
 }
 
 interface Stack {
+  /** Shared base filename (e.g. "DSC_8875") — stable key for URLs + photo-meta.json. */
+  id: string;
   files: string[];
   cover: number;
+  /** Pixel dimensions of the cover file, so the grid can lay out before load. */
+  w: number;
+  h: number;
 }
 
-function buildManifest(): Stack[] {
+async function buildManifest(): Promise<Stack[]> {
   const photoDir = resolve(__dirname, "public/photography");
   const exifPath = resolve(__dirname, "src/data/photo-exif.json");
   const hiddenPath = resolve(__dirname, "src/data/photo-hidden.json");
@@ -102,12 +147,17 @@ function buildManifest(): Stack[] {
     else groups.set(base, [f]);
   }
 
-  const stacks = [...groups.values()].map((grp) => {
-    const sortedFiles = [...grp].sort((a, b) => sortOrder(a) - sortOrder(b));
-    // Default the tile/lightbox to the edited version when one exists.
-    const editedIdx = sortedFiles.findIndex(isEdited);
-    return { files: sortedFiles, cover: editedIdx >= 0 ? editedIdx : 0 };
-  });
+  const stacks = await Promise.all(
+    [...groups.entries()].map(async ([id, grp]): Promise<Stack> => {
+      const sortedFiles = [...grp].sort((a, b) => sortOrder(a) - sortOrder(b));
+      // Default the tile/lightbox to the edited version when one exists.
+      const editedIdx = sortedFiles.findIndex(isEdited);
+      const cover = editedIdx >= 0 ? editedIdx : 0;
+      // Header-only read; originals are already orientation-corrected by copy-exif.
+      const meta = await sharp(resolve(photoDir, sortedFiles[cover])).metadata();
+      return { id, files: sortedFiles, cover, w: meta.width, h: meta.height };
+    }),
+  );
 
   // Sort stacks newest-first by EXIF date, fall back to filename descending
   stacks.sort((a, b) => {
@@ -130,12 +180,12 @@ function photoManifestPlugin(): Plugin {
       if (id === VIRTUAL_ID) return RESOLVED_ID;
     },
 
-    load(id) {
+    async load(id) {
       if (id !== RESOLVED_ID) return;
-      const stacks = buildManifest();
+      const stacks = await buildManifest();
       return `
 export const photoStacks = ${JSON.stringify(stacks)};
-export const PHOTOS_PER_PAGE = 20;
+export const PHOTOS_PER_PAGE = 24;
 export const photoSrc = (f) => '/photography/' + encodeURIComponent(f);
 export const photoThumb = (f) => '/photography/${DERIVED_DIR}/thumb/' + encodeURIComponent(f);
 export const photoLarge = (f) => '/photography/${DERIVED_DIR}/large/' + encodeURIComponent(f);

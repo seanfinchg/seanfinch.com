@@ -1,0 +1,122 @@
+{
+  "featured": "DSC_8875",
+  "tags": {
+    "street": "Street",
+    "night": "Night",
+    "landscape": "Landscape",
+    "nature": "Nature",
+    "winter": "Winter"
+  },
+  "photos": {
+    "DSCF0092 1": {
+      "title": "Surf and Stone",
+      "alt": "Waves breaking white over rust-colored rocks along a rugged ocean coastline under a partly cloudy sky.",
+      "tags": ["landscape"]
+    },
+    "DSCF0296": {
+      "title": "Banana Slug",
+      "alt": "A yellow banana slug crawling across dark soil beside a small green sprout, with a shallow depth of field.",
+      "tags": ["nature"]
+    },
+    "DSCF0740": {
+      "title": "Bixby Bridge",
+      "alt": "The concrete arch of Bixby Creek Bridge spanning a green canyon above the Big Sur coastline.",
+      "tags": ["landscape"]
+    },
+    "DSCF0999": {
+      "title": "Vineyard Hill",
+      "alt": "Neat rows of green vines covering a rolling hillside under a blue sky.",
+      "tags": ["landscape", "nature"]
+    },
+    "DSC_5619": {
+      "title": "Afternoon in the Park",
+      "alt": "Late-afternoon sun filtering through large trees onto a grassy park, with a white gazebo in the distance.",
+      "tags": ["nature"]
+    },
+    "DSC_5891": {
+      "title": "Back Alley at Dusk",
+      "alt": "A narrow alley between brick buildings at dusk, lit by warm wall lamps.",
+      "tags": ["street", "night"]
+    },
+    "DSC_6397": {
+      "title": "Paramount",
+      "alt": "The glowing vertical Paramount theater sign over a dark downtown street at night.",
+      "tags": ["street", "night"]
+    },
+    "DSC_6597": {
+      "title": "Painted Street",
+      "alt": "A pedestrian street between tall buildings, its pavement painted with a winding blue pattern.",
+      "tags": ["street"]
+    },
+    "DSC_6698": {
+      "title": "Red Scooter",
+      "alt": "A rider in a white helmet on a red scooter turning through an intersection in front of brick rowhouses.",
+      "tags": ["street"]
+    },
+    "DSC_6750": {
+      "title": "Evening Run",
+      "alt": "A runner on a footpath beside a passing commuter train, backlit by an overcast sunset.",
+      "tags": ["street"]
+    },
+    "DSC_6989": {
+      "title": "Steeple at Night",
+      "alt": "A lit white steeple glowing above dark buildings at the end of a quiet nighttime street.",
+      "tags": ["street", "night"]
+    },
+    "DSC_7407": {
+      "title": "Autumn Gold",
+      "alt": "A tree with bright yellow autumn leaves arching over a park path where a person walks a dog.",
+      "tags": ["nature"]
+    },
+    "DSC_7817": {
+      "title": "Night Dock",
+      "alt": "A dimly lit waterfront dock at night, its railings catching faint light.",
+      "tags": ["night"]
+    },
+    "DSC_7907": {
+      "title": "Snow Day",
+      "alt": "Two dogs bounding through deep fresh snow in a park.",
+      "tags": ["nature", "winter"]
+    },
+    "DSC_8381": {
+      "title": "Walking Home",
+      "alt": "A person walking away down a snow-covered brick street lined with lamp-lit rowhouses at dusk.",
+      "tags": ["street", "winter"]
+    },
+    "DSC_8400": {
+      "title": "Corner Market",
+      "alt": "The warmly lit storefront of DeLuca's Market at night, with snow piled on the sidewalk and a bicycle out front.",
+      "tags": ["street", "night", "winter"]
+    },
+    "DSC_8865": {
+      "title": "River at Dusk",
+      "alt": "Bare branches framing a gray river and a distant city skyline under an overcast evening sky.",
+      "tags": ["landscape"]
+    },
+    "DSC_8875": {
+      "title": "Blue Hour Skyline",
+      "alt": "The Prudential Tower lit pink and white above the city skyline at blue hour, reflected in the river below.",
+      "tags": ["landscape", "night"]
+    },
+    "DSC_8892": {
+      "title": "Underpass Light",
+      "alt": "A curved concrete structure glowing with warm light over an empty walkway at night.",
+      "tags": ["street", "night"]
+    },
+    "DSC_9005": {
+      "title": "Back Bay Afternoon",
+      "alt": "The Prudential Tower rising behind ornate brick rowhouses and parked cars under a clear blue sky.",
+      "tags": ["street"]
+    },
+    "DSC_9249": {
+      "title": "Red Streetcar",
+      "alt": "A vintage red streetcar rolling down a dark city street at night.",
+      "tags": ["street", "night"]
+    },
+    "DSC_9258": {
+      "title": "Green Streetcar",
+      "alt": "A vintage green streetcar rounding a corner on its tracks under streetlights at night.",
+      "tags": ["street", "night"]
+    }
+  }
+}
