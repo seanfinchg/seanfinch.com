@@ -64,7 +64,10 @@ export const getCurrentExperience = (
   const active = withStart.filter(
     ({ parsed }) => now >= parsed.start && now <= parsed.end,
   );
-  const pool = active.length > 0 ? active : withStart;
+  const pool =
+    active.length > 0
+      ? active
+      : withStart.filter(({ parsed }) => parsed.start <= now);
   if (pool.length === 0) return null;
 
   pool.sort((a, b) => b.parsed.start.getTime() - a.parsed.start.getTime());

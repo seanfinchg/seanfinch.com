@@ -18,6 +18,18 @@ import cyberpatriotLogo from "../assets/cyberpatriot.jpeg";
 
 export const experiences: ExperienceProps[] = [
   {
+    title: "Security Engineer (Incoming)",
+    company: "Palo Alto Networks",
+    location: "Santa Clara, CA",
+    description: [
+      "Accepted a full-time offer to return to Palo Alto Networks as a Security Engineer after graduating from Northeastern University",
+    ],
+    dateRange: "July 2027 – Present",
+    featured: true,
+    logo: paloLogo,
+    companyUrl: "https://www.paloaltonetworks.com/",
+  },
+  {
     title: "Security Engineer Intern",
     company: "Palo Alto Networks",
     location: "Santa Clara, CA",
