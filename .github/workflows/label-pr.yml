@@ -8,7 +8,7 @@ name: Label PR
 on:
   pull_request_target:
     types: [opened, reopened, edited, synchronize]
-    branches: [dev, stage, prod, main] # remove main after the branch cutover
+    branches: [dev, stage, prod]
 
 permissions: {}
 

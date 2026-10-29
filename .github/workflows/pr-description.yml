@@ -3,7 +3,7 @@ name: PR description
 # Separate from CI so that editing a PR description re-runs only this check.
 on:
   pull_request:
-    branches: [dev, stage, prod, main] # remove main after the branch cutover
+    branches: [dev, stage, prod]
     types: [opened, edited, reopened, synchronize]
 
 permissions:
