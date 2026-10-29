@@ -1,7 +1,7 @@
 # Plan: dev → stage → prod branches and PR workflow
 
-Status: **draft for review**. Nothing here has been done yet. After review, each phase is
-turned into explicit step lists for Sonnet 5.5 subagents.
+> **Status (2026-10-29): carried out.** Kept as the record of how the cutover was planned;
+> `CONTRIBUTING.md` is the current source of truth.
 
 Modelled on `KashmirLivingArchive` (KLA): same branch names, merge-commit-only rule, CI
 gate layout, PR template and length check, auto-labels, `YYYY.MM.N` releases on merge to
