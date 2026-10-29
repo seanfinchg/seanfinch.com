@@ -2,10 +2,9 @@ name: CI
 
 on:
   pull_request:
-    # `main` is here until the dev/stage/prod cutover; remove it afterwards.
-    branches: [dev, stage, prod, main]
+    branches: [dev, stage, prod]
   push:
-    branches: [dev, stage, prod, main]
+    branches: [dev, stage, prod]
 
 # Read-only token. Jobs that need more must ask for it explicitly.
 permissions:
@@ -19,8 +18,7 @@ env:
   # Don't install git hooks during `npm ci` (the `prepare` script runs lefthook).
   LEFTHOOK: "0"
   # Security scans (Semgrep, OSV-Scanner) only warn on dev, so findings don't block
-  # day-to-day work. Anything headed for stage or prod must pass them. On `main`
-  # (pre-cutover) this is false, so the scans block.
+  # day-to-day work. Anything headed for stage or prod must pass them.
   SECURITY_WARN_ONLY: ${{ github.base_ref == 'dev' || github.ref == 'refs/heads/dev' }}
 
 # Every step runs a command you can run locally, so `npm run check` passing on your
