@@ -1,7 +1,10 @@
 @import "tailwindcss";
-@import "@fontsource/roboto-slab";
-@import "@fontsource/raleway";
-@import "@fontsource/jost";
+/* Latin subset, weight 400 only: every character the site uses is in the Latin
+   range (arrows and emoji fall back to system fonts either way), and bold text
+   has always been synthesized from 400. Was all subsets: Cyrillic, Greek, Vietnamese. */
+@import "@fontsource/roboto-slab/latin-400.css";
+@import "@fontsource/raleway/latin-400.css";
+@import "@fontsource/jost/latin-400.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -109,5 +112,31 @@
       transparent 1px
     );
     background-size: 24px 24px;
+  }
+}
+
+/* Respect "reduce motion" (SF-10). Unlayered, so it beats the utilities layer.
+   Nothing changes for anyone who hasn't asked for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Scroll-revealed sections are simply there. */
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+  }
+  /* No hover zoom or lift; colour and shadow hover states stay. */
+  [class*="hover:scale"]:hover,
+  .group:hover [class*="group-hover:scale"],
+  [class*="hover:-translate-y"]:hover,
+  .group:hover [class*="group-hover:translate-x"] {
+    scale: none !important;
+    translate: none !important;
   }
 }

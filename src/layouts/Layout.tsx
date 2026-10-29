@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useTheme } from "../contexts/themeContext";
@@ -102,9 +102,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       />
 
       <Navbar />
-      <div key={location.pathname} className="animate-page-in relative z-10">
-        {children}
-      </div>
+      {/* Lazy pages suspend here, outside the keyed wrapper, so a page mounts
+          with its content and the page-in animation plays on the real page.
+          The empty fallback holds the footer down without a spinner flash. */}
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <div key={location.pathname} className="animate-page-in relative z-10">
+          {children}
+        </div>
+      </Suspense>
       {!hideFooter && <Footer />}
 
       {/* Floating theme toggle */}
