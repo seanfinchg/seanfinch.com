@@ -15,8 +15,9 @@ dist-ssr
 # Generated photo derivatives (thumb/large) — regenerated at build time
 public/photography/_derived
 
-# Claude
-.claude/
+# Claude: local settings stay private; shared commands are committed
+.claude/*
+!.claude/commands/
 
 # Editor directories and files
 .vscode/*
@@ -28,3 +29,7 @@ public/photography/_derived
 *.njsproj
 *.sln
 *.sw?
+
+# Harness run output
+.harness/reports/
+.harness/runs/

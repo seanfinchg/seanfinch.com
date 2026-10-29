@@ -1,0 +1,126 @@
+# harness config for seanfinch.com
+#
+#   harness tasks --project seanfinch.com
+#   harness dial  --project seanfinch.com
+#   harness run   seanfinch.com:check
+#
+# Level: guided. Every task here works inside this repo only: nothing pushes,
+# deploys, or calls a paid API (Netlify deploys come from git, which no task
+# touches). The two things that can lose work are gated regardless:
+# overwriting committed photos (photos-refresh) and rewriting the handoff doc.
+# Raising this to autonomous is reasonable once photos-refresh is rewritten
+# (backlog SF-13/SF-14).
+
+version: 1
+project: seanfinch.com
+description: Sean Finch's portfolio (React 19 + Vite 8, Netlify). Handoffs in docs/handoff/.
+
+automation:
+  level: guided
+  checkpoints:
+    # Overwriting a committed photo breaks the immutable /photography/* cache
+    # (see CLAUDE.md), so always ask, even at higher levels.
+    custom.photos-overwrite: ask
+
+vars:
+  reports: .harness/reports
+
+tasks:
+  check:
+    description: The definition of done. Lint (zero warnings), typecheck + build, whitespace.
+    tags: [gate]
+    steps:
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build
+      - name: diff-check
+        run: git diff --check
+
+  handoff:
+    description: Refresh the handoff snapshot (git state + gates) and write docs/handoff/CURRENT.md.
+    tags: [handoff]
+    steps:
+      # --stdout leaves the file alone; the write below goes through the
+      # finalize gate so the new snapshot is shown before it lands.
+      - name: snapshot
+        run: node scripts/handoff.mjs --gates --stdout
+        register: snapshot
+      - name: write
+        type: write_file
+        path: docs/handoff/CURRENT.md
+        content: ${steps.snapshot.data.stdout}
+        prompt: Write the refreshed snapshot into docs/handoff/CURRENT.md? (Prose sections are kept as-is.)
+      - name: remind
+        type: notify
+        message: Snapshot refreshed. The prose sections of CURRENT.md still need a human or /plz-handoff.
+
+  photo-audit:
+    description: List gallery photos missing a title, alt text, or valid tags in src/data/photo-meta.json.
+    tags: [photos]
+    steps:
+      - name: audit
+        run: node scripts/photo-meta-audit.mjs
+
+  photos-sanitize:
+    description: Strip identifying EXIF/XMP from public/photography originals and re-stamp attribution (lossless, idempotent).
+    tags: [photos]
+    steps:
+      - name: sanitize
+        run: npm run photos:sanitize
+        # exiftool rewrites committed files in place; metadata only, pixels untouched.
+        confirm: true
+        confirm_prompt: Rewrite metadata in place on every committed photo (lossless, pixels unchanged)?
+
+  photos-refresh:
+    description: >-
+      Re-encode photos from C:\Users\seanf\Downloads\Portfolio Pics over their existing
+      .webp files, rebuild photo-exif.json, sanitize, audit, check. Known gaps: SF-13, SF-14.
+    tags: [photos]
+    steps:
+      - name: overwrite
+        type: checkpoint
+        kind: custom
+        id: photos-overwrite
+        destructive: true
+        prompt: Re-encode and overwrite committed photos under the same filenames?
+        context: >-
+          scripts/copy-exif.mjs only updates JPGs whose .webp already exists (new files are
+          skipped), and re-encoding changes pixels under a filename that is cached immutably
+          for a year. scripts/extract-exif.mjs then rebuilds photo-exif.json from the
+          Downloads folder alone, dropping EXIF for anything not there. See backlog SF-13/SF-14.
+        format: approval
+        default: false
+      - name: convert
+        run: node scripts/copy-exif.mjs
+        destructive: true
+      - name: exif
+        run: node scripts/extract-exif.mjs
+        destructive: true
+      - name: sanitize
+        run: npm run photos:sanitize
+      - name: audit
+        run: node scripts/photo-meta-audit.mjs
+        continue_on_error: true
+      - name: check
+        type: task
+        task: check
+
+  audit-deps:
+    description: npm audit report (high and above). Reports only; never runs `npm audit fix`.
+    tags: [security]
+    steps:
+      - name: audit
+        run: npm audit --audit-level=high
+        continue_on_error: true
+
+  review:
+    description: Parallel read-only review of the uncommitted diff (correctness, security, style). Skips if no model provider.
+    tags: [review]
+    steps:
+      - name: review
+        type: review
+        angles: [correctness, security, style]
+        default_to_git_diff: true
+        optional: true
+        save_to: ${vars.reports}/review-${run.id}.md
