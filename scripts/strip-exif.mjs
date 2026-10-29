@@ -16,8 +16,8 @@
  *              displays)
  *
  * Only the top-level originals are touched. public/photography/_derived/* is
- * already metadata-free: vite.config.ts resizes with sharp and never calls
- * .withMetadata(), so sharp strips metadata by default there.
+ * handled by vite.config.ts, which rebuilds derivatives from raw pixels and
+ * writes only the same Artist/Copyright attribution (no camera data).
  *
  * Idempotent -- safe to re-run. Run it after scripts/copy-exif.mjs whenever
  * you add photos, then commit the result.

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { photos, PHOTOS_PER_PAGE, photoSrc } from "../data/photos";
+import { photos, PHOTOS_PER_PAGE, photoThumb } from "../data/photos";
 import { useMediaQuery } from "react-responsive";
 
 interface NavLink {
@@ -27,7 +27,7 @@ const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
     photoPreloaded.current = true;
     photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
       const img = new Image();
-      img.src = photoSrc(f);
+      img.src = photoThumb(f);
     });
   };
 
