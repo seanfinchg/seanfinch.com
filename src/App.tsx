@@ -5,16 +5,19 @@ import { featuredStack, photoLarge, photos, PHOTOS_PER_PAGE, photoThumb } from "
 import Layout from "./layouts/Layout";
 import { canPrefetch, whenIdle } from "./utils/idle";
 import Home from "./pages/Home";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Experience from "./pages/Experience";
+import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
 import { Navigate } from "react-router-dom";
 
-// Home is the common landing page, so it stays in the main bundle. Every other
-// page is its own chunk (Photography alone pulls in react-zoom-pan-pinch).
+// The small content pages (5-9 KB each) stay in the main bundle: splitting
+// them saved almost nothing and added a network round trip when landing on
+// them directly. The heavy or rarely visited pages are their own chunks;
+// Photography alone pulls in react-zoom-pan-pinch.
 const pages = {
-  projects: () => import("./pages/Projects"),
-  experience: () => import("./pages/Experience"),
   photography: () => import("./pages/Photography"),
-  contact: () => import("./pages/Contact"),
-  about: () => import("./pages/About"),
   homelab: () => import("./pages/HomelabDiagrams"),
   diagram: () => import("./pages/DiagramViewer"),
   cipherTools: () => import("./pages/CipherTools"),
@@ -22,14 +25,9 @@ const pages = {
   vigenere: () => import("./pages/VigenereCipher"),
   atbash: () => import("./pages/AtbashCipher"),
   rot13: () => import("./pages/Rot13Cipher"),
-  notFound: () => import("./pages/NotFound"),
 };
 
-const Projects = lazy(pages.projects);
-const Experience = lazy(pages.experience);
 const Photography = lazy(pages.photography);
-const Contact = lazy(pages.contact);
-const About = lazy(pages.about);
 const HomelabDiagrams = lazy(pages.homelab);
 const DiagramViewer = lazy(pages.diagram);
 const CipherTools = lazy(pages.cipherTools);
@@ -37,20 +35,20 @@ const CaesarCipher = lazy(pages.caesar);
 const VigenereCipher = lazy(pages.vigenere);
 const AtbashCipher = lazy(pages.atbash);
 const Rot13Cipher = lazy(pages.rot13);
-const NotFound = lazy(pages.notFound);
 
 // Start fetching the landing route's chunk now, in parallel with React's first
 // render, instead of waiting for <Suspense> to discover it.
 const initialPage = ((): (() => Promise<unknown>) | undefined => {
-  const path = window.location.pathname.replace(/\/+$/, "") || "/";
-  if (path === "/" || path === "/resume") return undefined;
-  if (path === "/projects") return pages.projects;
+  const path = window.location.pathname.replace(/\/+$/, "");
+  if (path === "/photography") return pages.photography;
   if (path === "/projects/homelab") return pages.homelab;
   if (path.startsWith("/projects/homelab/")) return pages.diagram;
   if (path === "/projects/cipher-tools") return pages.cipherTools;
-  // Top-level pages and the cipher tools are keyed by their last path segment.
-  const name = (path.split("/").pop() ?? "") as keyof typeof pages;
-  return name in pages ? pages[name] : pages.notFound;
+  if (path.startsWith("/projects/cipher-tools/")) {
+    const name = path.slice("/projects/cipher-tools/".length);
+    if (name === "caesar" || name === "vigenere" || name === "atbash" || name === "rot13") return pages[name];
+  }
+  return undefined;
 })();
 void initialPage?.();
 
