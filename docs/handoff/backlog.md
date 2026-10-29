@@ -38,7 +38,13 @@ Priority: **P1** visible to recruiters now · **P2** quality/consistency · **P3
 
 ## Performance and accessibility
 
-- **SF-9 (P2) Route-level code splitting.** Single ~434 KB JS chunk; lazy-load
+All of these are planned together in `docs/handoff/briefs/performance.md`.
+
+- **SF-23 (P1) Three images are served far above display size.** `public/pfp.webp`
+  1.1 MB at 4160×4160 for a small Home avatar; `public/SeanPortrait.jpg` 558 KB at
+  4160×6240 shown ~320 px wide on About; `src/assets/audax-group.jpeg` 554 KB for a
+  200×200 logo. Add right-sized `srcset` variants under new filenames.
+- **SF-9 (P2) Route-level code splitting.** Single ~457 KB JS chunk; lazy-load
   Photography, cipher tools, diagram pages (`React.lazy` in `src/App.tsx`).
 - **SF-10 (P2) `prefers-reduced-motion`.** Not respected by `.scroll-reveal`,
   `animate-pulse-dot`, or hover transforms (`src/index.css`).
@@ -75,14 +81,12 @@ Priority: **P1** visible to recruiters now · **P2** quality/consistency · **P3
 
 ## Tooling and process
 
-- **SF-16 (P1) Finish the dev → stage → prod cutover.** Done: `dev`/`stage` branches,
-  CI + security gates, rulesets (PR + required checks; stage/prod also need Semgrep
-  and OSV), merge-commit only, auto-merge, default branch `dev`. Left, in order:
-  force-push the rewritten `stage` (ruleset 26089364 off → `git push
-  --force-with-lease=stage:6173586 origin stage` → on); Netlify production branch →
-  `prod`, branch deploys `dev`+`stage`, branch subdomains on `seanfinch.com`; rename
-  `main` → `prod`; first `dev` → `stage` → `prod` promotion; drop `main` from the
-  workflow triggers; check `dev.`/`stage.seanfinch.com` send `noindex`.
+- **SF-16 (P1) Finish the dev → stage → prod cutover.** Done: branches, CI and
+  security gates, rulesets, merge-commit only, auto-merge, auto-delete, Netlify
+  production branch `prod` with `dev`/`stage` branch deploys (both live and `noindex`),
+  `main` dropped from workflow triggers. Left: rename `main` → `prod`
+  (`docs/handoff/ops/rename-main-to-prod.ps1`), Netlify branch subdomains, first
+  `stage` → `prod` release (`Release 2026.10.1`), delete 4 merged remote branches.
 - **SF-19 (P3) Machine-specific Claude settings are committed.** `.claude/settings.json`
   and `.claude/settings.local.json` are tracked despite the ignore rule. They hold
   permission allowlists with old `Documents\websites\` paths, no secrets.
