@@ -17,6 +17,18 @@ export interface ProjectProps {
 
 export const projects: ProjectProps[] = [
   {
+    title: "Job Search Dashboard",
+    description: [
+      "Built a job-discovery pipeline that polls 8 applicant-tracking platforms (Greenhouse, Lever, Ashby, Workday and more), tracking 10,000+ open postings from ~1,000 companies",
+      "Normalizes and de-duplicates postings across sources by content hash, filters them against YAML role profiles, and tags each by level and discipline",
+      "Deterministic and free to run: no LLM or paid APIs in the pipeline; results persist in SQLite and refresh daily to a React dashboard",
+      "Adding a job board is one adapter file; tests enforce that the engine never hardcodes a platform or seniority level",
+    ],
+    technologies: ["Python", "SQLite", "React", "TypeScript", "Vite", "Netlify"],
+    demoLink: "https://jobs.seanfinch.com/",
+    dateRange: "September 2026 – Present",
+  },
+  {
     title: "Cipher Tools",
     description: [
       "Interactive web-based cryptography tools for encoding, decoding, and analyzing classical ciphers",
