@@ -36,6 +36,8 @@ generated snapshot. The current handoff is loaded below:
 
 Work branches are `<type>/<slug>`, PRs go into `dev`, and promotion is `dev` → `stage` → `prod` with merge commits only (never squash or rebase-merge). Run `npm run check` (lint + build + tests) before pushing; CI and the lefthook hooks enforce commit-message and PR-description format and run secret, Semgrep and OSV scans. Full rules in `CONTRIBUTING.md`.
 
+**Everything is attributed to Sean.** Never add AI co-author trailers, "generated with" footers or tool links to commits, PR titles or PR descriptions; the content policy blocks them and `.claude/settings.json` turns attribution off.
+
 **Never commit personal or employer-private information** (home address, phone, personal email, anyone else's data, non-public employer details, GPS in photos). `scripts/check-content.mjs` enforces it in hooks, CI and a Claude Code PreToolUse hook (`scripts/agent-guard.mjs`); see "Content policy" in `CONTRIBUTING.md`.
 
 ## Architecture
