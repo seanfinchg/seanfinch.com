@@ -1,2 +1,2 @@
 # Approved exceptions to the content policy. Edit only with `check-content.mjs allow`.
-82f4457e05493f9be3687717690c348c9ae6bcc5 CONTRIBUTING.md
+4020796fb60422d98f26d8cdbcb7ae1818d309e1 CONTRIBUTING.md
