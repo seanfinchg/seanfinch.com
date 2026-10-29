@@ -1,0 +1,3 @@
+# Known vulnerabilities that are not reachable in this app. Each entry needs a reason
+# and an expiry date; after it expires the scan fails again and the entry must be
+# re-checked (is there a fix now? is it still unreachable?).

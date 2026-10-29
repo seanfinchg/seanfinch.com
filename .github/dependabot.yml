@@ -1,0 +1,48 @@
+# Weekly dependency update PRs into `dev`. Nothing auto-merges: every update goes
+# through the required checks like any other PR.
+#
+# NOTE: `target-branch: dev` errors until the `dev` branch exists (branch-workflow
+# Phase 3). Until then Dependabot reports a configuration error; that is expected.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    # Skip versions published in the last 3 days.
+    cooldown:
+      default-days: 3
+    # Pinned to Node 24 (LTS). Moving to a new Node major is a deliberate decision.
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+    groups:
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom", "@types/react-*"]
+      vite:
+        patterns: ["vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+      # The groups below skip packages already grouped above, so each update lands in one PR.
+      dev-tools:
+        dependency-type: development
+        update-types: [minor, patch]
+        exclude-patterns:
+          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+      production-minor-patch:
+        dependency-type: production
+        update-types: [minor, patch]
+        exclude-patterns:
+          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ["*"]

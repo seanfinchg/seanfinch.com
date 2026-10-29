@@ -1,0 +1,36 @@
+# Git hooks, installed automatically by `npm install` (the `prepare` script).
+# CI runs the same checks, so --no-verify only skips them locally.
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: lint
+      glob: "*.{ts,tsx,js,mjs}"
+      run: npx eslint --max-warnings 0 {staged_files}
+
+    # Optional: needs gitleaks on PATH (https://github.com/gitleaks/gitleaks).
+    # CI always scans the full history, so skipping here is safe.
+    - name: secrets
+      # One line, single quotes only: on Windows lefthook wraps this in sh -c "...".
+      run: if command -v gitleaks >/dev/null 2>&1; then gitleaks git --pre-commit --staged --redact --no-banner; else echo 'gitleaks not installed, skipping local secret scan; CI still runs it'; fi
+
+    # Personal or employer-private info and GPS in photos. Always blocking (CI runs it too).
+    - name: content
+      run: node scripts/check-content.mjs staged
+
+commit-msg:
+  jobs:
+    - name: message
+      run: node scripts/check-commit-msg.mjs {1}
+
+    - name: content
+      run: node scripts/check-content.mjs msg {1}
+
+pre-push:
+  jobs:
+    - name: content
+      run: node scripts/check-content.mjs push
+      use_stdin: true
+
+    - name: check
+      run: npm run check

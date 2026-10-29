@@ -5,6 +5,15 @@
 [build.environment]
   NODE_VERSION = "24"
 
+# Non-production deploys (Deploy Previews and branch deploys of dev/stage) must stay out of
+# search indexes. The script adds X-Robots-Tag noindex and a Disallow-all robots.txt, and
+# refuses to run when CONTEXT is production.
+[context.deploy-preview]
+  command = "npm run build && node scripts/netlify-noindex.mjs"
+
+[context.branch-deploy]
+  command = "npm run build && node scripts/netlify-noindex.mjs"
+
 # Security headers on every response. CSP is tuned to this app: self-hosted
 # assets/fonts, inline styles (React style props + a few inline <style> blocks),
 # and the draw.io viewer embedded in an iframe on the homelab diagram pages.
