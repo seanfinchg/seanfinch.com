@@ -13,6 +13,9 @@
  * profile. It is re-encoded in place as sRGB (converted through that profile,
  * so colours match what browsers rendered before). Vite content-hashes files
  * under src/assets/, so replacing it is cache-safe. Pass --force-logo to redo it.
+ *
+ * Other logos in src/assets/ wider than LOGO_MAX are downscaled in place too.
+ * They render at 64 CSS px at most, so 256 px covers 3x screens with room.
  */
 import sharp from "sharp";
 import fs from "fs";
@@ -56,4 +59,17 @@ if (meta.space === "cmyk" || process.argv.includes("--force-logo")) {
 } else {
   console.log("skip  src/assets/audax-group.jpeg (already sRGB)");
 }
+const LOGO_MAX = 256;
+for (const f of fs.readdirSync(path.join(ROOT, "src", "assets"))) {
+  if (!/\.jpe?g$/i.test(f)) continue;
+  const p = path.join(ROOT, "src", "assets", f);
+  const buf = fs.readFileSync(p);
+  const { width = 0 } = await sharp(buf).metadata();
+  if (width <= LOGO_MAX) continue;
+  const out = await sharp(buf).resize({ width: LOGO_MAX }).jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+  fs.writeFileSync(p, out);
+  console.log(`wrote src/assets/${f} (${width} to ${LOGO_MAX} px, ${Math.round(buf.length / 1024)} to ${Math.round(out.length / 1024)} KB)`);
+  wrote++;
+}
+
 console.log(`${wrote} file(s) written`);
