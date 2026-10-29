@@ -70,7 +70,12 @@ const About: React.FC = () => {
           className="flex flex-col md:flex-row gap-8 md:gap-12 mb-16"
         >
           <img
-            src="/SeanPortrait.jpg"
+            src="/SeanPortrait-960.webp"
+            srcSet="/SeanPortrait-480.webp 480w, /SeanPortrait-960.webp 960w, /SeanPortrait-1440.webp 1440w"
+            sizes="(min-width: 768px) 320px, (min-width: 640px) 50vw, 75vw"
+            width={960}
+            height={1440}
+            fetchPriority="high"
             alt="Portrait of Sean Finch"
             className="w-3/4 sm:w-1/2 md:w-80 md:shrink-0 self-start object-cover rounded-xl shadow-lg"
           />
