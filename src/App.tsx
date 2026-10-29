@@ -1,7 +1,7 @@
 import React, { lazy, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/themeContext";
-import { photos, PHOTOS_PER_PAGE, photoThumb } from "./data/photos";
+import { featuredStack, photoLarge, photos, PHOTOS_PER_PAGE, photoThumb } from "./data/photos";
 import Layout from "./layouts/Layout";
 import { canPrefetch, whenIdle } from "./utils/idle";
 import Home from "./pages/Home";
@@ -53,6 +53,18 @@ const initialPage = ((): (() => Promise<unknown>) | undefined => {
   return name in pages ? pages[name] : pages.notFound;
 })();
 void initialPage?.();
+
+// The Photography hero is its LCP image, but its <img> only exists once that
+// page's chunk has loaded and rendered. Preload it now so the two download in
+// parallel. Same URL as the hero's src, so the browser reuses the response.
+if (initialPage === pages.photography && featuredStack) {
+  const link = document.createElement("link");
+  link.rel = "preload";
+  link.as = "image";
+  link.href = photoLarge(featuredStack.files[featuredStack.cover] ?? featuredStack.files[0] ?? "");
+  link.fetchPriority = "high";
+  document.head.appendChild(link);
+}
 
 const AppRoutes = (): React.JSX.Element => (
   <Routes>
