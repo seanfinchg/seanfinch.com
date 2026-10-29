@@ -60,8 +60,13 @@ A `commit-msg` hook (lefthook) and a CI check enforce this.
 
 - **Commit subject:** one line, at most 72 characters, no trailing period.
 - **Commit body (optional):** a blank line, then up to 8 `- ` bullets, each under 100
-  characters. No paragraphs. Trailers (`Co-Authored-By: ...`) and GitHub references
-  (`Fixes #12`) are allowed.
+  characters. No paragraphs. GitHub references (`Fixes #12`) and trailers for human
+  co-authors are allowed.
+- **Attribution: everything is Sean's.** No AI co-author trailers, no "generated with"
+  footers, no tool links or robot emoji, in commits, PR titles or PR descriptions. The
+  content policy blocks them in the hooks and in CI, and `.claude/settings.json` turns
+  Claude Code's own attribution off. Plain mentions (`CLAUDE.md`, AI crawlers in
+  `robots.txt`) are fine.
 - **PR description:** fill in the template with bullets only. At most 25 lines and 1500
   characters. Headings, bullets, checklists, numbered steps, tables and lone images or links
   are allowed. Paragraphs are not.
