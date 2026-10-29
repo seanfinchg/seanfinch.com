@@ -1,7 +1,10 @@
 @import "tailwindcss";
-@import "@fontsource/roboto-slab";
-@import "@fontsource/raleway";
-@import "@fontsource/jost";
+/* Latin subset, weight 400 only: every character the site uses is in the Latin
+   range (arrows and emoji fall back to system fonts either way), and bold text
+   has always been synthesized from 400. Was all subsets: Cyrillic, Greek, Vietnamese. */
+@import "@fontsource/roboto-slab/latin-400.css";
+@import "@fontsource/raleway/latin-400.css";
+@import "@fontsource/jost/latin-400.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -111,3 +114,4 @@
     background-size: 24px 24px;
   }
 }
+
