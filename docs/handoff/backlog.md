@@ -38,7 +38,8 @@ Priority: **P1** visible to recruiters now · **P2** quality/consistency · **P3
 
 ## Performance and accessibility
 
-All of these are planned together in `docs/handoff/briefs/performance.md`.
+All four are done on local branch `perf/overnight` (not merged yet); see
+`docs/handoff/briefs/performance-report.md`. Remove them once that PR lands.
 
 - **SF-23 (P1) Three images are served far above display size.** `public/pfp.webp`
   1.1 MB at 4160×4160 for a small Home avatar; `public/SeanPortrait.jpg` 558 KB at
