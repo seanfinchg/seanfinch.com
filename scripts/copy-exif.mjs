@@ -1,9 +1,11 @@
 import sharp from "sharp";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const SRC = "C:\\Users\\seanf\\Downloads\\Portfolio Pics";
-const DEST = "C:\\Users\\seanf\\Documents\\websites\\seanfinch.com\\public\\photography";
+// Resolved from this script so it keeps working if the repo moves.
+const DEST = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "public", "photography");
 
 const srcFiles = fs.readdirSync(SRC);
 

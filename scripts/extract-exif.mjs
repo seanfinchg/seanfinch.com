@@ -1,9 +1,11 @@
 import exifr from "exifr";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const SRC = "C:\\Users\\seanf\\Downloads\\Portfolio Pics";
-const OUT = "C:\\Users\\seanf\\Documents\\websites\\seanfinch.com\\src\\data\\photo-exif.json";
+// Resolved from this script so it keeps working if the repo moves.
+const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "src", "data", "photo-exif.json");
 
 const srcFiles = fs.readdirSync(SRC);
 const result = {};
