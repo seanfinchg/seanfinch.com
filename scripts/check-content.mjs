@@ -8,6 +8,7 @@
  *   - US street addresses, phone numbers, SSNs
  *   - email addresses, except the allowed ones below
  *   - confidentiality / MNPI markers ("confidential", "internal only", "NDA", ...)
+ *   - AI attribution in messages and PR text (co-author trailers, "generated with")
  *   - Sean's own private terms (street, phone, ...), stored only as truncated
  *     SHA-256 hashes so the list itself reveals nothing. Add with `block`.
  * Blocks, in added images: embedded GPS coordinates.
@@ -76,10 +77,28 @@ export const lineProblem = (line, privateHashes = PRIVATE) => {
   return null;
 };
 
+// Commit messages, commit identities and PR text must credit Sean only: no AI
+// co-author trailers, "generated with" footers, tool links or robot emoji (the
+// KashmirLivingArchive rule). Plain mentions stay allowed, so a message can still
+// talk about CLAUDE.md or AI crawlers in robots.txt.
+const AI = "claude|anthropic|copilot|chatgpt|openai|gemini|cursor|codeium|windsurf|devin";
+const AI_NAME = new RegExp(`\\b(${AI})\\b`, "i");
+const ATTRIBUTION = [
+  new RegExp(`^\\s*co-authored-by:.*\\b(${AI})\\b`, "i"),
+  new RegExp(`\\b(generated|written|made|created|authored|built)\\s+(with|by|using|in)\\s+\\[?(${AI})\\b`, "i"),
+  /\bnoreply@anthropic\.com\b/i,
+  /claude\.(com|ai)\/(claude-)?code/i,
+  /\u{1F916}/u,
+];
+
+/** Returns "AI attribution" if a message line credits an AI tool, or null. */
+export const attributionProblem = (line) =>
+  ATTRIBUTION.some((re) => re.test(line)) ? "AI attribution" : null;
+
 const problems = [];
-const scanText = (where, text) => {
+const scanText = (where, text, { message = false } = {}) => {
   text.split(/\r?\n/).forEach((line, i) => {
-    const why = lineProblem(line);
+    const why = (message && attributionProblem(line)) || lineProblem(line);
     // The offending text is not echoed, so a CI log can't leak it either.
     if (why) problems.push(`${where}, line ${i + 1}: ${why}`);
   });
@@ -143,8 +162,12 @@ const scanFiles = async (where, files, { blobOf, diffOf, bytesOf, allowed }) => 
 const scanCommit = async (sha) => {
   const short = sha.slice(0, 7);
   const allowed = parseAllowlist(git(["show", `${sha}:${ALLOWLIST}`], { allowFailure: true }));
-  // The message only: author/committer emails are the GitHub identity and stay out of scope.
-  scanText(`commit ${short} message`, git(["log", "-1", "--format=%B", sha]));
+  // The message gets every check. The author/committer identity gets only the AI
+  // check: those emails are the GitHub identity, so the PII rules don't apply.
+  scanText(`commit ${short} message`, git(["log", "-1", "--format=%B", sha]), { message: true });
+  if (AI_NAME.test(git(["log", "-1", "--format=%an <%ae>%n%cn <%ce>", sha]))) {
+    problems.push(`commit ${short} author/committer: AI identity`);
+  }
   const files = lines(git(["diff-tree", "--no-commit-id", "--name-only", "--diff-filter=ACMR", "-r", "--root", "-m", "--first-parent", sha]));
   await scanFiles(`commit ${short}`, files, {
     blobOf: (p) => git(["rev-parse", "--verify", "--quiet", `${sha}:${p}`], { allowFailure: true }).trim(),
@@ -183,7 +206,7 @@ if (isMain) {
     }
     case "msg":
       if (!args[0]) process.exit(2);
-      scanText("commit message", lines(readFileSync(args[0], "utf8")).filter((l) => !l.startsWith("#")).join("\n"));
+      scanText("commit message", lines(readFileSync(args[0], "utf8")).filter((l) => !l.startsWith("#")).join("\n"), { message: true });
       break;
     case "push":
       for (const ref of lines(readFileSync(0, "utf8"))) {
@@ -198,7 +221,7 @@ if (isMain) {
       for (const sha of lines(git(["rev-list", args[0]]))) await scanCommit(sha);
       break;
     case "text":
-      scanText("text", readFileSync(0, "utf8"));
+      scanText("text", readFileSync(0, "utf8"), { message: true });
       break;
     case "block": {
       const term = args.join(" ").toLowerCase().match(/[a-z0-9]+/g) ?? [];

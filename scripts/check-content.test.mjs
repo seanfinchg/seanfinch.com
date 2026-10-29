@@ -49,3 +49,29 @@ test("does not flag ordinary site content", () => {
     assert.equal(lineProblem(line, none), null, line);
   }
 });
+
+test("blocks AI attribution in commit and PR text", async () => {
+  const { attributionProblem } = await import("./check-content.mjs");
+  for (const line of [
+    "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+    "co-authored-by: GitHub Copilot <copilot@github.com>",
+    "\u{1F916} Generated with [Claude Code](https://claude.com/claude-code)",
+    "Generated with ChatGPT",
+    "Made with Claude",
+    "Written using Cursor",
+  ]) {
+    assert.equal(attributionProblem(line), "AI attribution", line);
+  }
+});
+
+test("allows plain mentions and human co-authors", async () => {
+  const { attributionProblem } = await import("./check-content.mjs");
+  for (const line of [
+    "Update CLAUDE.md with the handoff section",
+    "Allow ClaudeBot and GPTBot to read the resume pages",
+    "Co-Authored-By: Jane Smith <jane@seanfinch.com>",
+    "Generated with sharp at build time",
+  ]) {
+    assert.equal(attributionProblem(line), null, line);
+  }
+});
