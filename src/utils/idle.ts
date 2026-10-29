@@ -11,3 +11,20 @@ export const whenIdle = (fn: () => void, timeout = 3000): (() => void) => {
   const id = window.setTimeout(fn, timeout);
   return () => { window.clearTimeout(id); };
 };
+
+interface NetworkInformation {
+  saveData?: boolean;
+  effectiveType?: string;
+}
+
+/**
+ * False when the visitor asked to save data or is on a slow connection, so
+ * speculative downloads (gallery thumbnails, page chunks) are skipped there.
+ * `navigator.connection` is Chromium-only; elsewhere this is true.
+ */
+export const canPrefetch = (): boolean => {
+  const conn = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+  if (!conn) return true;
+  if (conn.saveData) return false;
+  return !["slow-2g", "2g", "3g"].includes(conn.effectiveType ?? "");
+};

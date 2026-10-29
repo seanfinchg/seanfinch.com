@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/themeContext";
 import { photos, PHOTOS_PER_PAGE, photoThumb } from "./data/photos";
 import Layout from "./layouts/Layout";
-import { whenIdle } from "./utils/idle";
+import { canPrefetch, whenIdle } from "./utils/idle";
 import Home from "./pages/Home";
 import { Navigate } from "react-router-dom";
 
@@ -77,20 +77,26 @@ const AppRoutes = (): React.JSX.Element => (
 const App: React.FC = () => {
   // Once the landing page has settled, warm the other page chunks (so
   // navigation never waits on the network) and, 3s in, page 1 of the gallery
-  // thumbnails so Photography feels instant.
+  // thumbnails so Photography feels instant. Skipped on Save-Data or slow
+  // connections, where those bytes would compete with what's on screen.
   useEffect(() => {
+    if (!canPrefetch()) return;
     const cancelChunks = whenIdle(() => {
       Object.values(pages).forEach((load) => { void load(); });
     }, 2000);
+    let cancelThumbs: (() => void) | undefined;
     const timer = setTimeout(() => {
-      photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
-        const img = new Image();
-        img.src = photoThumb(f);
+      cancelThumbs = whenIdle(() => {
+        photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
+          const img = new Image();
+          img.src = photoThumb(f);
+        });
       });
     }, 3000);
     return () => {
       cancelChunks();
       clearTimeout(timer);
+      cancelThumbs?.();
     };
   }, []);
 
