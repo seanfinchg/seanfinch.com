@@ -12,12 +12,14 @@ const VIRTUAL_ID = "virtual:photo-manifest";
 const RESOLVED_ID = "\0" + VIRTUAL_ID;
 
 // Resized WebP derivatives generated at build time (dev + prod). Grid tiles use
-// `thumb`, the lightbox/compare view uses `large`. Full-res originals are only
+// `thumb`; the lightbox picks `medium` or `large` via srcset (phones and 1x
+// screens get `medium`), and the hero/compare view use `large`. Full-res originals are only
 // downloaded on explicit request. Output lives in public/photography/_derived
 // (gitignored) so originals stay the single source of truth and nothing extra
 // is committed. Bump SUFFIX-less widths here to trade quality for bytes.
 const DERIVATIVES = [
   { dir: "thumb", width: 500, quality: 72 },
+  { dir: "medium", width: 1200, quality: 78 },
   { dir: "large", width: 2000, quality: 80 },
 ] as const;
 const DERIVED_DIR = "_derived";
@@ -49,7 +51,7 @@ const DERIVED_XMP = `<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
 <?xpacket end="w"?>`;
 // Bump when derivative settings or embedded metadata change, so existing
 // derivatives are regenerated instead of skipped as "up to date".
-const DERIVED_VERSION = "3-attribution-raw";
+const DERIVED_VERSION = "4-medium";
 
 async function generateDerivatives(photoDir: string): Promise<void> {
   if (!existsSync(photoDir)) return;
@@ -188,6 +190,7 @@ export const photoStacks = ${JSON.stringify(stacks)};
 export const PHOTOS_PER_PAGE = 24;
 export const photoSrc = (f) => '/photography/' + encodeURIComponent(f);
 export const photoThumb = (f) => '/photography/${DERIVED_DIR}/thumb/' + encodeURIComponent(f);
+export const photoMedium = (f) => '/photography/${DERIVED_DIR}/medium/' + encodeURIComponent(f);
 export const photoLarge = (f) => '/photography/${DERIVED_DIR}/large/' + encodeURIComponent(f);
 export const photos = photoStacks.map(s => s.files[s.cover]);
 `;
