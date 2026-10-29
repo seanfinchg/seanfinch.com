@@ -11,7 +11,12 @@
     "build": "tsc && vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "photos:sanitize": "node scripts/strip-exif.mjs"
+    "photos:sanitize": "node scripts/strip-exif.mjs",
+    "handoff": "node scripts/handoff.mjs",
+    "check": "npm run lint && npm run build && npm test",
+    "test": "node --test \"scripts/**/*.test.mjs\"",
+    "security:headers": "node scripts/check-headers.mjs",
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "@fontsource/jost": "^5.0.16",
@@ -41,6 +46,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^16.0.0",
+    "lefthook": "^2.2.2",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "sharp": "^0.34.5",

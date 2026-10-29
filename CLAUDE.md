@@ -7,9 +7,9 @@ Guidance for working in this repo (seanfinch.com — Sean Finch's personal portf
 - **React 19** + **TypeScript** + **Vite 8**
 - **Tailwind CSS v4** via the `@tailwindcss/vite` plugin (not the old PostCSS flow; `tailwind.config.js` + `src/index.css`)
 - **react-router-dom v7** (client-side routing, `BrowserRouter`)
-- Deployed on **Netlify** (`netlify.toml`); auto-deploys from `main`.
+- Hosted on **Netlify** (`netlify.toml`). Target model: `dev` → `stage` → `prod`, where `prod` is the production branch (seanfinch.com) and `dev`/`stage` are noindex branch deploys. Until the cutover in `docs/plans/branch-workflow.md` is finished, production still auto-deploys from `main`.
 - **Node ≥ 22 required** (`package.json` `engines`). Pinned to **Node 24 LTS** via `.nvmrc`; Netlify builds on `NODE_VERSION = "24"`. `@types/node` tracks the Node 24 major. Locally, `fnm`/`nvm` auto-selects from `.nvmrc`.
-- No test framework is configured.
+- No app test framework; `npm test` runs `node:test` unit tests for the `scripts/` helpers only.
 
 ## Commands
 
@@ -22,6 +22,22 @@ npm run preview  # preview the production build
 
 Always run `npm run build` before considering a change done — the build typechecks with `tsc` and will fail on type errors. Run `npm run lint` too; it is configured with `--max-warnings 0`.
 
+## Handoffs
+
+Work moves between sessions and agents through `docs/handoff/` (protocol in its
+`README.md`). `/plz-handoff` writes the handoff before stopping (or
+`/plz-handoff brief <slug>` writes a standalone subagent brief); `/plz-resume`
+picks it up and checks it against git. `npm run handoff -- --gates` refreshes the
+generated snapshot. The current handoff is loaded below:
+
+@docs/handoff/CURRENT.md
+
+## Branches & PRs
+
+Work branches are `<type>/<slug>`, PRs go into `dev`, and promotion is `dev` → `stage` → `prod` with merge commits only (never squash or rebase-merge). Run `npm run check` (lint + build + tests) before pushing; CI and the lefthook hooks enforce commit-message and PR-description format and run secret, Semgrep and OSV scans. Full rules in `CONTRIBUTING.md`.
+
+**Never commit personal or employer-private information** (home address, phone, personal email, anyone else's data, non-public employer details, GPS in photos). `scripts/check-content.mjs` enforces it in hooks, CI and a Claude Code PreToolUse hook (`scripts/agent-guard.mjs`); see "Content policy" in `CONTRIBUTING.md`.
+
 ## Architecture
 
 - **Entry:** `src/main.tsx` → `src/App.tsx`. `App.tsx` defines all routes and wraps everything in `ThemeProvider` + `Layout`.
@@ -32,6 +48,8 @@ Always run `npm run build` before considering a change done — the build typech
   - `projects.ts` — projects.
   - `photos.ts` — thin re-export of the `virtual:photo-manifest` module (see below).
   - `photo-exif.json` — per-file EXIF (camera, lens, aperture, ISO, shutter, date).
+  - `photo-meta.json` — hand-written per-stack titles, alt text, tags and the featured photo (see below).
+  - `about.ts` — About page content (bio, skill groups, interests, leadership).
 - **Theming:** `src/contexts/themeContext.tsx` provides light/dark; `src/utils/themeUtils.ts` maps theme → class strings. Components call `useTheme()` and pass `theme` into helpers like `getThemeClasses(theme)`.
 - **Scroll animations:** `src/hooks/useScrollReveal.ts` (IntersectionObserver → `.scroll-reveal` class).
 - **Path aliases** (`vite.config.ts`): `@` → `src/`. `lucide-react` and `sonner` are aliased to **local stubs** in `src/lib/` — do not add the real npm packages; extend the stubs if you need more icons/toasts.
@@ -43,7 +61,10 @@ Photos are **committed WebP files** in `public/photography/` (~66 MB, ~45 files 
 
 - `photoManifestPlugin()` scans `public/photography/*.webp`, groups files into **"stacks"**, and exposes them through the virtual module `virtual:photo-manifest` (re-exported by `src/data/photos.ts`).
 - **Resized derivatives (performance):** the same plugin's `buildStart` hook uses `sharp` to generate two smaller WebP sizes for every photo into `public/photography/_derived/{thumb,large}/` — `thumb` (~500px, used for grid tiles + filmstrip) and `large` (~2000px, used in the lightbox/compare view). Full-res originals are only fetched on explicit request. `_derived/` is **gitignored** and regenerated on every build (generation is incremental — skips files whose derivative is already up to date). The manifest exports `photoThumb(f)` and `photoLarge(f)` alongside the original `photoSrc(f)`.
-- Each stack has a `cover` index → the version shown by default on the tile and when the lightbox opens. **The edited version is the default cover** when a stack contains one. Tiles and the lightbox show an **"Edited" / "Original" badge** (via `isEditedFile`).
+- Each stack is `{ id, files, cover, w, h }`. `id` is the shared base filename (`"DSC_8875"`), the stable key for URLs and `photo-meta.json`. `cover` is the version shown by default; **the edited version is the default cover** when a stack has one. `w`/`h` are the cover's pixel dimensions (read with sharp at build time) so the justified-rows grid lays out before images load.
+- **Badges:** tiles show an "Edited" badge only when the cover is edited *and* the stack has more than one version; the lightbox shows "Edited"/"Original" only on multi-version stacks (via `isEditedFile`).
+- **`src/data/photo-meta.json`** holds `{ featured, tags, photos }`: `tags` maps tag id → filter-chip label (in display order), `photos` maps stack id → `{ title, alt, tags }`, and `featured` picks the hero photo (falls back to the newest stack). Helpers in `src/data/photos.ts`: `photoMeta`, `photoTitle`, `photoAlt`, `PHOTO_TAGS`, `featuredStack`. **Add an entry for every new stack**, or it shows as "Untitled" with generic alt text; `node scripts/photo-meta-audit.mjs` lists gaps.
+- **URL state:** the tag filter (`?tag=night`) and the open photo (`?photo=<id>`) live in the query string, so both are shareable. Opening a photo from the grid pushes a history entry (Back closes the lightbox); prev/next and closing a deep-linked photo use replace. "Show more" (24 at a time, `PHOTOS_PER_PAGE`) replaced numbered pagination.
 - **Hiding photos:** add filenames to `src/data/photo-hidden.json` (a JSON array) to exclude them from the gallery without deleting them. They stay in the repo (and are still deployed) but never appear in the manifest.
 - **Gear labels** (hero + footer) come from `CAMERA` / `LENSES` consts at the top of `Photography.tsx`; per-photo lens is read from EXIF. Add lenses to `LENSES` as acquired.
 - **Stacking / naming convention** — files are grouped by a "base" name so multiple versions of one shot appear as a single tile:
@@ -53,12 +74,24 @@ Photos are **committed WebP files** in `public/photography/` (~66 MB, ~45 files 
 - Stacks are sorted **newest-first** using `DateTimeOriginal` from `photo-exif.json`, falling back to descending filename.
 - The dev server watches `public/photography/` and full-reloads when files are added/removed.
 
-**Adding photos is a manual, local process** via `scripts/` (both hardcode the source folder `C:\Users\seanf\Downloads\Portfolio Pics`):
+**Adding photos** is local. The camera archive is
+`C:\Users\seanf\Pictures\Saved Pictures\D610\{JPEG,Raw}\<card folder>`; Lightroom
+edits are saved beside the originals as `NAME_edited.JPG`.
 
-- `scripts/copy-exif.mjs` — converts source JPGs → WebP (quality 85, `sharp`), applying EXIF orientation and preserving metadata.
-- `scripts/extract-exif.mjs` — reads EXIF from the source JPGs → writes `src/data/photo-exif.json`.
+1. `node scripts/add-photos.mjs <jpg...>` converts **new** JPGs to WebP (quality 85,
+   EXIF orientation applied, metadata kept) and **refuses to overwrite** a
+   published `.webp`. Pass both `NAME.JPG` and `NAME_edited.JPG` to get a
+   before/after stack.
+2. `npm run photos:sanitize` (see "Photo metadata hygiene"), required before committing.
+3. Add EXIF for the new files to `src/data/photo-exif.json` (`scripts/extract-exif.mjs`
+   reads `C:\Users\seanf\Downloads\Portfolio Pics` and **rebuilds the file from
+   that folder only**, so check the diff; see backlog SF-14).
+4. Add `photo-meta.json` entries, then `node scripts/photo-meta-audit.mjs`.
 
-`sharp` is a devDependency used only by these scripts. To add photos: drop JPGs in the source folder, run both scripts, verify the new WebP files land in `public/photography/`, then commit.
+`scripts/copy-exif.mjs` is a re-encode tool for photos that are *already*
+published (it skips new files and overwrites existing ones under the same name,
+which breaks the immutable cache). Don't use it to add photos (backlog SF-13).
+`sharp` is a devDependency used by these scripts and the Vite plugin.
 
 ## Deployment & caching
 
@@ -88,17 +121,9 @@ Prioritized list from a whole-site review. **P0 is done** (kept here for context
 
 **P0 — deferred:** true prerender/SSG for the SPA. Social scrapers already get real OG tags from the static `index.html`, and Google renders JS, so the practical win is mostly captured. Full per-route prerender (`react-snap`/similar) is a heavier, riskier change — do it as a focused follow-up if organic search matters.
 
-**P1 (polish/perf):**
-- Route-based code splitting (`React.lazy`) for heavy routes (Photography, cipher tools, diagram iframes) — the JS bundle is one ~440 KB chunk.
-- Trim `@fontsource` to latin-only subsets (Cyrillic/Greek/Vietnamese are being shipped unused).
-- Accessibility: real `alt` text on gallery/lightbox images; `aria-label`s on lightbox icon buttons; lightbox focus trap; light-mode contrast check.
-- `npm audit` — 6 known vulns (1 low / 2 moderate / 3 high) as of the Node-24 bump.
-
-**P2 (content/maturity):**
-- Project **case studies** (highest content ROI — see `docs/ROADMAP.md`).
-- Privacy-friendly analytics (Cloudflare/Plausible free tier).
-- A Vitest smoke test + GitHub Action running `build`/`lint`.
-- Blog (deferred; tooling noted in `docs/ROADMAP.md`).
+**Open work** lives in `docs/handoff/backlog.md` with stable `SF-<n>` IDs (the
+old P1/P2 items are folded in there; gallery alt text, aria-labels and the
+lightbox focus trap shipped with the Photography redesign).
 
 ## Crawler policy (robots.txt + AI)
 
@@ -156,8 +181,12 @@ attribution. No GPS was ever present.
 exiftool rewrites only the metadata chunks, so this is **lossless** — verified
 by comparing `VP8`/`ICCP` chunk hashes against git. The gallery is unaffected
 either way: it reads `src/data/photo-exif.json`, built separately from the
-source JPGs. `_derived/*` is already metadata-free (sharp strips by default
-when `.withMetadata()` is not called).
+source JPGs. `_derived/*` (the files visitors actually see and save) is built
+from decoded pixels, so nothing from the source carries over; `vite.config.ts`
+then writes **only** attribution: EXIF `Artist`/`Copyright` plus XMP
+`dc:creator`/`dc:rights`/`photoshop:Credit`/`xmpRights:WebStatement` (what
+Google Images shows as Creator/Copyright). Bump `DERIVED_VERSION` there when
+that metadata or the resize settings change, to force regeneration.
 
 ## Retired routes
 
@@ -178,5 +207,4 @@ when `.withMetadata()` is not called).
 
 ## Known rough edges (candidates for cleanup)
 
-- `npm run lint` currently reports pre-existing `react-hooks` errors in `src/pages/HomelabDiagrams.tsx` and `src/pages/DiagramViewer.tsx` (conditional hook calls / setState-in-effect). These predate the current work; the lint gate won't pass until they're refactored.
 - Full-res originals (~66 MB) are still committed to git. Serving performance is solved via `_derived` resized versions, but repo size will keep growing as photos are added; consider moving originals off-repo (e.g. Cloudflare R2) if it becomes a problem.

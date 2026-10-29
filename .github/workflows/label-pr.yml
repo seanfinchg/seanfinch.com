@@ -1,0 +1,74 @@
+name: Label PR
+
+# Gives every PR one type label (feat, fix, docs, chore, dependencies, release) and adds
+# `security` when it touches security. A type label set by hand is never replaced.
+# Release notes are grouped by these labels (.github/release.yml).
+# pull_request_target so Dependabot PRs get a token that can label; it never checks out or
+# runs code from the PR.
+on:
+  pull_request_target:
+    types: [opened, reopened, edited, synchronize]
+    branches: [dev, stage, prod, main] # remove main after the branch cutover
+
+permissions: {}
+
+concurrency:
+  group: label-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  label:
+    name: label PR by type
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Add type and security labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          ensure() { gh label create "$1" --repo "$REPO" --color "$2" --description "$3" 2>/dev/null || true; }
+          ensure feat 1a7f37 "New or changed behaviour"
+          ensure fix d73a4a "Bug fix"
+          ensure docs 0075ca "Documentation only"
+          ensure chore cfd3d7 "Tooling, CI, config or refactoring"
+          ensure dependencies 0366d6 "Dependency updates"
+          ensure release 5319e7 "Promotion to stage or prod"
+          ensure security b60205 "Touches security"
+
+          labels="$(gh api "repos/$REPO/issues/$PR/labels" --jq '.[].name')"
+          files="$(gh api --paginate "repos/$REPO/pulls/$PR/files" --jq '.[].filename')"
+          first="$(printf '%s' "$TITLE" | awk '{print tolower($1)}')"
+          only() { [ -n "$files" ] && ! printf '%s\n' "$files" | grep -qvE "$1"; }
+
+          if ! printf '%s\n' "$labels" | grep -qxE 'feat|fix|docs|chore|dependencies|release'; then
+            if [ "$AUTHOR" = "dependabot[bot]" ]; then type=dependencies
+            elif [ "$BASE" = "stage" ] || [ "$BASE" = "prod" ]; then type=release
+            elif only '(\.md$|^docs/)'; then type=docs
+            else
+              case "$first" in
+                fix|fixes|fixed|correct|repair|resolve) type=fix ;;
+                add|build|show|create|implement|support|allow|enable|let|make|display|introduce) type=feat ;;
+                *)
+                  if only '^(package\.json|package-lock\.json)$'; then type=dependencies
+                  elif printf '%s\n' "$files" | grep -qE '^src/'; then type=feat
+                  else type=chore
+                  fi ;;
+              esac
+            fi
+            gh api -X POST "repos/$REPO/issues/$PR/labels" -f "labels[]=$type" > /dev/null
+            echo "Labelled #$PR as $type"
+          fi
+
+          if printf '%s\n' "$TITLE" | grep -qiE 'security|advisor|vulnerab|ghsa|cve|xss|csp|auth' \
+            || printf '%s\n' "$files" | grep -qE '^(netlify\.toml|public/_redirects|public/robots\.txt|scripts/check-headers\.mjs|osv-scanner\.toml)$'; then
+            gh api -X POST "repos/$REPO/issues/$PR/labels" -f "labels[]=security" > /dev/null
+            echo "Labelled #$PR as security"
+          fi

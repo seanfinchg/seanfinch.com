@@ -1,0 +1,17 @@
+# Sections of the generated release notes, by PR label (labels come from label-pr.yml).
+changelog:
+  exclude:
+    labels: [release]
+  categories:
+    - title: Features
+      labels: [feat]
+    - title: Fixes
+      labels: [fix]
+    - title: Security
+      labels: [security]
+    - title: Documentation
+      labels: [docs]
+    - title: Dependencies
+      labels: [dependencies]
+    - title: Other changes
+      labels: ["*"]
