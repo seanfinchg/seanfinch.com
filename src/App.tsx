@@ -87,28 +87,33 @@ const AppRoutes = (): React.JSX.Element => (
 );
 
 const App: React.FC = () => {
-  // Once the landing page has settled, warm the other page chunks (so
-  // navigation never waits on the network) and, 3s in, page 1 of the gallery
-  // thumbnails so Photography feels instant. Skipped on Save-Data or slow
-  // connections, where those bytes would compete with what's on screen.
+  // Once the landing page has fully loaded and settled, warm the other page
+  // chunks (so navigation never waits on the network) and page 1 of the
+  // gallery thumbnails (so Photography feels instant). Waiting for `load` plus
+  // 3s keeps these bytes from competing with fonts and the LCP element; idle
+  // callbacks alone fire too early, while the network is still busy. Skipped
+  // on Save-Data or slow connections.
   useEffect(() => {
     if (!canPrefetch()) return;
-    const cancelChunks = whenIdle(() => {
-      Object.values(pages).forEach((load) => { void load(); });
-    }, 2000);
-    let cancelThumbs: (() => void) | undefined;
-    const timer = setTimeout(() => {
-      cancelThumbs = whenIdle(() => {
-        photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
-          const img = new Image();
-          img.src = photoThumb(f);
+    let timer: number | undefined;
+    let cancelIdle: (() => void) | undefined;
+    const warm = (): void => {
+      timer = window.setTimeout(() => {
+        cancelIdle = whenIdle(() => {
+          Object.values(pages).forEach((load) => { void load(); });
+          photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
+            const img = new Image();
+            img.src = photoThumb(f);
+          });
         });
-      });
-    }, 3000);
+      }, 3000);
+    };
+    if (document.readyState === "complete") warm();
+    else window.addEventListener("load", warm, { once: true });
     return () => {
-      cancelChunks();
-      clearTimeout(timer);
-      cancelThumbs?.();
+      window.removeEventListener("load", warm);
+      window.clearTimeout(timer);
+      cancelIdle?.();
     };
   }, []);
 
