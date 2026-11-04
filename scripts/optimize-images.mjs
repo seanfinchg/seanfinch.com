@@ -40,8 +40,13 @@ for (const job of JOBS) {
       continue;
     }
     // sharp drops metadata by default; only the colour conversion to sRGB happens.
-    await sharp(job.src).resize({ width: w, withoutEnlargement: true }).webp({ quality: job.quality }).toFile(out);
-    console.log(`wrote ${path.relative(ROOT, out)} (${Math.round(fs.statSync(out).size / 1024)} KB)`);
+    await sharp(job.src)
+      .resize({ width: w, withoutEnlargement: true })
+      .webp({ quality: job.quality })
+      .toFile(out);
+    console.log(
+      `wrote ${path.relative(ROOT, out)} (${Math.round(fs.statSync(out).size / 1024)} KB)`,
+    );
     wrote++;
   }
 }
@@ -52,7 +57,10 @@ const logo = path.join(ROOT, "src", "assets", "audax-group.jpeg");
 const logoBuf = fs.readFileSync(logo);
 const meta = await sharp(logoBuf).metadata();
 if (meta.space === "cmyk" || process.argv.includes("--force-logo")) {
-  const buf = await sharp(logoBuf).toColourspace("srgb").jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+  const buf = await sharp(logoBuf)
+    .toColourspace("srgb")
+    .jpeg({ quality: 90, mozjpeg: true })
+    .toBuffer();
   fs.writeFileSync(logo, buf);
   console.log(`wrote src/assets/audax-group.jpeg (${Math.round(buf.length / 1024)} KB, sRGB)`);
   wrote++;
@@ -66,9 +74,14 @@ for (const f of fs.readdirSync(path.join(ROOT, "src", "assets"))) {
   const buf = fs.readFileSync(p);
   const { width = 0 } = await sharp(buf).metadata();
   if (width <= LOGO_MAX) continue;
-  const out = await sharp(buf).resize({ width: LOGO_MAX }).jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+  const out = await sharp(buf)
+    .resize({ width: LOGO_MAX })
+    .jpeg({ quality: 90, mozjpeg: true })
+    .toBuffer();
   fs.writeFileSync(p, out);
-  console.log(`wrote src/assets/${f} (${width} to ${LOGO_MAX} px, ${Math.round(buf.length / 1024)} to ${Math.round(out.length / 1024)} KB)`);
+  console.log(
+    `wrote src/assets/${f} (${width} to ${LOGO_MAX} px, ${Math.round(buf.length / 1024)} to ${Math.round(out.length / 1024)} KB)`,
+  );
   wrote++;
 }
 

@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/themeContext";
 import type { ProjectProps } from "../data/projects";
 import { FaGithub, FaExternalLinkAlt, FaSitemap } from "react-icons/fa";
-import {
-  getCardClasses,
-  getFeaturedProjectCardClasses,
-} from "../utils/themeUtils";
+import { getCardClasses, getFeaturedProjectCardClasses } from "../utils/themeUtils";
 
 interface ProjectCardProps extends ProjectProps {
   featured?: boolean;
@@ -57,9 +54,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       )}
       {!hideContent && (
         <>
-          <h3 className="font-bold mb-1.5 font-monospace text-sm">
-            Technologies employed:
-          </h3>
+          <h3 className="font-bold mb-1.5 font-monospace text-sm">Technologies employed:</h3>
           <div className="mb-3 flex flex-wrap gap-2">
             {technologies.map((tech) => (
               <span
@@ -72,17 +67,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         </>
       )}
-      {dateRange && (
-        <p className="text-sm mb-3 italic font-monospace">{dateRange}</p>
-      )}
+      {dateRange && <p className="text-sm mb-3 italic font-monospace">{dateRange}</p>}
       <div className="flex flex-wrap gap-2">
         {!hideContent && githubLink && (
-          <a
-            href={githubLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
+          <a href={githubLink} target="_blank" rel="noopener noreferrer" className={linkClass}>
             <FaGithub size={14} /> GitHub
           </a>
         )}
@@ -93,12 +81,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 <FaExternalLinkAlt size={12} /> Demo
               </Link>
             ) : (
-              <a
-                href={demoLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClass}
-              >
+              <a href={demoLink} target="_blank" rel="noopener noreferrer" className={linkClass}>
                 <FaExternalLinkAlt size={12} /> Demo
               </a>
             )}
@@ -113,8 +96,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     </div>
   );
 
-  const hoverClasses =
-    "transition-all duration-200 hover:-translate-y-1 hover:shadow-xl";
+  const hoverClasses = "transition-all duration-200 hover:-translate-y-1 hover:shadow-xl";
 
   const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(theme)} ${hoverClasses}`;
 

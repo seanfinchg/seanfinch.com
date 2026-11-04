@@ -10,18 +10,18 @@ a solo, Netlify-hosted static site differs from a team Docker app.
 
 ## Target model
 
-| Branch   | Purpose                        | Gets changes from                      | Netlify                                                      |
-| -------- | ------------------------------ | -------------------------------------- | ------------------------------------------------------------ |
-| `dev`    | Integration, base for all work | PR from a work branch, green CI        | Branch deploy `dev--<site>.netlify.app` (noindex)            |
-| `stage`  | Pre-release check              | PR from `dev` only, green CI           | Branch deploy `stage--<site>.netlify.app` (noindex)          |
-| `prod`   | What seanfinch.com serves      | PR from `stage` only, green CI         | **Production branch** → seanfinch.com, tagged `YYYY.MM.N`   |
-| PRs      | —                              | —                                      | Deploy Previews per PR (noindex)                             |
+| Branch  | Purpose                        | Gets changes from               | Netlify                                                   |
+| ------- | ------------------------------ | ------------------------------- | --------------------------------------------------------- |
+| `dev`   | Integration, base for all work | PR from a work branch, green CI | Branch deploy `dev--<site>.netlify.app` (noindex)         |
+| `stage` | Pre-release check              | PR from `dev` only, green CI    | Branch deploy `stage--<site>.netlify.app` (noindex)       |
+| `prod`  | What seanfinch.com serves      | PR from `stage` only, green CI  | **Production branch** → seanfinch.com, tagged `YYYY.MM.N` |
+| PRs     | —                              | —                               | Deploy Previews per PR (noindex)                          |
 
 - `main` is retired by **renaming it to `prod`**. GitHub keeps a redirect, so history stays
   the same and existing links still work. `dev` and `stage` are created from the new `prod`.
 - Work branches: `<type>/<short-slug>` (e.g. `feat/photography-redesign`), optionally
-  `<type>/<issue#>-<slug>` when a GitHub issue exists. *(KLA uses Linear `kas-<n>` names;
-  see open question 1.)*
+  `<type>/<issue#>-<slug>` when a GitHub issue exists. _(KLA uses Linear `kas-<n>` names;
+  see open question 1.)_
 - Merge commits only. Never squash or rebase-merge, and never force-push `dev`/`stage`/`prod`.
 - Feature PRs into `dev` use auto-merge (`gh pr merge <n> --auto --merge`). Promotion PRs
   (`dev` → `stage` → `prod`) are merged by hand.
@@ -127,7 +127,7 @@ To bootstrap, these files can land on `main` before the rename instead (see sequ
 1. Land the Phase 1 files on `main` directly (bootstrap commit), CI green.
 2. **Netlify UI**: Site config → Build & deploy → Branches: set the production branch to
    `prod`, branch deploys to "Let me add individual branches" (`dev`, `stage`), and
-   Deploy Previews on. *Manual step for you; the Netlify CLI isn't set up here.*
+   Deploy Previews on. _Manual step for you; the Netlify CLI isn't set up here._
 3. `gh api -X POST repos/seanfinchg/seanfinch.com/branches/main/rename -f new_name=prod`.
 4. Create `stage` and `dev` from `prod`; push both.
 5. Apply the Phase 2 settings and ruleset, then set the default branch to `dev`.

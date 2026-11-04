@@ -7,10 +7,7 @@ import { projects, type ProjectProps } from "../data/projects";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { FaGithub, FaExternalLinkAlt, FaSitemap } from "react-icons/fa";
 
-const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
-  proj,
-  index,
-}) => {
+const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, index }) => {
   const { theme } = useTheme();
   const ref = useScrollReveal();
   const isActive = proj.dateRange.includes("Present");
@@ -58,9 +55,7 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
         }`}
       >
         <div className="flex items-start justify-between gap-3 mb-2">
-          <h3 className="text-lg font-bold font-jost leading-tight">
-            {proj.title}
-          </h3>
+          <h3 className="text-lg font-bold font-jost leading-tight">{proj.title}</h3>
           {proj.featured && (
             <span className="text-[10px] font-monospace px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
               FEATURED
@@ -103,9 +98,11 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
               target="_blank"
               rel="noopener noreferrer"
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
-                ${theme === "light"
-                  ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
-                  : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40"}`}
+                ${
+                  theme === "light"
+                    ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
+                    : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40"
+                }`}
             >
               <FaGithub size={14} /> GitHub
             </a>
@@ -115,9 +112,11 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
               <Link
                 to={proj.demoLink}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
-                  ${theme === "light"
-                    ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
-                    : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"}`}
+                  ${
+                    theme === "light"
+                      ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
+                      : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"
+                  }`}
               >
                 <FaExternalLinkAlt size={12} /> Demo
               </Link>
@@ -127,9 +126,11 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
-                  ${theme === "light"
-                    ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
-                    : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"}`}
+                  ${
+                    theme === "light"
+                      ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
+                      : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"
+                  }`}
               >
                 <FaExternalLinkAlt size={12} /> Demo
               </a>
@@ -138,9 +139,11 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
             <Link
               to="/projects/homelab"
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
-                ${theme === "light"
-                  ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
-                  : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"}`}
+                ${
+                  theme === "light"
+                    ? "text-emerald-700 border-emerald-200 bg-emerald-50 hover:bg-emerald-100"
+                    : "text-emerald-400 border-emerald-800/50 bg-emerald-900/20 hover:bg-emerald-800/40"
+                }`}
             >
               <FaSitemap size={13} /> Diagrams
             </Link>
@@ -154,14 +157,9 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({
 const Projects: React.FC = () => {
   const { theme } = useTheme();
 
-  usePageMeta(
-    "Projects",
-    "Cybersecurity, homelab, and software projects built by Sean Finch.",
-  );
+  usePageMeta("Projects", "Cybersecurity, homelab, and software projects built by Sean Finch.");
 
-  const sorted = [...projects].sort(
-    (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0),
-  );
+  const sorted = [...projects].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 
   return (
     <div className={`flex flex-col items-center ${getThemeClasses(theme)}`}>

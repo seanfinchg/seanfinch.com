@@ -44,16 +44,15 @@ export default function AtbashCipher(): JSX.Element {
     [keepCapitalization, keepPunctuation],
   );
 
-  const transformed = useMemo(
-    () => atbashTransform(inputText),
-    [inputText, atbashTransform],
-  );
+  const transformed = useMemo(() => atbashTransform(inputText), [inputText, atbashTransform]);
 
   const copyToClipboard = useCallback(async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      setTimeout(() => { setCopied(false); }, 2000);
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
       toast.success("Copied to clipboard");
     } catch {
       toast.error("Failed to copy to clipboard");
@@ -61,15 +60,11 @@ export default function AtbashCipher(): JSX.Element {
   }, []);
 
   return (
-    <ToolsWrapper
-      backUrl="/projects/cipher-tools"
-      backLabel="Back to Cipher Tools"
-    >
+    <ToolsWrapper backUrl="/projects/cipher-tools" backLabel="Back to Cipher Tools">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Atbash Cipher Encoder/Decoder</h1>
         <p className="text-muted-foreground">
-          Encode and decode text using the Atbash cipher — a reversed-alphabet
-          substitution cipher
+          Encode and decode text using the Atbash cipher — a reversed-alphabet substitution cipher
         </p>
       </div>
 
@@ -87,7 +82,9 @@ export default function AtbashCipher(): JSX.Element {
                   id="input-text"
                   placeholder="Enter your text here..."
                   value={inputText}
-                  onChange={(e) => { setInputText(e.target.value); }}
+                  onChange={(e) => {
+                    setInputText(e.target.value);
+                  }}
                   rows={8}
                   className="font-mono"
                 />
@@ -99,14 +96,11 @@ export default function AtbashCipher(): JSX.Element {
                   <Checkbox
                     id="keep-caps"
                     checked={keepCapitalization}
-                    onCheckedChange={(checked) =>
-                      { setKeepCapitalization(checked); }
-                    }
+                    onCheckedChange={(checked) => {
+                      setKeepCapitalization(checked);
+                    }}
                   />
-                  <Label
-                    htmlFor="keep-caps"
-                    className="cursor-pointer text-sm font-normal"
-                  >
+                  <Label htmlFor="keep-caps" className="cursor-pointer text-sm font-normal">
                     Keep Capitalization
                   </Label>
                 </div>
@@ -114,14 +108,11 @@ export default function AtbashCipher(): JSX.Element {
                   <Checkbox
                     id="keep-punct"
                     checked={keepPunctuation}
-                    onCheckedChange={(checked) =>
-                      { setKeepPunctuation(checked); }
-                    }
+                    onCheckedChange={(checked) => {
+                      setKeepPunctuation(checked);
+                    }}
                   />
-                  <Label
-                    htmlFor="keep-punct"
-                    className="cursor-pointer text-sm font-normal"
-                  >
+                  <Label htmlFor="keep-punct" className="cursor-pointer text-sm font-normal">
                     Keep Punctuation & Spaces
                   </Label>
                 </div>
@@ -138,14 +129,12 @@ export default function AtbashCipher(): JSX.Element {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => { void copyToClipboard(transformed); }}
+                onClick={() => {
+                  void copyToClipboard(transformed);
+                }}
                 disabled={!transformed}
               >
-                {copied ? (
-                  <Check className="mr-2 h-4 w-4" />
-                ) : (
-                  <Copy className="mr-2 h-4 w-4" />
-                )}
+                {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
                 {copied ? "Copied!" : "Copy"}
               </Button>
             </CardHeader>
@@ -158,9 +147,7 @@ export default function AtbashCipher(): JSX.Element {
                 </div>
               ) : (
                 <div className="flex min-h-[200px] items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
-                  <p className="text-muted-foreground">
-                    Enter text to see the transformed result
-                  </p>
+                  <p className="text-muted-foreground">Enter text to see the transformed result</p>
                 </div>
               )}
             </CardContent>
@@ -198,14 +185,12 @@ export default function AtbashCipher(): JSX.Element {
                 <h4 className="mb-2 font-semibold">Security Best Practices</h4>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div>
-                    ⚠️ <strong>Not secure for real-world encryption</strong> -
-                    there is no key, so it&apos;s trivial to reverse
+                    ⚠️ <strong>Not secure for real-world encryption</strong> - there is no key, so
+                    it&apos;s trivial to reverse
                   </div>
                   <div>• Vulnerable to frequency analysis</div>
                   <div>• Use for educational purposes only</div>
-                  <div>
-                    • For real security, use modern encryption (AES, RSA)
-                  </div>
+                  <div>• For real security, use modern encryption (AES, RSA)</div>
                 </div>
               </div>
               <div>
@@ -221,8 +206,8 @@ export default function AtbashCipher(): JSX.Element {
           </div>
           <div className="border-t pt-4">
             <p className="text-sm text-muted-foreground">
-              All encryption happens locally in your browser. No data is sent to
-              external servers, ensuring complete privacy and security.
+              All encryption happens locally in your browser. No data is sent to external servers,
+              ensuring complete privacy and security.
             </p>
           </div>
         </CardContent>

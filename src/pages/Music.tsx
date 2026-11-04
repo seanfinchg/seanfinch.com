@@ -19,10 +19,7 @@ const Music: React.FC = () => {
         <div className="flex flex-col items-center text-center mt-16">
           <h1 className="text-4xl font-bold mb-8 font-jost">Music</h1>
           <div className="flex justify-center flex-wrap">
-            <SocialMediaButton
-              url="/music/music_resume.pdf"
-              className="mb-4 md:mb-0"
-            >
+            <SocialMediaButton url="/music/music_resume.pdf" className="mb-4 md:mb-0">
               Music Resume
             </SocialMediaButton>
             <SocialMediaButton
@@ -47,46 +44,40 @@ const Music: React.FC = () => {
                 }`}
             >
               <p className="mb-4">
-                My name is Sean Finch, and I'm currently a third-year
-                Cybersecurity major and Music minor at Northeastern University.
+                My name is Sean Finch, and I'm currently a third-year Cybersecurity major and Music
+                minor at Northeastern University.
               </p>
               <p className="mb-4">
-                Music has been central to my life since childhood. I began
-                playing piano in first grade and discovered my passion for
-                singing as I grew older. Joining choir in eighth grade marked
-                the beginning of my vocal journey, one that continues to bring
-                me immense joy as I develop my craft.
+                Music has been central to my life since childhood. I began playing piano in first
+                grade and discovered my passion for singing as I grew older. Joining choir in eighth
+                grade marked the beginning of my vocal journey, one that continues to bring me
+                immense joy as I develop my craft.
               </p>
               <p className="mb-4">
-                Throughout high school at Fullerton Union High School, I
-                immersed myself in various ensembles: Bass Chorus, Vocal
-                Ensemble (three years), and the FUHS Fullertones. I served as
-                tenor section lead in Vocal Ensemble for two years and president
-                of the Fullertones. Beyond my school, I sang in the SCVA
-                Southern California Regional Honor Choir for three years and the
-                CASMEC California All-State Honor Choir for two years.
+                Throughout high school at Fullerton Union High School, I immersed myself in various
+                ensembles: Bass Chorus, Vocal Ensemble (three years), and the FUHS Fullertones. I
+                served as tenor section lead in Vocal Ensemble for two years and president of the
+                Fullertones. Beyond my school, I sang in the SCVA Southern California Regional Honor
+                Choir for three years and the CASMEC California All-State Honor Choir for two years.
               </p>
               <p className="mb-4">
-                During my first year at Northeastern, I expanded my musical
-                horizons by singing in St. Mary's College of California Glee and
-                Chamber Singers as a visiting student, and as a member of the UC
-                Berkeley University Chorus.
+                During my first year at Northeastern, I expanded my musical horizons by singing in
+                St. Mary's College of California Glee and Chamber Singers as a visiting student, and
+                as a member of the UC Berkeley University Chorus.
               </p>
               <p className="mb-4">
-                Currently, I'm singing in Northeastern University's Chorus and
-                Chamber Ensemble under the direction of Dr. Katherine Chan. I
-                also serve as Vice President (Spring 2025) and President (Fall
-                2025 - Spring 2026) of the Northeastern University Choral
+                Currently, I'm singing in Northeastern University's Chorus and Chamber Ensemble
+                under the direction of Dr. Katherine Chan. I also serve as Vice President (Spring
+                2025) and President (Fall 2025 - Spring 2026) of the Northeastern University Choral
                 Society.
               </p>
               <p className="mb-4">
-                Additional accomplishments include serving as Historian for the
-                Tri-M Music Honor Society Chapter #7054, earning the Music
-                Teachers' Association of California Certificate of Merit Level 5
-                in Piano, receiving a nomination for Orange County Artist of the
-                Year in Piano (2023), completing the Fullerton Union High School
-                Academy of the Arts Choral/Vocal Track, and receiving a voice
-                scholarship from Northeastern University's Music Department.
+                Additional accomplishments include serving as Historian for the Tri-M Music Honor
+                Society Chapter #7054, earning the Music Teachers' Association of California
+                Certificate of Merit Level 5 in Piano, receiving a nomination for Orange County
+                Artist of the Year in Piano (2023), completing the Fullerton Union High School
+                Academy of the Arts Choral/Vocal Track, and receiving a voice scholarship from
+                Northeastern University's Music Department.
               </p>
             </div>
           </div>

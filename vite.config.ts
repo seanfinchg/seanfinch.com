@@ -3,7 +3,15 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import { readdirSync, readFileSync, writeFileSync, existsSync, statSync, mkdirSync, renameSync } from "fs";
+import {
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  statSync,
+  mkdirSync,
+  renameSync,
+} from "fs";
 import sharp from "sharp";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -60,7 +68,8 @@ async function generateDerivatives(photoDir: string): Promise<void> {
     mkdirSync(resolve(photoDir, DERIVED_DIR, cfg.dir), { recursive: true });
   }
   const stampPath = resolve(photoDir, DERIVED_DIR, ".version");
-  const stale = !existsSync(stampPath) || readFileSync(stampPath, "utf8").trim() !== DERIVED_VERSION;
+  const stale =
+    !existsSync(stampPath) || readFileSync(stampPath, "utf8").trim() !== DERIVED_VERSION;
 
   let made = 0;
   for (const f of files) {
@@ -78,7 +87,9 @@ async function generateDerivatives(photoDir: string): Promise<void> {
           .resize({ width: cfg.width, withoutEnlargement: true })
           .raw()
           .toBuffer({ resolveWithObject: true });
-        await sharp(data, { raw: { width: info.width, height: info.height, channels: info.channels } })
+        await sharp(data, {
+          raw: { width: info.width, height: info.height, channels: info.channels },
+        })
           .webp({ quality: cfg.quality })
           .withExif(DERIVED_EXIF)
           .withXmp(DERIVED_XMP)
@@ -114,9 +125,7 @@ async function buildManifest(): Promise<Stack[]> {
   // Filenames listed in src/data/photo-hidden.json are kept in the repo but
   // excluded from the gallery.
   const hidden = new Set<string>(
-    existsSync(hiddenPath)
-      ? (JSON.parse(readFileSync(hiddenPath, "utf8")) as string[])
-      : [],
+    existsSync(hiddenPath) ? (JSON.parse(readFileSync(hiddenPath, "utf8")) as string[]) : [],
   );
 
   const files = readdirSync(photoDir)
@@ -129,7 +138,11 @@ async function buildManifest(): Promise<Stack[]> {
     : {};
 
   const getBase = (f: string): string =>
-    f.replace(/\.webp$/i, "").replace(/[_-]edit(ed)?$/i, "").replace(/\s*\(\d+\)$/, "").trim();
+    f
+      .replace(/\.webp$/i, "")
+      .replace(/[_-]edit(ed)?$/i, "")
+      .replace(/\s*\(\d+\)$/, "")
+      .trim();
 
   const sortOrder = (f: string): number => {
     const name = f.replace(/\.webp$/i, "");
@@ -138,8 +151,7 @@ async function buildManifest(): Promise<Stack[]> {
     return m?.[1] != null ? parseInt(m[1], 10) : 0;
   };
 
-  const isEdited = (f: string): boolean =>
-    /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
+  const isEdited = (f: string): boolean => /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
 
   const groups = new Map<string, string[]>();
   for (const f of files) {

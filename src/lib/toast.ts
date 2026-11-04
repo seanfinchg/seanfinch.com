@@ -28,11 +28,7 @@ class ToastManager {
     return this.container;
   }
 
-  private show(
-    message: string,
-    type: ToastType,
-    options: ToastOptions = {},
-  ): void {
+  private show(message: string, type: ToastType, options: ToastOptions = {}): void {
     const container = this.ensureContainer();
     const duration = options.duration ?? 3000;
 

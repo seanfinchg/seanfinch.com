@@ -30,12 +30,28 @@ updates:
         dependency-type: development
         update-types: [minor, patch]
         exclude-patterns:
-          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+          [
+            "react",
+            "react-dom",
+            "@types/react*",
+            "vite",
+            "@vitejs/*",
+            "@tailwindcss/vite",
+            "tailwindcss",
+          ]
       production-minor-patch:
         dependency-type: production
         update-types: [minor, patch]
         exclude-patterns:
-          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+          [
+            "react",
+            "react-dom",
+            "@types/react*",
+            "vite",
+            "@vitejs/*",
+            "@tailwindcss/vite",
+            "tailwindcss",
+          ]
 
   - package-ecosystem: github-actions
     directory: /

@@ -1,11 +1,8 @@
 {
   "name": "seanfinch.com",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=24"
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -57,5 +54,8 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.10"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }

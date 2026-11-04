@@ -18,9 +18,7 @@ export default function oneLineFormatter(results) {
       const rule = m.ruleId || "syntax";
       const line = m.line || 1;
       const column = m.column || 1;
-      lines.push(
-        `${result.filePath}:${line}:${column}: ${severity}: ${message} [${rule}]`,
-      );
+      lines.push(`${result.filePath}:${line}:${column}: ${severity}: ${message} [${rule}]`);
     }
   }
   return lines.length ? lines.join("\n") + "\n" : "";
