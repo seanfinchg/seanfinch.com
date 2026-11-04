@@ -156,19 +156,24 @@ async function buildManifest(): Promise<Stack[]> {
       const editedIdx = sortedFiles.findIndex(isEdited);
       const cover = editedIdx >= 0 ? editedIdx : 0;
       // Header-only read; originals are already orientation-corrected by copy-exif.
-      const meta = await sharp(resolve(photoDir, sortedFiles[cover])).metadata();
+      const coverFile = sortedFiles[cover];
+      if (coverFile === undefined) throw new Error(`Photo stack ${id} has no files`);
+      const meta = await sharp(resolve(photoDir, coverFile)).metadata();
       return { id, files: sortedFiles, cover, w: meta.width, h: meta.height };
     }),
   );
 
   // Sort stacks newest-first by EXIF date, fall back to filename descending
   stacks.sort((a, b) => {
-    const da = exifDb[a.files[0]]?.DateTimeOriginal ?? "";
-    const db = exifDb[b.files[0]]?.DateTimeOriginal ?? "";
+    // Every stack has at least one file (groups are created with one).
+    const fa = a.files[0] ?? "";
+    const fb = b.files[0] ?? "";
+    const da = exifDb[fa]?.DateTimeOriginal ?? "";
+    const db = exifDb[fb]?.DateTimeOriginal ?? "";
     if (da && db) return db.localeCompare(da);
     if (da) return -1;
     if (db) return 1;
-    return b.files[0].localeCompare(a.files[0]);
+    return fb.localeCompare(fa);
   });
 
   return stacks;
@@ -179,7 +184,7 @@ function photoManifestPlugin(): Plugin {
     name: "photo-manifest",
 
     resolveId(id) {
-      if (id === VIRTUAL_ID) return RESOLVED_ID;
+      return id === VIRTUAL_ID ? RESOLVED_ID : null;
     },
 
     async load(id) {
