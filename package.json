@@ -12,7 +12,6 @@
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "photos:sanitize": "node scripts/strip-exif.mjs",
-    "handoff": "node scripts/handoff.mjs",
     "check": "npm run lint && npm run build && npm test",
     "test": "node --test \"scripts/**/*.test.mjs\"",
     "security:headers": "node scripts/check-headers.mjs",
