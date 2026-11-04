@@ -1,8 +1,5 @@
 # Weekly dependency update PRs into `dev`. Nothing auto-merges: every update goes
 # through the required checks like any other PR.
-#
-# NOTE: `target-branch: dev` errors until the `dev` branch exists (branch-workflow
-# Phase 3). Until then Dependabot reports a configuration error; that is expected.
 version: 2
 
 updates:
@@ -59,6 +56,8 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    cooldown:
+      default-days: 3
     groups:
       actions:
         patterns: ["*"]
