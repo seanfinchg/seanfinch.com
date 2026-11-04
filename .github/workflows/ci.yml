@@ -23,9 +23,10 @@ env:
 
 # Every step runs a command you can run locally, so `npm run check` passing on your
 # machine means the check job passes too. Actions are pinned to full commit SHAs.
+# The ruleset requires the job names `check` and `secrets (gitleaks)`; keep them exact.
 jobs:
   check:
-    name: check (lint, types, build, tests, headers)
+    name: check
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
