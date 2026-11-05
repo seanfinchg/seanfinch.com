@@ -21,8 +21,8 @@ export default defineConfig(
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
-        // Type-aware linting: pull real type info from the tsconfigs.
-        projectService: true,
+        // Type-aware linting: app code (tsconfig.json) and the Vite config (tsconfig.node.json).
+        project: ["./tsconfig.json", "./tsconfig.node.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },

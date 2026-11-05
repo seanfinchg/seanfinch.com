@@ -13,6 +13,8 @@ import {
   renameSync,
 } from "fs";
 import sharp from "sharp";
+import { z } from "zod";
+import { photoExifSchema, photoHiddenSchema, photoMetaDbSchema } from "./src/data/schemas";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -97,12 +99,26 @@ async function generateDerivatives(photoDir: string): Promise<void> {
         renameSync(outPath + ".tmp", outPath);
         made++;
       } catch (e) {
-        console.warn(`[photo-manifest] failed to resize ${f} (${cfg.dir}):`, (e as Error).message);
+        console.warn(
+          `[photo-manifest] failed to resize ${f} (${cfg.dir}):`,
+          e instanceof Error ? e.message : e,
+        );
       }
     }
   }
   writeFileSync(stampPath, DERIVED_VERSION);
   if (made > 0) console.log(`[photo-manifest] generated ${made} image derivative(s)`);
+}
+
+/** Reads a JSON data file and validates it, failing the build with the file name on a mismatch. */
+function readJson<T>(path: string, schema: z.ZodType<T>, fallback: T): T {
+  if (!existsSync(path)) return fallback;
+  const parsed = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
+  if (!parsed.success) {
+    throw new Error(`[photo-manifest] ${path} is invalid:
+${z.prettifyError(parsed.error)}`);
+  }
+  return parsed.data;
 }
 
 interface Stack {
@@ -124,18 +140,13 @@ async function buildManifest(): Promise<Stack[]> {
 
   // Filenames listed in src/data/photo-hidden.json are kept in the repo but
   // excluded from the gallery.
-  const hidden = new Set<string>(
-    existsSync(hiddenPath) ? (JSON.parse(readFileSync(hiddenPath, "utf8")) as string[]) : [],
-  );
+  const hidden = new Set<string>(readJson(hiddenPath, photoHiddenSchema, []));
 
   const files = readdirSync(photoDir)
     .filter((f) => f.toLowerCase().endsWith(".webp") && !hidden.has(f))
     .sort();
 
-  type ExifEntry = { DateTimeOriginal?: string } | undefined;
-  const exifDb: Record<string, ExifEntry> = existsSync(exifPath)
-    ? (JSON.parse(readFileSync(exifPath, "utf8")) as Record<string, ExifEntry>)
-    : {};
+  const exifDb = readJson(exifPath, photoExifSchema, {});
 
   const getBase = (f: string): string =>
     f
@@ -214,6 +225,11 @@ export const photos = photoStacks.map(s => s.files[s.cover]);
     },
 
     async buildStart() {
+      // App code imports photo-meta.json directly; validate it here so a bad edit fails the build.
+      readJson(resolve(__dirname, "src/data/photo-meta.json"), photoMetaDbSchema, {
+        tags: {},
+        photos: {},
+      });
       await generateDerivatives(resolve(__dirname, "public/photography"));
     },
 

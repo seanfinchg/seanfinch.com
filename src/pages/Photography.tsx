@@ -27,23 +27,13 @@ import {
   type PhotoStack,
 } from "../data/photos";
 import exifDb from "../data/photo-exif.json";
+import type { ExifEntry } from "../data/schemas";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 const isEditedFile = (f: string): boolean => /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
 
-interface ExifData {
-  Make?: string;
-  Model?: string;
-  LensModel?: string;
-  FNumber?: number;
-  ExposureTime?: number;
-  ISO?: number;
-  FocalLength?: number;
-  DateTimeOriginal?: string;
-}
-
-const exifByFile = exifDb as Record<string, ExifData>;
+const exifByFile: Record<string, ExifEntry> = exifDb;
 
 /** The default-display file for a stack (edited version), never undefined. */
 const coverFile = (stack: PhotoStack): string => stack.files[stack.cover] ?? stack.files[0] ?? "";
@@ -318,7 +308,7 @@ const Photography: React.FC = () => {
   // since both versions describe the same shot.
   const exifFile =
     currentFile && currentFile in exifByFile ? currentFile : (currentStack?.files[0] ?? null);
-  const exif: ExifData = exifFile ? (exifByFile[exifFile] ?? {}) : {};
+  const exif: ExifEntry = exifFile ? (exifByFile[exifFile] ?? {}) : {};
 
   const make = exif.Make;
   const model = exif.Model;
