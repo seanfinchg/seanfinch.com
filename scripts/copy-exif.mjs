@@ -29,9 +29,9 @@ for (const file of srcFiles) {
 
   try {
     await sharp(srcPath)
-      .rotate()           // Apply EXIF orientation to pixels, then strip orientation tag
+      .rotate() // Apply EXIF orientation to pixels, then strip orientation tag
       .webp({ quality: 85 })
-      .withMetadata()     // Keep all other EXIF (aperture, ISO, shutter, date, etc.)
+      .withMetadata() // Keep all other EXIF (aperture, ISO, shutter, date, etc.)
       .toFile(destPath + ".tmp");
 
     fs.renameSync(destPath + ".tmp", destPath);
@@ -58,13 +58,15 @@ if (converted > 0) {
 // Spot-check: verify EXIF is readable in first output file
 console.log("\n--- EXIF spot-check on first output file ---");
 import exifr from "exifr";
-const first = srcFiles.find(f => f.toLowerCase().endsWith(".jpg") || f.toLowerCase().endsWith(".jpeg"));
+const first = srcFiles.find(
+  (f) => f.toLowerCase().endsWith(".jpg") || f.toLowerCase().endsWith(".jpeg"),
+);
 if (first) {
   const base = path.basename(first, path.extname(first));
   const check = path.join(DEST, base + ".webp");
   try {
     const data = await exifr.parse(check, {
-      pick: ["Make", "Model", "FNumber", "ExposureTime", "ISO", "DateTimeOriginal", "FocalLength"]
+      pick: ["Make", "Model", "FNumber", "ExposureTime", "ISO", "DateTimeOriginal", "FocalLength"],
     });
     if (data && Object.keys(data).length > 0) {
       console.log("EXIF found:", JSON.stringify(data, null, 2));

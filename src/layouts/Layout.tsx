@@ -36,7 +36,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       }
     };
     window.addEventListener("mousemove", onMouse, { passive: true });
-    return () => { window.removeEventListener("mousemove", onMouse); };
+    return () => {
+      window.removeEventListener("mousemove", onMouse);
+    };
   }, [disableGlow]);
 
   return (
@@ -84,8 +86,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             theme === "light"
               ? "radial-gradient(circle, rgba(99,179,237,1) 0%, rgba(139,92,246,0.5) 50%, transparent 70%)"
               : "radial-gradient(circle, rgba(129,140,248,1) 0%, rgba(56,189,248,0.5) 50%, transparent 70%)",
-          transition:
-            "transform 0.2s ease-out, opacity 0.5s ease, background 0.5s ease",
+          transition: "transform 0.2s ease-out, opacity 0.5s ease, background 0.5s ease",
           willChange: "transform",
         }}
         aria-hidden="true"
@@ -95,7 +96,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div
         className="fixed inset-0 pointer-events-none z-[40]"
         style={{
-          background: "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.055) 2px, rgba(0,0,0,0.055) 4px)",
+          background:
+            "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.055) 2px, rgba(0,0,0,0.055) 4px)",
           opacity: theme === "light" ? 0.45 : 0.65,
         }}
         aria-hidden="true"

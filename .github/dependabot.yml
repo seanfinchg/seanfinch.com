@@ -1,8 +1,5 @@
 # Weekly dependency update PRs into `dev`. Nothing auto-merges: every update goes
 # through the required checks like any other PR.
-#
-# NOTE: `target-branch: dev` errors until the `dev` branch exists (branch-workflow
-# Phase 3). Until then Dependabot reports a configuration error; that is expected.
 version: 2
 
 updates:
@@ -30,12 +27,28 @@ updates:
         dependency-type: development
         update-types: [minor, patch]
         exclude-patterns:
-          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+          [
+            "react",
+            "react-dom",
+            "@types/react*",
+            "vite",
+            "@vitejs/*",
+            "@tailwindcss/vite",
+            "tailwindcss",
+          ]
       production-minor-patch:
         dependency-type: production
         update-types: [minor, patch]
         exclude-patterns:
-          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+          [
+            "react",
+            "react-dom",
+            "@types/react*",
+            "vite",
+            "@vitejs/*",
+            "@tailwindcss/vite",
+            "tailwindcss",
+          ]
 
   - package-ecosystem: github-actions
     directory: /
@@ -43,6 +56,8 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    cooldown:
+      default-days: 3
     groups:
       actions:
         patterns: ["*"]

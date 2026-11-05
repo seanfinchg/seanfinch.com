@@ -106,11 +106,7 @@
     animation: cursor-blink 1s step-end infinite;
   }
   .dot-grid-bg {
-    background-image: radial-gradient(
-      circle,
-      currentColor 1px,
-      transparent 1px
-    );
+    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
     background-size: 24px 24px;
   }
 }

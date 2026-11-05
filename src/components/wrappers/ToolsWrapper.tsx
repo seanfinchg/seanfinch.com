@@ -21,7 +21,9 @@ export default function ToolsWrapper({
       <div className="max-w-7xl mx-auto px-4 space-y-6">
         {backUrl && (
           <button
-            onClick={() => { void navigate(backUrl); }}
+            onClick={() => {
+              void navigate(backUrl);
+            }}
             className="text-blue-500 hover:text-blue-600 font-monospace text-lg transition-all mb-4 flex items-center gap-2"
             title={backLabel}
           >

@@ -46,7 +46,8 @@ const initialPage = ((): (() => Promise<unknown>) | undefined => {
   if (path === "/projects/cipher-tools") return pages.cipherTools;
   if (path.startsWith("/projects/cipher-tools/")) {
     const name = path.slice("/projects/cipher-tools/".length);
-    if (name === "caesar" || name === "vigenere" || name === "atbash" || name === "rot13") return pages[name];
+    if (name === "caesar" || name === "vigenere" || name === "atbash" || name === "rot13")
+      return pages[name];
   }
   return undefined;
 })();
@@ -98,7 +99,9 @@ const App: React.FC = () => {
     const warm = (): void => {
       timer = window.setTimeout(() => {
         cancelIdle = whenIdle(() => {
-          Object.values(pages).forEach((load) => { void load(); });
+          Object.values(pages).forEach((load) => {
+            void load();
+          });
           photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
             const img = new Image();
             img.src = photoThumb(f);

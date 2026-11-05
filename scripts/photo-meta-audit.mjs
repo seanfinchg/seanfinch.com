@@ -17,10 +17,15 @@ const readJson = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), "utf8"));
 const hidden = new Set(readJson("src/data/photo-hidden.json"));
 const meta = readJson("src/data/photo-meta.json");
 const baseOf = (f) =>
-  f.replace(/\.webp$/i, "").replace(/[_-]edit(ed)?$/i, "").replace(/\s*\(\d+\)$/, "").trim();
+  f
+    .replace(/\.webp$/i, "")
+    .replace(/[_-]edit(ed)?$/i, "")
+    .replace(/\s*\(\d+\)$/, "")
+    .trim();
 
 const ids = new Set(
-  fs.readdirSync(photoDir)
+  fs
+    .readdirSync(photoDir)
     .filter((f) => f.toLowerCase().endsWith(".webp") && !hidden.has(f))
     .map(baseOf),
 );

@@ -125,11 +125,9 @@ try {
 // Verify: re-read every file and fail loudly if any stripped tag survived.
 let leaks = 0;
 for (const name of originals) {
-  const out = execFileSync(
-    "exiftool",
-    ["-a", "-G1", "-s", path.join(PHOTO_DIR, name)],
-    { encoding: "utf8" },
-  );
+  const out = execFileSync("exiftool", ["-a", "-G1", "-s", path.join(PHOTO_DIR, name)], {
+    encoding: "utf8",
+  });
   const bad = out
     .split("\n")
     .filter((line) => {

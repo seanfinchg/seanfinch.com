@@ -17,11 +17,14 @@ const headersFile = join(dist, "_headers");
 const rule = "/*\n  X-Robots-Tag: noindex, nofollow\n";
 if (existsSync(headersFile)) {
   const existing = readFileSync(headersFile, "utf8");
-  const separator = existing === "" || existing.endsWith("\n\n") ? "" : existing.endsWith("\n") ? "\n" : "\n\n";
+  const separator =
+    existing === "" || existing.endsWith("\n\n") ? "" : existing.endsWith("\n") ? "\n" : "\n\n";
   appendFileSync(headersFile, separator + rule);
 } else {
   writeFileSync(headersFile, rule);
 }
 
 writeFileSync(join(dist, "robots.txt"), "User-agent: *\nDisallow: /\n");
-process.stdout.write(`netlify-noindex: noindex applied (CONTEXT=${process.env.CONTEXT ?? "unset"})\n`);
+process.stdout.write(
+  `netlify-noindex: noindex applied (CONTEXT=${process.env.CONTEXT ?? "unset"})\n`,
+);

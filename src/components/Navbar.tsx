@@ -36,8 +36,7 @@ const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
     <>
       {links.map((link) => {
         const isActive =
-          location.pathname === link.to ||
-          (isHomelabPage && link.to === "/projects");
+          location.pathname === link.to || (isHomelabPage && link.to === "/projects");
         return (
           <Link
             key={link.to}
@@ -84,12 +83,20 @@ const Navbar: React.FC = () => {
       <div className="flex items-center w-full">
         <button
           className="text-5xl md:invisible opacity-60 hover:opacity-90 transition-opacity"
-          onClick={() => { setIsOpen(!isOpen); }}
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
         >
           ☰
         </button>
         <div className={getStyleForMobileNavbar()}>
-          {(isOpen || !isMobile) && <Links onClick={() => { setIsOpen(false); }} />}
+          {(isOpen || !isMobile) && (
+            <Links
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

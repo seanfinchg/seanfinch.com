@@ -30,10 +30,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
 
       // Typing everywhere: no implicit/explicit `any`, require annotations.
       "@typescript-eslint/no-explicit-any": "error",
@@ -57,10 +54,7 @@ export default tseslint.config(
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
       // Numbers stringify safely; still strict about objects/any/nullish.
-      "@typescript-eslint/restrict-template-expressions": [
-        "error",
-        { allowNumber: true },
-      ],
+      "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
     },
   },
 

@@ -5,7 +5,13 @@ import { fileURLToPath } from "url";
 
 const SRC = "C:\\Users\\seanf\\Downloads\\Portfolio Pics";
 // Resolved from this script so it keeps working if the repo moves.
-const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "src", "data", "photo-exif.json");
+const OUT = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "src",
+  "data",
+  "photo-exif.json",
+);
 
 const srcFiles = fs.readdirSync(SRC);
 const result = {};
@@ -20,8 +26,16 @@ for (const file of srcFiles) {
 
   try {
     const data = await exifr.parse(srcPath, {
-      pick: ["Make", "Model", "LensModel", "FocalLength", "FNumber",
-             "ExposureTime", "ISO", "DateTimeOriginal"],
+      pick: [
+        "Make",
+        "Model",
+        "LensModel",
+        "FocalLength",
+        "FNumber",
+        "ExposureTime",
+        "ISO",
+        "DateTimeOriginal",
+      ],
     });
 
     if (data && Object.keys(data).length > 0) {
@@ -30,7 +44,9 @@ for (const file of srcFiles) {
         data.DateTimeOriginal = data.DateTimeOriginal.toISOString();
       }
       result[webpKey] = data;
-      console.log(`  OK: ${file} — f/${data.FNumber} ${data.ExposureTime ? `1/${Math.round(1/data.ExposureTime)}s` : ""} ISO${data.ISO}`);
+      console.log(
+        `  OK: ${file} — f/${data.FNumber} ${data.ExposureTime ? `1/${Math.round(1 / data.ExposureTime)}s` : ""} ISO${data.ISO}`,
+      );
     } else {
       result[webpKey] = {};
       console.log(`  EMPTY: ${file} — no EXIF found`);

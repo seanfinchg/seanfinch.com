@@ -30,8 +30,7 @@ import exifDb from "../data/photo-exif.json";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import { usePageMeta } from "../hooks/usePageMeta";
 
-const isEditedFile = (f: string): boolean =>
-  /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
+const isEditedFile = (f: string): boolean => /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
 
 interface ExifData {
   Make?: string;
@@ -47,8 +46,7 @@ interface ExifData {
 const exifByFile = exifDb as Record<string, ExifData>;
 
 /** The default-display file for a stack (edited version), never undefined. */
-const coverFile = (stack: PhotoStack): string =>
-  stack.files[stack.cover] ?? stack.files[0] ?? "";
+const coverFile = (stack: PhotoStack): string => stack.files[stack.cover] ?? stack.files[0] ?? "";
 
 // Lightbox image candidates. The image is at most the viewport wide (less the
 // details panel on md+), so phones and 1x laptops get the 1200px derivative
@@ -77,13 +75,19 @@ const formatDateTime = (d: Date | string | undefined): string => {
   try {
     const date = typeof d === "string" ? new Date(d) : d;
     const datePart = date.toLocaleDateString("en-US", {
-      month: "short", day: "numeric", year: "numeric",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
     const timePart = date.toLocaleTimeString("en-US", {
-      hour: "numeric", minute: "2-digit", hour12: true,
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
     });
     return `${datePart} · ${timePart}`;
-  } catch { return "—"; }
+  } catch {
+    return "—";
+  }
 };
 
 const versionLabel = (filename: string, idx: number, total: number): string => {
@@ -112,7 +116,10 @@ const IconButton: React.FC<{
     aria-label={label}
     title={label}
     disabled={disabled}
-    onClick={(e) => { e.stopPropagation(); onClick(); }}
+    onClick={(e) => {
+      e.stopPropagation();
+      onClick();
+    }}
     className={`shrink-0 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center
       text-white transition-colors duration-150 disabled:opacity-20 disabled:cursor-not-allowed
       focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${className}`}
@@ -142,13 +149,17 @@ const PhotoTile: React.FC<{ stack: PhotoStack; onOpen: () => void }> = ({ stack,
         focus-visible:ring-offset-transparent"
     >
       <span className="block" style={{ paddingBottom: `${100 / ratio}%` }} aria-hidden="true" />
-      {!loaded && <span className="absolute inset-0 animate-pulse bg-neutral-800" aria-hidden="true" />}
+      {!loaded && (
+        <span className="absolute inset-0 animate-pulse bg-neutral-800" aria-hidden="true" />
+      )}
       <img
         src={photoThumb(file)}
         alt={photoAlt(stack.id)}
         loading="lazy"
         decoding="async"
-        onLoad={() => { setLoaded(true); }}
+        onLoad={() => {
+          setLoaded(true);
+        }}
         className={`absolute inset-0 w-full h-full object-cover transition-[opacity,transform] duration-500
           ease-out group-hover:scale-[1.04] ${loaded ? "opacity-100" : "opacity-0"}`}
       />
@@ -172,18 +183,56 @@ const PhotoTile: React.FC<{ stack: PhotoStack; onOpen: () => void }> = ({ stack,
       </span>
 
       {isEditedFile(file) && stack.files.length > 1 && (
-        <span className="absolute top-1.5 left-1.5 rounded px-1.5 py-0.5 text-[9px] font-monospace font-semibold
-          uppercase tracking-wide leading-none bg-amber-500/85 text-black">
+        <span
+          className="absolute top-1.5 left-1.5 rounded px-1.5 py-0.5 text-[9px] font-monospace font-semibold
+          uppercase tracking-wide leading-none bg-amber-500/85 text-black"
+        >
           Edited
         </span>
       )}
 
       {stack.files.length > 1 && (
         <span className="absolute top-1.5 right-1.5 flex items-center gap-1 bg-black/70 backdrop-blur-sm rounded px-1.5 py-0.5">
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="text-white/70 shrink-0" aria-hidden="true">
-            <rect x="2.5" y="2.5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.5" />
-            <rect x="1.5" y="1.5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.75" />
-            <rect x="0.5" y="0.5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1" fill="none" />
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            fill="none"
+            className="text-white/70 shrink-0"
+            aria-hidden="true"
+          >
+            <rect
+              x="2.5"
+              y="2.5"
+              width="6"
+              height="6"
+              rx="1"
+              stroke="currentColor"
+              strokeWidth="1"
+              fill="none"
+              opacity="0.5"
+            />
+            <rect
+              x="1.5"
+              y="1.5"
+              width="6"
+              height="6"
+              rx="1"
+              stroke="currentColor"
+              strokeWidth="1"
+              fill="none"
+              opacity="0.75"
+            />
+            <rect
+              x="0.5"
+              y="0.5"
+              width="6"
+              height="6"
+              rx="1"
+              stroke="currentColor"
+              strokeWidth="1"
+              fill="none"
+            />
           </svg>
           <span className="text-white text-[10px] font-monospace font-semibold leading-none">
             {stack.files.length}
@@ -196,7 +245,10 @@ const PhotoTile: React.FC<{ stack: PhotoStack; onOpen: () => void }> = ({ stack,
 };
 
 /** Per-photo UI choices, keyed by stack id so they reset when the photo changes. */
-interface PerPhoto<T> { id: string; value: T }
+interface PerPhoto<T> {
+  id: string;
+  value: T;
+}
 
 const Photography: React.FC = () => {
   const { theme } = useTheme();
@@ -244,7 +296,9 @@ const Photography: React.FC = () => {
   const isOpen = currentStack !== null;
   const versionIdx =
     currentStack && version?.id === currentStack.id ? version.value : (currentStack?.cover ?? 0);
-  const currentFile = currentStack ? (currentStack.files[versionIdx] ?? coverFile(currentStack)) : null;
+  const currentFile = currentStack
+    ? (currentStack.files[versionIdx] ?? coverFile(currentStack))
+    : null;
   const compare = currentStack !== null && compareFor === currentStack.id;
   const fullQuality = currentStack !== null && fullQualityFor === currentStack.id;
 
@@ -263,9 +317,7 @@ const Photography: React.FC = () => {
   // Edited exports may lack EXIF — fall back to the stack's original file,
   // since both versions describe the same shot.
   const exifFile =
-    currentFile && currentFile in exifByFile
-      ? currentFile
-      : (currentStack?.files[0] ?? null);
+    currentFile && currentFile in exifByFile ? currentFile : (currentStack?.files[0] ?? null);
   const exif: ExifData = exifFile ? (exifByFile[exifFile] ?? {}) : {};
 
   const make = exif.Make;
@@ -287,24 +339,31 @@ const Photography: React.FC = () => {
   );
 
   const updateParams = (mutate: (p: URLSearchParams) => void, replace: boolean): void => {
-    setParams((prev) => {
-      const next = new URLSearchParams(prev);
-      mutate(next);
-      return next;
-    }, { replace, preventScrollReset: true });
+    setParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        mutate(next);
+        return next;
+      },
+      { replace, preventScrollReset: true },
+    );
   };
 
   const openPhoto = (id: string): void => {
     zoomScaleRef.current = 1;
     pushedRef.current = true;
-    updateParams((p) => { p.set("photo", id); }, false);
+    updateParams((p) => {
+      p.set("photo", id);
+    }, false);
   };
 
   const goTo = (idx: number): void => {
     const target = navList[idx];
     if (!target) return;
     zoomScaleRef.current = 1;
-    updateParams((p) => { p.set("photo", target.id); }, true);
+    updateParams((p) => {
+      p.set("photo", target.id);
+    }, true);
   };
 
   const close = (): void => {
@@ -313,7 +372,9 @@ const Photography: React.FC = () => {
       pushedRef.current = false;
       void navigate(-1);
     } else {
-      updateParams((p) => { p.delete("photo"); }, true);
+      updateParams((p) => {
+        p.delete("photo");
+      }, true);
     }
   };
 
@@ -331,9 +392,13 @@ const Photography: React.FC = () => {
   };
 
   useEffect(() => {
-    const onChange = (): void => { setIsFullscreen(document.fullscreenElement !== null); };
+    const onChange = (): void => {
+      setIsFullscreen(document.fullscreenElement !== null);
+    };
     document.addEventListener("fullscreenchange", onChange);
-    return () => { document.removeEventListener("fullscreenchange", onChange); };
+    return () => {
+      document.removeEventListener("fullscreenchange", onChange);
+    };
   }, []);
 
   // Lock page scroll while open; on close, return focus to the photo's tile.
@@ -347,7 +412,9 @@ const Photography: React.FC = () => {
         ?.focus({ preventScroll: false });
       lastOpenId.current = null;
     }
-    return () => { document.body.style.removeProperty("overflow"); };
+    return () => {
+      document.body.style.removeProperty("overflow");
+    };
   }, [isOpen, currentStack?.id]);
 
   // Move focus into the dialog when it opens.
@@ -368,12 +435,19 @@ const Photography: React.FC = () => {
         const first = items[0];
         const last = items[items.length - 1];
         if (!first || !last) return;
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener("keydown", handler);
-    return () => { window.removeEventListener("keydown", handler); };
+    return () => {
+      window.removeEventListener("keydown", handler);
+    };
   });
 
   // Preload neighbouring photos in the lightbox.
@@ -422,7 +496,6 @@ const Photography: React.FC = () => {
 
   return (
     <div className={`${getThemeClasses(theme)} min-h-screen`}>
-
       {/* Hero — full-bleed featured photograph */}
       <section className="relative isolate overflow-hidden bg-neutral-950 min-h-[460px] h-[72vh] max-h-[820px] flex items-end">
         {featured && featuredFile && (
@@ -435,12 +508,20 @@ const Photography: React.FC = () => {
             className="absolute inset-0 -z-10 w-full h-full object-cover bg-cover bg-center"
           />
         )}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-neutral-950 via-neutral-950/55 to-neutral-950/10" aria-hidden="true" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950/70 to-transparent" aria-hidden="true" />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-neutral-950 via-neutral-950/55 to-neutral-950/10"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950/70 to-transparent"
+          aria-hidden="true"
+        />
 
         <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div className="max-w-xl">
-            <p className="font-monospace text-amber-400/90 text-xs tracking-[0.4em] uppercase mb-4">Portfolio</p>
+            <p className="font-monospace text-amber-400/90 text-xs tracking-[0.4em] uppercase mb-4">
+              Portfolio
+            </p>
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-jost font-extrabold text-white mb-4 tracking-tight">
               Photography
             </h1>
@@ -476,7 +557,9 @@ const Photography: React.FC = () => {
           {featured && (
             <button
               type="button"
-              onClick={() => { openPhoto(featured.id); }}
+              onClick={() => {
+                openPhoto(featured.id);
+              }}
               className="self-start md:self-auto text-left group focus:outline-none focus-visible:ring-2
                 focus-visible:ring-amber-400 rounded-md px-1"
             >
@@ -495,7 +578,14 @@ const Photography: React.FC = () => {
       <section id="gallery" className="max-w-6xl mx-auto px-4 sm:px-6 py-10 scroll-mt-20">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div role="group" aria-label="Filter photos by subject" className="flex flex-wrap gap-2">
-            <button type="button" aria-pressed={!activeTag} onClick={() => { setTag(null); }} className={chipClass(!activeTag)}>
+            <button
+              type="button"
+              aria-pressed={!activeTag}
+              onClick={() => {
+                setTag(null);
+              }}
+              className={chipClass(!activeTag)}
+            >
               All <span className="opacity-60">{photoStacks.length}</span>
             </button>
             {tagCounts.map((t) => (
@@ -503,14 +593,19 @@ const Photography: React.FC = () => {
                 key={t.id}
                 type="button"
                 aria-pressed={activeTag === t.id}
-                onClick={() => { setTag(activeTag === t.id ? null : t.id); }}
+                onClick={() => {
+                  setTag(activeTag === t.id ? null : t.id);
+                }}
                 className={chipClass(activeTag === t.id)}
               >
                 {t.label} <span className="opacity-60">{t.count}</span>
               </button>
             ))}
           </div>
-          <p className={`font-monospace text-xs ${isLight ? "text-neutral-500" : "text-neutral-500"}`} aria-live="polite">
+          <p
+            className={`font-monospace text-xs ${isLight ? "text-neutral-500" : "text-neutral-500"}`}
+            aria-live="polite"
+          >
             {filtered.length} {filtered.length === 1 ? "photo" : "photos"}
             {activeTag ? ` · ${tagLabels.get(activeTag) ?? ""}` : ` · ${totalPhotos} files`}
           </p>
@@ -521,7 +616,13 @@ const Photography: React.FC = () => {
             after:content-[''] after:grow-[999]"
         >
           {shown.map((stack) => (
-            <PhotoTile key={stack.id} stack={stack} onOpen={() => { openPhoto(stack.id); }} />
+            <PhotoTile
+              key={stack.id}
+              stack={stack}
+              onOpen={() => {
+                openPhoto(stack.id);
+              }}
+            />
           ))}
         </div>
 
@@ -529,7 +630,9 @@ const Photography: React.FC = () => {
           <div className="flex justify-center mt-10">
             <button
               type="button"
-              onClick={() => { setVisibleCount((c) => c + PHOTOS_PER_PAGE); }}
+              onClick={() => {
+                setVisibleCount((c) => c + PHOTOS_PER_PAGE);
+              }}
               className={`${chipClass(false)} h-10 px-5`}
             >
               Show {Math.min(remaining, PHOTOS_PER_PAGE)} more
@@ -538,11 +641,15 @@ const Photography: React.FC = () => {
           </div>
         )}
 
-        <div className={`mt-14 rounded-xl border px-6 py-8 text-center ${
-          isLight ? "border-neutral-200 bg-white/60" : "border-neutral-800 bg-neutral-900/40"
-        }`}>
+        <div
+          className={`mt-14 rounded-xl border px-6 py-8 text-center ${
+            isLight ? "border-neutral-200 bg-white/60" : "border-neutral-800 bg-neutral-900/40"
+          }`}
+        >
           <p className="font-jost text-xl font-semibold mb-2">There&rsquo;s more on Instagram</p>
-          <p className={`font-raleway text-sm mb-5 ${isLight ? "text-neutral-600" : "text-neutral-400"}`}>
+          <p
+            className={`font-raleway text-sm mb-5 ${isLight ? "text-neutral-600" : "text-neutral-400"}`}
+          >
             New shots usually land there first.
           </p>
           <a
@@ -558,10 +665,13 @@ const Photography: React.FC = () => {
           </a>
         </div>
 
-        <div className={`mt-10 pt-6 border-t text-center ${isLight ? "border-neutral-200" : "border-neutral-800"}`}>
+        <div
+          className={`mt-10 pt-6 border-t text-center ${isLight ? "border-neutral-200" : "border-neutral-800"}`}
+        >
           <p className="font-monospace text-[11px] text-neutral-500 max-w-xl mx-auto leading-relaxed mb-8">
-            © {new Date().getFullYear()} Sean Finch. All images are subject to copyright and may not be reproduced,
-            distributed, or used for any purpose without explicit written license from the author.
+            © {new Date().getFullYear()} Sean Finch. All images are subject to copyright and may not
+            be reproduced, distributed, or used for any purpose without explicit written license
+            from the author.
           </p>
           <div className="flex flex-wrap justify-center gap-6 font-monospace text-xs text-muted-foreground">
             {[
@@ -580,266 +690,312 @@ const Photography: React.FC = () => {
         </div>
       </section>
 
-      {isOpen && currentFile && createPortal(
-        <div
-          ref={dialogRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${photoTitle(currentStack.id)} — photo ${lbIndex + 1} of ${navList.length}`}
-          className="fixed inset-0 z-50 bg-black/95 flex flex-col"
-          onClick={close}
-        >
-          {/* Top bar */}
-          <div className="flex items-center justify-between gap-3 px-3 sm:px-5 py-3 shrink-0">
-            <p className="font-monospace text-xs text-neutral-400 w-16 shrink-0">
-              {lbIndex + 1} / {navList.length}
-            </p>
-            <div className="flex items-center gap-2 min-w-0">
-              {currentStack.files.length > 1 && (
-                <span
-                  className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-monospace font-semibold
+      {isOpen &&
+        currentFile &&
+        createPortal(
+          <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${photoTitle(currentStack.id)} — photo ${lbIndex + 1} of ${navList.length}`}
+            className="fixed inset-0 z-50 bg-black/95 flex flex-col"
+            onClick={close}
+          >
+            {/* Top bar */}
+            <div className="flex items-center justify-between gap-3 px-3 sm:px-5 py-3 shrink-0">
+              <p className="font-monospace text-xs text-neutral-400 w-16 shrink-0">
+                {lbIndex + 1} / {navList.length}
+              </p>
+              <div className="flex items-center gap-2 min-w-0">
+                {currentStack.files.length > 1 && (
+                  <span
+                    className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-monospace font-semibold
                     uppercase tracking-wide leading-none ${
-                      isEditedFile(currentFile) ? "bg-amber-500/85 text-black" : "bg-white/15 text-neutral-200"
+                      isEditedFile(currentFile)
+                        ? "bg-amber-500/85 text-black"
+                        : "bg-white/15 text-neutral-200"
                     }`}
-                >
-                  {isEditedFile(currentFile) ? "Edited" : "Original"}
-                </span>
-              )}
-              <h2 className="font-jost text-sm sm:text-base font-semibold text-white truncate">
-                {photoTitle(currentStack.id)}
-              </h2>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              {!compare && (
-                <button
-                  type="button"
-                  aria-pressed={fullQuality}
-                  onClick={(e) => { e.stopPropagation(); setFullQualityFor(fullQuality ? null : currentStack.id); }}
-                  title="Load the full-resolution original (larger download)"
-                  className={`h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-monospace
-                    font-semibold transition-colors duration-150 focus:outline-none focus-visible:ring-2
-                    focus-visible:ring-amber-400 ${
-                      fullQuality ? "bg-amber-500 text-black" : "bg-white/10 hover:bg-white/20 text-white"
-                    }`}
-                >
-                  <span className="sm:hidden">HQ</span>
-                  <span className="hidden sm:inline">Full quality</span>
-                  {fullQuality && " ✓"}
-                </button>
-              )}
-              {editPair && (
-                <button
-                  type="button"
-                  aria-pressed={compare}
-                  onClick={(e) => { e.stopPropagation(); setCompareFor(compare ? null : currentStack.id); }}
-                  className={`h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-monospace
-                    font-semibold transition-colors duration-150 focus:outline-none focus-visible:ring-2
-                    focus-visible:ring-amber-400 ${
-                      compare ? "bg-amber-500 text-black" : "bg-white/10 hover:bg-white/20 text-white"
-                    }`}
-                >
-                  ⇄ {compare ? "Exit compare" : "Compare"}
-                </button>
-              )}
-              <IconButton
-                label={isFullscreen ? "Exit fullscreen (F)" : "Fullscreen (F)"}
-                onClick={toggleFullscreen}
-                className="w-9 h-9 hidden sm:flex"
-              >
-                {isFullscreen ? <FaCompress size={13} /> : <FaExpand size={13} />}
-              </IconButton>
-              <span data-autofocus tabIndex={-1} className="sr-only" />
-              <IconButton label="Close (Esc)" onClick={close} className="w-9 h-9">
-                <FaTimes size={14} />
-              </IconButton>
-            </div>
-          </div>
-
-          {/* Main content row */}
-          <div className="flex items-center flex-1 min-h-0 px-2 sm:px-4 gap-3">
-            <IconButton
-              label="Previous photo"
-              onClick={() => { goTo(lbIndex - 1); }}
-              disabled={lbIndex === 0}
-              className="w-10 h-10 hidden sm:flex"
-            >
-              <FaChevronLeft size={15} />
-            </IconButton>
-
-            {/* Image + EXIF */}
-            <div
-              className="flex items-center justify-center gap-4 flex-1 min-w-0 min-h-0 h-full overflow-hidden"
-              onClick={(e) => { e.stopPropagation(); }}
-              onTouchStart={onTouchStart}
-              onTouchEnd={onTouchEnd}
-            >
-              {compare && editPair ? (
-                <BeforeAfterSlider
-                  beforeSrc={photoLarge(editPair.before)}
-                  afterSrc={photoLarge(editPair.after)}
-                />
-              ) : (
-                <TransformWrapper
-                  key={currentFile}
-                  minScale={1}
-                  maxScale={8}
-                  centerOnInit
-                  centerZoomedOut
-                  doubleClick={{ mode: "toggle", step: 1.6 }}
-                  wheel={{ step: 0.2 }}
-                  pinch={{ step: 5 }}
-                  panning={{ velocityDisabled: true }}
-                  onInit={() => { zoomScaleRef.current = 1; }}
-                  onTransform={(ref) => {
-                    zoomScaleRef.current = ref.state.scale;
-                    if (ref.state.scale > 1.05 && zoomedFile !== currentFile) setZoomedFile(currentFile);
-                  }}
-                >
-                  <TransformComponent
-                    wrapperStyle={{ width: "100%", height: "100%" }}
-                    contentStyle={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
                   >
-                    <img
-                      src={fullQuality ? photoSrc(currentFile) : photoLarge(currentFile)}
-                      {...(fullQuality || zoomedFile === currentFile
-                        ? {}
-                        : { srcSet: lightboxSrcSet(currentFile), sizes: LIGHTBOX_SIZES })}
-                      alt={photoAlt(currentStack.id)}
-                      // Cover dimensions reserve the box so the blurred thumb
-                      // placeholder shows while the large image streams in.
-                      {...(currentFile === coverFile(currentStack)
-                        ? { width: currentStack.w, height: currentStack.h }
-                        : {})}
-                      style={{ backgroundImage: `url("${photoThumb(currentFile)}")` }}
-                      className="max-h-[calc(100dvh-9rem)] h-auto min-w-0 w-auto max-w-full object-contain rounded
-                        shadow-2xl select-none cursor-zoom-in bg-cover bg-center"
-                    />
-                  </TransformComponent>
-                </TransformWrapper>
-              )}
-
-              {/* Details panel — desktop only */}
-              <div className="hidden md:flex flex-col w-56 shrink-0 bg-neutral-900/80 border border-neutral-800
-                rounded-xl p-4 gap-4 self-center">
-                {(photoMeta(currentStack.id).tags ?? []).length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {stackTags(currentStack).map((t) => (
-                      <span key={t} className="rounded-full border border-neutral-700 px-2 py-0.5 text-[10px]
-                        font-monospace uppercase tracking-wider text-neutral-400">
-                        {tagLabels.get(t) ?? t}
-                      </span>
-                    ))}
-                  </div>
+                    {isEditedFile(currentFile) ? "Edited" : "Original"}
+                  </span>
                 )}
-                {cameraLabel && (
-                  <div>
-                    <p className="text-[9px] uppercase tracking-widest text-neutral-500 mb-1">Camera</p>
-                    <p className="text-xs font-semibold text-neutral-300">{cameraLabel}</p>
-                  </div>
+                <h2 className="font-jost text-sm sm:text-base font-semibold text-white truncate">
+                  {photoTitle(currentStack.id)}
+                </h2>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {!compare && (
+                  <button
+                    type="button"
+                    aria-pressed={fullQuality}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFullQualityFor(fullQuality ? null : currentStack.id);
+                    }}
+                    title="Load the full-resolution original (larger download)"
+                    className={`h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-monospace
+                    font-semibold transition-colors duration-150 focus:outline-none focus-visible:ring-2
+                    focus-visible:ring-amber-400 ${
+                      fullQuality
+                        ? "bg-amber-500 text-black"
+                        : "bg-white/10 hover:bg-white/20 text-white"
+                    }`}
+                  >
+                    <span className="sm:hidden">HQ</span>
+                    <span className="hidden sm:inline">Full quality</span>
+                    {fullQuality && " ✓"}
+                  </button>
                 )}
-                {lensLabel && (
-                  <div>
-                    <p className="text-[9px] uppercase tracking-widest text-neutral-500 mb-1">Lens</p>
-                    <p className="text-xs font-semibold text-neutral-300 break-words leading-snug">{lensLabel}</p>
-                  </div>
+                {editPair && (
+                  <button
+                    type="button"
+                    aria-pressed={compare}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCompareFor(compare ? null : currentStack.id);
+                    }}
+                    className={`h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-monospace
+                    font-semibold transition-colors duration-150 focus:outline-none focus-visible:ring-2
+                    focus-visible:ring-amber-400 ${
+                      compare
+                        ? "bg-amber-500 text-black"
+                        : "bg-white/10 hover:bg-white/20 text-white"
+                    }`}
+                  >
+                    ⇄ {compare ? "Exit compare" : "Compare"}
+                  </button>
                 )}
-
-                <div className="border-t border-neutral-800 pt-3 grid grid-cols-2 gap-x-3 gap-y-3">
-                  <ExifCell label="Aperture" value={aperture} />
-                  <ExifCell label="Shutter" value={shutter} />
-                  <ExifCell label="ISO" value={iso} />
-                  <ExifCell label="Focal" value={focal} />
-                </div>
-
-                <div className="border-t border-neutral-800 pt-3">
-                  <ExifCell label="Taken" value={dateTaken} />
-                </div>
-
-                {Object.keys(exif).length === 0 && (
-                  <p className="text-[10px] font-monospace text-neutral-600 text-center leading-snug">
-                    No EXIF data found in this file
-                  </p>
-                )}
-                <p className="text-[10px] font-monospace text-neutral-600 leading-snug">
-                  ← → to browse · F fullscreen · double-click to zoom
-                </p>
+                <IconButton
+                  label={isFullscreen ? "Exit fullscreen (F)" : "Fullscreen (F)"}
+                  onClick={toggleFullscreen}
+                  className="w-9 h-9 hidden sm:flex"
+                >
+                  {isFullscreen ? <FaCompress size={13} /> : <FaExpand size={13} />}
+                </IconButton>
+                <span data-autofocus tabIndex={-1} className="sr-only" />
+                <IconButton label="Close (Esc)" onClick={close} className="w-9 h-9">
+                  <FaTimes size={14} />
+                </IconButton>
               </div>
             </div>
 
-            <IconButton
-              label="Next photo"
-              onClick={() => { goTo(lbIndex + 1); }}
-              disabled={lbIndex === navList.length - 1}
-              className="w-10 h-10 hidden sm:flex"
-            >
-              <FaChevronRight size={15} />
-            </IconButton>
-          </div>
+            {/* Main content row */}
+            <div className="flex items-center flex-1 min-h-0 px-2 sm:px-4 gap-3">
+              <IconButton
+                label="Previous photo"
+                onClick={() => {
+                  goTo(lbIndex - 1);
+                }}
+                disabled={lbIndex === 0}
+                className="w-10 h-10 hidden sm:flex"
+              >
+                <FaChevronLeft size={15} />
+              </IconButton>
 
-          {/* Version filmstrip — sits below image row, doesn't compete for height */}
-          {!compare && currentStack.files.length > 1 && (
-            <div
-              className="shrink-0 flex items-center justify-center gap-2 py-2 border-t border-neutral-800/60"
-              onClick={(e) => { e.stopPropagation(); }}
-            >
-              {currentStack.files.map((f, vi) => (
-                <button
-                  key={f}
-                  type="button"
-                  aria-label={`Show version: ${versionLabel(f, vi, currentStack.files.length)}`}
-                  aria-pressed={versionIdx === vi}
-                  onClick={() => { setVersion({ id: currentStack.id, value: vi }); }}
-                  className={`relative w-16 h-11 rounded overflow-hidden transition-all duration-150 shrink-0
+              {/* Image + EXIF */}
+              <div
+                className="flex items-center justify-center gap-4 flex-1 min-w-0 min-h-0 h-full overflow-hidden"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+              >
+                {compare && editPair ? (
+                  <BeforeAfterSlider
+                    beforeSrc={photoLarge(editPair.before)}
+                    afterSrc={photoLarge(editPair.after)}
+                  />
+                ) : (
+                  <TransformWrapper
+                    key={currentFile}
+                    minScale={1}
+                    maxScale={8}
+                    centerOnInit
+                    centerZoomedOut
+                    doubleClick={{ mode: "toggle", step: 1.6 }}
+                    wheel={{ step: 0.2 }}
+                    pinch={{ step: 5 }}
+                    panning={{ velocityDisabled: true }}
+                    onInit={() => {
+                      zoomScaleRef.current = 1;
+                    }}
+                    onTransform={(ref) => {
+                      zoomScaleRef.current = ref.state.scale;
+                      if (ref.state.scale > 1.05 && zoomedFile !== currentFile)
+                        setZoomedFile(currentFile);
+                    }}
+                  >
+                    <TransformComponent
+                      wrapperStyle={{ width: "100%", height: "100%" }}
+                      contentStyle={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <img
+                        src={fullQuality ? photoSrc(currentFile) : photoLarge(currentFile)}
+                        {...(fullQuality || zoomedFile === currentFile
+                          ? {}
+                          : { srcSet: lightboxSrcSet(currentFile), sizes: LIGHTBOX_SIZES })}
+                        alt={photoAlt(currentStack.id)}
+                        // Cover dimensions reserve the box so the blurred thumb
+                        // placeholder shows while the large image streams in.
+                        {...(currentFile === coverFile(currentStack)
+                          ? { width: currentStack.w, height: currentStack.h }
+                          : {})}
+                        style={{ backgroundImage: `url("${photoThumb(currentFile)}")` }}
+                        className="max-h-[calc(100dvh-9rem)] h-auto min-w-0 w-auto max-w-full object-contain rounded
+                        shadow-2xl select-none cursor-zoom-in bg-cover bg-center"
+                      />
+                    </TransformComponent>
+                  </TransformWrapper>
+                )}
+
+                {/* Details panel — desktop only */}
+                <div
+                  className="hidden md:flex flex-col w-56 shrink-0 bg-neutral-900/80 border border-neutral-800
+                rounded-xl p-4 gap-4 self-center"
+                >
+                  {(photoMeta(currentStack.id).tags ?? []).length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {stackTags(currentStack).map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-full border border-neutral-700 px-2 py-0.5 text-[10px]
+                        font-monospace uppercase tracking-wider text-neutral-400"
+                        >
+                          {tagLabels.get(t) ?? t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {cameraLabel && (
+                    <div>
+                      <p className="text-[9px] uppercase tracking-widest text-neutral-500 mb-1">
+                        Camera
+                      </p>
+                      <p className="text-xs font-semibold text-neutral-300">{cameraLabel}</p>
+                    </div>
+                  )}
+                  {lensLabel && (
+                    <div>
+                      <p className="text-[9px] uppercase tracking-widest text-neutral-500 mb-1">
+                        Lens
+                      </p>
+                      <p className="text-xs font-semibold text-neutral-300 break-words leading-snug">
+                        {lensLabel}
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="border-t border-neutral-800 pt-3 grid grid-cols-2 gap-x-3 gap-y-3">
+                    <ExifCell label="Aperture" value={aperture} />
+                    <ExifCell label="Shutter" value={shutter} />
+                    <ExifCell label="ISO" value={iso} />
+                    <ExifCell label="Focal" value={focal} />
+                  </div>
+
+                  <div className="border-t border-neutral-800 pt-3">
+                    <ExifCell label="Taken" value={dateTaken} />
+                  </div>
+
+                  {Object.keys(exif).length === 0 && (
+                    <p className="text-[10px] font-monospace text-neutral-600 text-center leading-snug">
+                      No EXIF data found in this file
+                    </p>
+                  )}
+                  <p className="text-[10px] font-monospace text-neutral-600 leading-snug">
+                    ← → to browse · F fullscreen · double-click to zoom
+                  </p>
+                </div>
+              </div>
+
+              <IconButton
+                label="Next photo"
+                onClick={() => {
+                  goTo(lbIndex + 1);
+                }}
+                disabled={lbIndex === navList.length - 1}
+                className="w-10 h-10 hidden sm:flex"
+              >
+                <FaChevronRight size={15} />
+              </IconButton>
+            </div>
+
+            {/* Version filmstrip — sits below image row, doesn't compete for height */}
+            {!compare && currentStack.files.length > 1 && (
+              <div
+                className="shrink-0 flex items-center justify-center gap-2 py-2 border-t border-neutral-800/60"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                {currentStack.files.map((f, vi) => (
+                  <button
+                    key={f}
+                    type="button"
+                    aria-label={`Show version: ${versionLabel(f, vi, currentStack.files.length)}`}
+                    aria-pressed={versionIdx === vi}
+                    onClick={() => {
+                      setVersion({ id: currentStack.id, value: vi });
+                    }}
+                    className={`relative w-16 h-11 rounded overflow-hidden transition-all duration-150 shrink-0
                     focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400
                     ${versionIdx === vi ? "ring-2 ring-amber-400 opacity-100" : "opacity-40 hover:opacity-70"}`}
-                >
-                  <img src={photoThumb(f)} className="w-full h-full object-cover" alt="" />
-                  <span className="absolute bottom-0 left-0 right-0 bg-black/60 text-white
-                    text-[8px] font-monospace text-center py-0.5 leading-none">
-                    {versionLabel(f, vi, currentStack.files.length)}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
+                  >
+                    <img src={photoThumb(f)} className="w-full h-full object-cover" alt="" />
+                    <span
+                      className="absolute bottom-0 left-0 right-0 bg-black/60 text-white
+                    text-[8px] font-monospace text-center py-0.5 leading-none"
+                    >
+                      {versionLabel(f, vi, currentStack.files.length)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
 
-          {/* Mobile bottom bar: prev/next + EXIF */}
-          <div
-            className="md:hidden flex items-center justify-between gap-3 px-3 py-3 shrink-0 border-t border-neutral-800 font-monospace"
-            onClick={(e) => { e.stopPropagation(); }}
-          >
-            <IconButton
-              label="Previous photo"
-              onClick={() => { goTo(lbIndex - 1); }}
-              disabled={lbIndex === 0}
-              className="w-10 h-10 sm:hidden"
+            {/* Mobile bottom bar: prev/next + EXIF */}
+            <div
+              className="md:hidden flex items-center justify-between gap-3 px-3 py-3 shrink-0 border-t border-neutral-800 font-monospace"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
             >
-              <FaChevronLeft size={14} />
-            </IconButton>
-            <div className="flex items-center justify-center gap-5 flex-1">
-              <ExifCell label="Aperture" value={aperture} />
-              <ExifCell label="Shutter" value={shutter} />
-              <ExifCell label="ISO" value={iso} />
-              <ExifCell label="Focal" value={focal} />
+              <IconButton
+                label="Previous photo"
+                onClick={() => {
+                  goTo(lbIndex - 1);
+                }}
+                disabled={lbIndex === 0}
+                className="w-10 h-10 sm:hidden"
+              >
+                <FaChevronLeft size={14} />
+              </IconButton>
+              <div className="flex items-center justify-center gap-5 flex-1">
+                <ExifCell label="Aperture" value={aperture} />
+                <ExifCell label="Shutter" value={shutter} />
+                <ExifCell label="ISO" value={iso} />
+                <ExifCell label="Focal" value={focal} />
+              </div>
+              <IconButton
+                label="Next photo"
+                onClick={() => {
+                  goTo(lbIndex + 1);
+                }}
+                disabled={lbIndex === navList.length - 1}
+                className="w-10 h-10 sm:hidden"
+              >
+                <FaChevronRight size={14} />
+              </IconButton>
             </div>
-            <IconButton
-              label="Next photo"
-              onClick={() => { goTo(lbIndex + 1); }}
-              disabled={lbIndex === navList.length - 1}
-              className="w-10 h-10 sm:hidden"
-            >
-              <FaChevronRight size={14} />
-            </IconButton>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 };

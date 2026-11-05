@@ -37,11 +37,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           aria-label={`${company} website`}
         >
           {logo && (
-            <img
-              src={logo}
-              alt={`${company} logo`}
-              className="w-16 h-16 object-contain rounded"
-            />
+            <img src={logo} alt={`${company} logo`} className="w-16 h-16 object-contain rounded" />
           )}
           <h3 className="text-2xl font-semibold font-jost">{company}</h3>
         </a>
@@ -75,8 +71,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     </div>
   );
 
-  const hoverClasses =
-    "transition-all duration-200 hover:-translate-y-1 hover:shadow-xl";
+  const hoverClasses = "transition-all duration-200 hover:-translate-y-1 hover:shadow-xl";
 
   const regularClasses = `w-full md:w-1/2 mb-8 p-4 rounded-lg shadow-lg border-2 ${getCardClasses(theme)} ${hoverClasses}`;
 

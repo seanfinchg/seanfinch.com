@@ -13,9 +13,7 @@ const DiagramViewer: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Find the Homelab project
-  const project = projects.find((p) =>
-    p.title.toLowerCase().includes("homelab"),
-  );
+  const project = projects.find((p) => p.title.toLowerCase().includes("homelab"));
 
   const diagram = project?.diagrams?.find((d) => d.name === diagramName);
 
@@ -51,7 +49,9 @@ const DiagramViewer: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <button
-            onClick={() => { void navigate("/projects/homelab"); }}
+            onClick={() => {
+              void navigate("/projects/homelab");
+            }}
             className="text-sky-500 hover:text-sky-400 font-monospace mb-2 transition-colors"
           >
             ← Back to Homelab
@@ -79,7 +79,9 @@ const DiagramViewer: React.FC = () => {
             src={viewerUrl}
             className="w-full h-full rounded-lg"
             title={diagram.label}
-            onLoad={() => { setLoading(false); }}
+            onLoad={() => {
+              setLoading(false);
+            }}
             style={{ border: "none" }}
           />
         </div>
@@ -87,16 +89,16 @@ const DiagramViewer: React.FC = () => {
         {/* Navigation to other diagrams if available */}
         {project.diagrams && project.diagrams.length > 1 && (
           <div className="mt-6">
-            <h3 className="text-xl font-bold font-jost mb-3">
-              Other Diagrams:
-            </h3>
+            <h3 className="text-xl font-bold font-jost mb-3">Other Diagrams:</h3>
             <div className="flex flex-wrap gap-3">
               {project.diagrams
                 .filter((d) => d.name !== diagramName)
                 .map((d) => (
                   <button
                     key={d.name}
-                    onClick={() => { void navigate(`/projects/homelab/${d.name}`); }}
+                    onClick={() => {
+                      void navigate(`/projects/homelab/${d.name}`);
+                    }}
                     className="bg-sky-500 hover:bg-sky-400 text-white px-4 py-2 rounded-lg font-monospace transition-colors"
                   >
                     {d.label}

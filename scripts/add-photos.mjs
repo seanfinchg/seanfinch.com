@@ -57,7 +57,11 @@ for (const src of sources) {
     console.log(`  WOULD ADD: ${src} → ${path.basename(out)}`);
     continue;
   }
-  await sharp(src).rotate().webp({ quality: 85 }).withMetadata().toFile(out + ".tmp");
+  await sharp(src)
+    .rotate()
+    .webp({ quality: 85 })
+    .withMetadata()
+    .toFile(out + ".tmp");
   fs.renameSync(out + ".tmp", out);
   console.log(`  ADDED: ${path.basename(out)}`);
   added++;
