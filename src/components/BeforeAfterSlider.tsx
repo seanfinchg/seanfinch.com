@@ -68,8 +68,8 @@ const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
 
       {/* Divider + handle */}
       <div
-        className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_6px_rgba(0,0,0,0.6)] pointer-events-none"
-        style={{ left: `${pos}%`, transform: "translateX(-50%)" }}
+        className="absolute top-0 bottom-0 w-0.5 bg-white/90 shadow-[0_0_6px_rgba(0,0,0,0.6)] pointer-events-none -translate-x-1/2"
+        style={{ left: `${pos}%` }}
       >
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-black text-xs font-bold">
           ‹›

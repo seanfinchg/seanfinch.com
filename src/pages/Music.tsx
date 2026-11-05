@@ -88,8 +88,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_10.jpg"
                 alt="Music Portrait"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Music Portrait</p>
             </div>
@@ -97,8 +96,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_9.jpg"
                 alt="CASMEC Honor Choir Concert 2023"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">CASMEC Honor Choir Concert 2023</p>
             </div>
@@ -106,8 +104,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_8.jpg"
                 alt="Winter Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Winter Concert 2022</p>
             </div>
@@ -115,8 +112,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_7.jpg"
                 alt="SCVA Honor Choir Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">SCVA Honor Choir Concert 2022</p>
             </div>
@@ -124,8 +120,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_6.jpg"
                 alt="Spring Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Spring Concert 2022</p>
             </div>
@@ -133,8 +128,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_5.jpg"
                 alt="Spring Concert 2022 Poster"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Spring Concert 2022 Poster</p>
             </div>
@@ -142,8 +136,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_4.jpg"
                 alt="CASMEC Honor Choir Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">CASMEC Honor Choir Concert 2022</p>
             </div>
@@ -151,8 +144,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_3.jpg"
                 alt="SCVA Honor Choir Concert 2021"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">SCVA Honor Choir Concert 2021</p>
             </div>
@@ -160,8 +152,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_2.jpg"
                 alt="Winter Concert 2019"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Winter Concert 2019</p>
             </div>
@@ -169,8 +160,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_1.jpg"
                 alt="Fall Concert 2019"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Fall Concert 2019</p>
             </div>

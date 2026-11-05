@@ -72,17 +72,7 @@ const HomelabDiagrams: React.FC = () => {
                   onChange={(e) => {
                     if (e.target.value !== "networking") setSelectedDiagram(e.target.value);
                   }}
-                  className="w-full px-4 py-2.5 rounded-lg font-monospace text-base font-semibold border-2 transition-all shadow-sm bg-sky-500 border-sky-500 text-white hover:bg-sky-600"
-                  style={{
-                    WebkitAppearance: "none",
-                    MozAppearance: "none",
-                    appearance: "none",
-                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 0.7rem center",
-                    backgroundSize: "1.2rem",
-                    paddingRight: "2.5rem",
-                  }}
+                  className="w-full px-4 py-2.5 rounded-lg font-monospace text-base font-semibold border-2 transition-all shadow-sm bg-sky-500 border-sky-500 text-white hover:bg-sky-600 appearance-none select-chevron pr-10"
                 >
                   {homelabProject.diagrams.map((diagram) => (
                     <option
@@ -142,12 +132,11 @@ const HomelabDiagrams: React.FC = () => {
             )}
             <iframe
               src={viewerUrl}
-              className="w-full h-full"
+              className="w-full h-full border-0"
               onLoad={() => {
                 setLoading(false);
               }}
               title={currentDiagram.label}
-              style={{ border: "none" }}
             />
           </div>
         </div>
