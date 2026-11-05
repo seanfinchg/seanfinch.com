@@ -17,7 +17,14 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
+      # TypeScript 7 (the native port) ships no classic compiler API, and typescript-eslint
+      # 8.x needs it (peer typescript <6.1.0). Lift this when typescript-eslint supports 7.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
     groups:
+      # ESLint majors land together: eslint 10 alone breaks @eslint/js 9, and vice versa.
+      eslint:
+        patterns: ["eslint", "@eslint/*", "eslint-plugin-*", "typescript-eslint", "globals"]
       react:
         patterns: ["react", "react-dom", "@types/react", "@types/react-dom", "@types/react-*"]
       vite:
@@ -35,6 +42,11 @@ updates:
             "@vitejs/*",
             "@tailwindcss/vite",
             "tailwindcss",
+            "eslint",
+            "@eslint/*",
+            "eslint-plugin-*",
+            "typescript-eslint",
+            "globals",
           ]
       production-minor-patch:
         dependency-type: production
