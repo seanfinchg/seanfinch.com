@@ -12,10 +12,17 @@ import { fileURLToPath } from "url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const photoDir = path.join(ROOT, "public", "photography");
+/** @param {string} p @returns {unknown} */
 const readJson = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), "utf8"));
 
-const hidden = new Set(readJson("src/data/photo-hidden.json"));
-const meta = readJson("src/data/photo-meta.json");
+/**
+ * @typedef {object} PhotoMeta
+ * @property {Record<string, string>} tags
+ * @property {Record<string, { title?: string, alt?: string, tags?: string[] }>} photos
+ */
+const hidden = new Set(/** @type {string[]} */ (readJson("src/data/photo-hidden.json")));
+const meta = /** @type {PhotoMeta} */ (readJson("src/data/photo-meta.json"));
+/** @param {string} f */
 const baseOf = (f) =>
   f
     .replace(/\.webp$/i, "")

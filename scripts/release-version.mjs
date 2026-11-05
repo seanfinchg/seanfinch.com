@@ -7,20 +7,26 @@ import { fileURLToPath } from "node:url";
 const TIME_ZONE = "America/New_York";
 
 // "2026.11" for the month the release happens in, in the site owner's time zone.
+/** @param {Date} date */
 export const monthPrefix = (date) => {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: TIME_ZONE,
     year: "numeric",
     month: "2-digit",
   }).formatToParts(date);
+  /** @param {Intl.DateTimeFormatPartTypes} type */
   const part = (type) => parts.find((p) => p.type === type)?.value ?? "";
   return `${part("year")}.${part("month")}`;
 };
 
 // The next version given the existing tags. Tags that aren't releases of this month are ignored.
+/**
+ * @param {Date} date
+ * @param {string[]} tags
+ */
 export const nextVersion = (date, tags) => {
   const prefix = monthPrefix(date);
-  const pattern = new RegExp(`^${prefix.replace(".", "\.")}\.([1-9][0-9]*)$`);
+  const pattern = new RegExp(`^${prefix.replace(".", "\\.")}\\.([1-9][0-9]*)$`);
   const highest = tags.reduce((max, tag) => {
     const n = Number(pattern.exec(tag.trim())?.[1] ?? 0);
     return n > max ? n : max;

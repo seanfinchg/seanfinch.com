@@ -27,23 +27,13 @@ import {
   type PhotoStack,
 } from "../data/photos";
 import exifDb from "../data/photo-exif.json";
+import type { ExifEntry } from "../data/schemas";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 const isEditedFile = (f: string): boolean => /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
 
-interface ExifData {
-  Make?: string;
-  Model?: string;
-  LensModel?: string;
-  FNumber?: number;
-  ExposureTime?: number;
-  ISO?: number;
-  FocalLength?: number;
-  DateTimeOriginal?: string;
-}
-
-const exifByFile = exifDb as Record<string, ExifData>;
+const exifByFile: Record<string, ExifEntry> = exifDb;
 
 /** The default-display file for a stack (edited version), never undefined. */
 const coverFile = (stack: PhotoStack): string => stack.files[stack.cover] ?? stack.files[0] ?? "";
@@ -318,7 +308,7 @@ const Photography: React.FC = () => {
   // since both versions describe the same shot.
   const exifFile =
     currentFile && currentFile in exifByFile ? currentFile : (currentStack?.files[0] ?? null);
-  const exif: ExifData = exifFile ? (exifByFile[exifFile] ?? {}) : {};
+  const exif: ExifEntry = exifFile ? (exifByFile[exifFile] ?? {}) : {};
 
   const make = exif.Make;
   const model = exif.Model;
@@ -451,20 +441,26 @@ const Photography: React.FC = () => {
   });
 
   // Preload neighbouring photos in the lightbox.
+  // Keyed on the neighbours' file names (joined into one string), so it runs
+  // only when they change, not on every render.
+  const neighbourFiles =
+    lbIndex < 0
+      ? ""
+      : [-1, 1, 2]
+          .map((offset) => navList[lbIndex + offset])
+          .filter((stack) => stack !== undefined)
+          .map(coverFile)
+          .join("\n");
   useEffect(() => {
-    if (lbIndex < 0) return;
-    [-1, 1, 2].forEach((offset) => {
-      const stack = navList[lbIndex + offset];
-      if (!stack) return;
+    if (neighbourFiles === "") return;
+    for (const file of neighbourFiles.split("\n")) {
       // Same candidates as the lightbox <img>, so the preload is the one it uses.
       const img = new Image();
       img.sizes = LIGHTBOX_SIZES;
-      img.srcset = lightboxSrcSet(coverFile(stack));
-      img.src = photoLarge(coverFile(stack));
-    });
-    // Keyed on the active photo only.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStack?.id]);
+      img.srcset = lightboxSrcSet(file);
+      img.src = photoLarge(file);
+    }
+  }, [neighbourFiles]);
 
   const onTouchStart = (e: React.TouchEvent): void => {
     const t = e.touches[0];

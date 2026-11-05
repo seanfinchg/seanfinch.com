@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { lineProblem } from "./check-content.mjs";
 
+/** @type {Set<string>} */
 const none = new Set();
+/** @param {string} v */
 const h = (v) => createHash("sha256").update(v).digest("hex").slice(0, 16);
 
 test("blocks street addresses", () => {

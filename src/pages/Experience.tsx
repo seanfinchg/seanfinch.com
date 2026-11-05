@@ -5,6 +5,7 @@ import { getThemeClasses } from "../utils/themeUtils";
 import { experiences, type ExperienceProps } from "../data/experiences";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { isCurrentlyActive } from "../utils/experienceUtils";
+import { revealDelayClass } from "../utils/revealDelay";
 
 const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({ exp, index }) => {
   const { theme } = useTheme();
@@ -12,11 +13,7 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({ exp
   const isActive = isCurrentlyActive(exp.dateRange);
 
   return (
-    <div
-      ref={ref}
-      className="scroll-reveal relative pl-14 mb-8"
-      style={{ transitionDelay: `${Math.min(index * 70, 350)}ms` }}
-    >
+    <div ref={ref} className={`scroll-reveal relative pl-14 mb-8 ${revealDelayClass(index)}`}>
       {/* Timeline node */}
       <div
         className={`absolute left-[0.85rem] top-2 w-7 h-7 rounded-full z-10 flex items-center justify-center shadow-md overflow-hidden
@@ -37,7 +34,7 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({ exp
 
       {/* Date + location */}
       <p className="text-[11px] font-monospace text-muted-foreground mb-1.5 tracking-wide">
-        <span style={{ color: "#6fa8f8" }}>{exp.dateRange}</span>
+        <span className="text-[#6fa8f8]">{exp.dateRange}</span>
         <span className="opacity-40 mx-1.5">·</span>
         {exp.location}
       </p>

@@ -64,10 +64,9 @@ const DiagramViewer: React.FC = () => {
 
         {/* Diagram iframe container */}
         <div
-          className={`relative w-full rounded-xl border ${
+          className={`relative w-full h-[calc(100vh-250px)] min-h-[600px] rounded-xl border ${
             theme === "light" ? "border-slate-200" : "border-white/10"
           }`}
-          style={{ height: "calc(100vh - 250px)", minHeight: "600px" }}
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -77,12 +76,11 @@ const DiagramViewer: React.FC = () => {
           <iframe
             key={theme}
             src={viewerUrl}
-            className="w-full h-full rounded-lg"
+            className="w-full h-full rounded-lg border-0"
             title={diagram.label}
             onLoad={() => {
               setLoading(false);
             }}
-            style={{ border: "none" }}
           />
         </div>
 

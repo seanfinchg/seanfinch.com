@@ -9,13 +9,15 @@ const toml = readFileSync(file, "utf8");
 // Find the [[headers]] block whose `for` is "/*" and collect its `Key = "value"` lines.
 const blocks = toml.split(/^\[\[headers\]\]\s*$/m).slice(1);
 const block = blocks.find((b) => /^\s*for\s*=\s*"\/\*"\s*$/m.test(b));
+/** @type {Record<string, string>} */
 const headers = {};
 if (block) {
   const values = block.split(/^\s*\[headers\.values\]\s*$/m)[1] ?? "";
   for (const line of values.split(/\r?\n/)) {
     if (/^\s*\[/.test(line)) break; // the next table starts
     const match = /^\s*([A-Za-z-]+)\s*=\s*"(.*)"\s*$/.exec(line);
-    if (match) headers[match[1]] = match[2];
+    const [, name, value] = match ?? [];
+    if (name !== undefined && value !== undefined) headers[name] = value;
   }
 }
 

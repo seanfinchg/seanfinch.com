@@ -9,6 +9,10 @@
 // Output format (one per line):
 //   <absoluteFilePath>:<line>:<col>: <error|warning>: <message> [<ruleId>]
 
+/**
+ * @param {import("eslint").ESLint.LintResult[]} results
+ * @returns {string}
+ */
 export default function oneLineFormatter(results) {
   const lines = [];
   for (const result of results) {
