@@ -441,20 +441,26 @@ const Photography: React.FC = () => {
   });
 
   // Preload neighbouring photos in the lightbox.
+  // Keyed on the neighbours' file names (joined into one string), so it runs
+  // only when they change, not on every render.
+  const neighbourFiles =
+    lbIndex < 0
+      ? ""
+      : [-1, 1, 2]
+          .map((offset) => navList[lbIndex + offset])
+          .filter((stack) => stack !== undefined)
+          .map(coverFile)
+          .join("\n");
   useEffect(() => {
-    if (lbIndex < 0) return;
-    [-1, 1, 2].forEach((offset) => {
-      const stack = navList[lbIndex + offset];
-      if (!stack) return;
+    if (neighbourFiles === "") return;
+    for (const file of neighbourFiles.split("\n")) {
       // Same candidates as the lightbox <img>, so the preload is the one it uses.
       const img = new Image();
       img.sizes = LIGHTBOX_SIZES;
-      img.srcset = lightboxSrcSet(coverFile(stack));
-      img.src = photoLarge(coverFile(stack));
-    });
-    // Keyed on the active photo only.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStack?.id]);
+      img.srcset = lightboxSrcSet(file);
+      img.src = photoLarge(file);
+    }
+  }, [neighbourFiles]);
 
   const onTouchStart = (e: React.TouchEvent): void => {
     const t = e.touches[0];
