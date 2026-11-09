@@ -14,6 +14,13 @@ const OUT = path.join(
 );
 
 const srcFiles = fs.readdirSync(SRC);
+/**
+ * @param {unknown} v
+ * @returns {v is Record<string, unknown>}
+ */
+const isRecord = (v) => typeof v === "object" && v !== null && !Array.isArray(v);
+
+/** @type {Record<string, Record<string, unknown>>} */
 const result = {};
 
 for (const file of srcFiles) {
@@ -25,7 +32,8 @@ for (const file of srcFiles) {
   const srcPath = path.join(SRC, file);
 
   try {
-    const data = await exifr.parse(srcPath, {
+    /** @type {unknown} */
+    const raw = await exifr.parse(srcPath, {
       pick: [
         "Make",
         "Model",
@@ -38,22 +46,23 @@ for (const file of srcFiles) {
       ],
     });
 
-    if (data && Object.keys(data).length > 0) {
+    const data = isRecord(raw) ? raw : {};
+    if (Object.keys(data).length > 0) {
       // Serialize DateTimeOriginal as ISO string
       if (data.DateTimeOriginal instanceof Date) {
         data.DateTimeOriginal = data.DateTimeOriginal.toISOString();
       }
       result[webpKey] = data;
-      console.log(
-        `  OK: ${file} — f/${data.FNumber} ${data.ExposureTime ? `1/${Math.round(1 / data.ExposureTime)}s` : ""} ISO${data.ISO}`,
-      );
+      const { FNumber, ExposureTime, ISO } = data;
+      const shutter = typeof ExposureTime === "number" ? `1/${Math.round(1 / ExposureTime)}s` : "";
+      console.log(`  OK: ${file} — f/${String(FNumber)} ${shutter} ISO${String(ISO)}`);
     } else {
       result[webpKey] = {};
       console.log(`  EMPTY: ${file} — no EXIF found`);
     }
   } catch (e) {
     result[webpKey] = {};
-    console.log(`  FAIL: ${file} — ${e.message}`);
+    console.log(`  FAIL: ${file} — ${e instanceof Error ? e.message : String(e)}`);
   }
 }
 

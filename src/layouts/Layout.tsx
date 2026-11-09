@@ -48,58 +48,38 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Cursor-tracking glow — large, behind content */}
       <div
         ref={cursorGlowRef}
-        className="fixed pointer-events-none z-0"
-        hidden={disableGlow}
-        style={{
-          width: "820px",
-          height: "820px",
-          borderRadius: "50%",
-          left: "-410px",
-          top: "-410px",
-          filter: "blur(90px)",
-          opacity: theme === "light" ? 0.38 : 0.28,
-          background:
+        className={`fixed pointer-events-none z-0 w-[820px] h-[820px] rounded-full -left-[410px] -top-[410px]
+          blur-[90px] will-change-transform
+          [transition:transform_0.45s_cubic-bezier(0.17,0.67,0.35,0.99),opacity_0.5s_ease,background_0.5s_ease]
+          ${
             theme === "light"
-              ? "radial-gradient(circle, rgba(147,197,253,0.95) 0%, rgba(167,139,250,0.5) 45%, transparent 70%)"
-              : "radial-gradient(circle, rgba(79,70,229,0.9) 0%, rgba(14,165,233,0.55) 45%, transparent 70%)",
-          transition:
-            "transform 0.45s cubic-bezier(0.17, 0.67, 0.35, 0.99), opacity 0.5s ease, background 0.5s ease",
-          willChange: "transform",
-        }}
+              ? "opacity-38 bg-[radial-gradient(circle,rgba(147,197,253,0.95)_0%,rgba(167,139,250,0.5)_45%,transparent_70%)]"
+              : "opacity-28 bg-[radial-gradient(circle,rgba(79,70,229,0.9)_0%,rgba(14,165,233,0.55)_45%,transparent_70%)]"
+          }`}
+        hidden={disableGlow}
         aria-hidden="true"
       />
 
       {/* Secondary spotlight — small, sits above content for always-visible cursor presence */}
       <div
         ref={ambientGlowRef}
-        className="fixed pointer-events-none z-[15]"
-        hidden={disableGlow}
-        style={{
-          width: "320px",
-          height: "320px",
-          borderRadius: "50%",
-          left: "-160px",
-          top: "-160px",
-          filter: "blur(50px)",
-          opacity: theme === "light" ? 0.11 : 0.09,
-          background:
+        className={`fixed pointer-events-none z-[15] w-[320px] h-[320px] rounded-full -left-[160px] -top-[160px]
+          blur-[50px] will-change-transform
+          [transition:transform_0.2s_ease-out,opacity_0.5s_ease,background_0.5s_ease]
+          ${
             theme === "light"
-              ? "radial-gradient(circle, rgba(99,179,237,1) 0%, rgba(139,92,246,0.5) 50%, transparent 70%)"
-              : "radial-gradient(circle, rgba(129,140,248,1) 0%, rgba(56,189,248,0.5) 50%, transparent 70%)",
-          transition: "transform 0.2s ease-out, opacity 0.5s ease, background 0.5s ease",
-          willChange: "transform",
-        }}
+              ? "opacity-11 bg-[radial-gradient(circle,rgba(99,179,237,1)_0%,rgba(139,92,246,0.5)_50%,transparent_70%)]"
+              : "opacity-9 bg-[radial-gradient(circle,rgba(129,140,248,1)_0%,rgba(56,189,248,0.5)_50%,transparent_70%)]"
+          }`}
+        hidden={disableGlow}
         aria-hidden="true"
       />
 
       {/* CRT scanline overlay */}
       <div
-        className="fixed inset-0 pointer-events-none z-[40]"
-        style={{
-          background:
-            "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.055) 2px, rgba(0,0,0,0.055) 4px)",
-          opacity: theme === "light" ? 0.45 : 0.65,
-        }}
+        className={`fixed inset-0 pointer-events-none z-[40]
+          bg-[repeating-linear-gradient(0deg,transparent_0px,transparent_2px,rgba(0,0,0,0.055)_2px,rgba(0,0,0,0.055)_4px)]
+          ${theme === "light" ? "opacity-45" : "opacity-65"}`}
         aria-hidden="true"
       />
 

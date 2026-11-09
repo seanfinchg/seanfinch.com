@@ -51,7 +51,7 @@ const Home: React.FC = () => {
             className="absolute inset-0 dot-grid-bg text-gray-200 dark:text-gray-700 opacity-50 pointer-events-none"
             aria-hidden="true"
           />
-          <p className="relative animate-fade-up mb-4 text-6xl md:text-7xl font-jost font-extrabold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent animate-gradient">
+          <p className="relative mb-4 text-6xl md:text-7xl font-jost font-extrabold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent animate-gradient">
             Sean Finch
           </p>
           {currentRole && (

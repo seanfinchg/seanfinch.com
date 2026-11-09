@@ -6,6 +6,7 @@ import { getThemeClasses } from "../utils/themeUtils";
 import { projects, type ProjectProps } from "../data/projects";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { FaGithub, FaExternalLinkAlt, FaSitemap } from "react-icons/fa";
+import { revealDelayClass } from "../utils/revealDelay";
 
 const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, index }) => {
   const { theme } = useTheme();
@@ -13,11 +14,7 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, in
   const isActive = proj.dateRange.includes("Present");
 
   return (
-    <div
-      ref={ref}
-      className="scroll-reveal relative pl-14 mb-8"
-      style={{ transitionDelay: `${Math.min(index * 70, 350)}ms` }}
-    >
+    <div ref={ref} className={`scroll-reveal relative pl-14 mb-8 ${revealDelayClass(index)}`}>
       {/* Timeline node */}
       <div
         className={`absolute left-[0.85rem] top-2 w-7 h-7 rounded-full z-10 flex items-center justify-center shadow-md font-bold text-xs
@@ -34,7 +31,7 @@ const ProjectItem: React.FC<{ proj: ProjectProps; index: number }> = ({ proj, in
 
       {/* Date */}
       <p className="text-[11px] font-monospace text-muted-foreground mb-1.5 tracking-wide flex items-center gap-2">
-        <span style={{ color: "#98d898" }}>{proj.dateRange}</span>
+        <span className="text-[#98d898]">{proj.dateRange}</span>
         {isActive && (
           <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse-dot inline-block" />

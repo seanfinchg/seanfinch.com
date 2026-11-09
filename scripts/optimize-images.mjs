@@ -23,6 +23,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+/** @param {string} f */
 const pub = (f) => path.join(ROOT, "public", f);
 
 // Widths cover 1x/2x/3x of the largest rendered size.
@@ -72,7 +73,7 @@ for (const f of fs.readdirSync(path.join(ROOT, "src", "assets"))) {
   if (!/\.jpe?g$/i.test(f)) continue;
   const p = path.join(ROOT, "src", "assets", f);
   const buf = fs.readFileSync(p);
-  const { width = 0 } = await sharp(buf).metadata();
+  const { width } = await sharp(buf).metadata();
   if (width <= LOGO_MAX) continue;
   const out = await sharp(buf)
     .resize({ width: LOGO_MAX })
