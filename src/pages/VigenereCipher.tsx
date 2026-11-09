@@ -55,45 +55,36 @@ export default function VigenereCipher(): JSX.Element {
     [keyword, keepCapitalization, keepPunctuation],
   );
 
-  const encoded = useMemo(
-    () => vigenereShift(inputText, false),
-    [inputText, vigenereShift],
-  );
+  const encoded = useMemo(() => vigenereShift(inputText, false), [inputText, vigenereShift]);
 
-  const decoded = useMemo(
-    () => vigenereShift(inputText, true),
-    [inputText, vigenereShift],
-  );
+  const decoded = useMemo(() => vigenereShift(inputText, true), [inputText, vigenereShift]);
 
-  const copyToClipboard = useCallback(
-    async (text: string, type: "encoded" | "decoded") => {
-      try {
-        await navigator.clipboard.writeText(text);
-        if (type === "encoded") {
-          setCopiedEncoded(true);
-          setTimeout(() => { setCopiedEncoded(false); }, 2000);
-        } else {
-          setCopiedDecoded(true);
-          setTimeout(() => { setCopiedDecoded(false); }, 2000);
-        }
-        toast.success("Copied to clipboard");
-      } catch {
-        toast.error("Failed to copy to clipboard");
+  const copyToClipboard = useCallback(async (text: string, type: "encoded" | "decoded") => {
+    try {
+      await navigator.clipboard.writeText(text);
+      if (type === "encoded") {
+        setCopiedEncoded(true);
+        setTimeout(() => {
+          setCopiedEncoded(false);
+        }, 2000);
+      } else {
+        setCopiedDecoded(true);
+        setTimeout(() => {
+          setCopiedDecoded(false);
+        }, 2000);
       }
-    },
-    [],
-  );
+      toast.success("Copied to clipboard");
+    } catch {
+      toast.error("Failed to copy to clipboard");
+    }
+  }, []);
 
   return (
-    <ToolsWrapper
-      backUrl="/projects/cipher-tools"
-      backLabel="Back to Cipher Tools"
-    >
+    <ToolsWrapper backUrl="/projects/cipher-tools" backLabel="Back to Cipher Tools">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Vigenère Cipher Encoder/Decoder</h1>
         <p className="text-muted-foreground">
-          Encode and decode text using the classic Vigenère cipher with a
-          repeating keyword
+          Encode and decode text using the classic Vigenère cipher with a repeating keyword
         </p>
       </div>
 
@@ -111,7 +102,9 @@ export default function VigenereCipher(): JSX.Element {
                   id="input-text"
                   placeholder="Enter your text here..."
                   value={inputText}
-                  onChange={(e) => { setInputText(e.target.value); }}
+                  onChange={(e) => {
+                    setInputText(e.target.value);
+                  }}
                   rows={8}
                   className="font-mono"
                 />
@@ -125,12 +118,14 @@ export default function VigenereCipher(): JSX.Element {
                   type="text"
                   placeholder="Enter a keyword..."
                   value={keyword}
-                  onChange={(e) => { setKeyword(e.target.value); }}
+                  onChange={(e) => {
+                    setKeyword(e.target.value);
+                  }}
                   className="w-full font-mono uppercase"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Non-letter characters are ignored; the keyword repeats to
-                  match the length of your text.
+                  Non-letter characters are ignored; the keyword repeats to match the length of your
+                  text.
                 </p>
               </div>
 
@@ -140,14 +135,11 @@ export default function VigenereCipher(): JSX.Element {
                   <Checkbox
                     id="keep-caps"
                     checked={keepCapitalization}
-                    onCheckedChange={(checked) =>
-                      { setKeepCapitalization(checked); }
-                    }
+                    onCheckedChange={(checked) => {
+                      setKeepCapitalization(checked);
+                    }}
                   />
-                  <Label
-                    htmlFor="keep-caps"
-                    className="cursor-pointer text-sm font-normal"
-                  >
+                  <Label htmlFor="keep-caps" className="cursor-pointer text-sm font-normal">
                     Keep Capitalization
                   </Label>
                 </div>
@@ -155,14 +147,11 @@ export default function VigenereCipher(): JSX.Element {
                   <Checkbox
                     id="keep-punct"
                     checked={keepPunctuation}
-                    onCheckedChange={(checked) =>
-                      { setKeepPunctuation(checked); }
-                    }
+                    onCheckedChange={(checked) => {
+                      setKeepPunctuation(checked);
+                    }}
                   />
-                  <Label
-                    htmlFor="keep-punct"
-                    className="cursor-pointer text-sm font-normal"
-                  >
+                  <Label htmlFor="keep-punct" className="cursor-pointer text-sm font-normal">
                     Keep Punctuation & Spaces
                   </Label>
                 </div>
@@ -186,7 +175,9 @@ export default function VigenereCipher(): JSX.Element {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => { void copyToClipboard(encoded, "encoded"); }}
+                    onClick={() => {
+                      void copyToClipboard(encoded, "encoded");
+                    }}
                     disabled={!encoded}
                   >
                     {copiedEncoded ? (
@@ -206,9 +197,7 @@ export default function VigenereCipher(): JSX.Element {
                     </div>
                   ) : (
                     <div className="flex min-h-[200px] items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
-                      <p className="text-muted-foreground">
-                        Enter text to see encoded result
-                      </p>
+                      <p className="text-muted-foreground">Enter text to see encoded result</p>
                     </div>
                   )}
                 </CardContent>
@@ -222,7 +211,9 @@ export default function VigenereCipher(): JSX.Element {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => { void copyToClipboard(decoded, "decoded"); }}
+                    onClick={() => {
+                      void copyToClipboard(decoded, "decoded");
+                    }}
                     disabled={!decoded}
                   >
                     {copiedDecoded ? (
@@ -285,14 +276,12 @@ export default function VigenereCipher(): JSX.Element {
                 <h4 className="mb-2 font-semibold">Security Best Practices</h4>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div>
-                    ⚠️ <strong>Not secure for real-world encryption</strong> -
-                    breakable via Kasiski examination and frequency analysis
+                    ⚠️ <strong>Not secure for real-world encryption</strong> - breakable via Kasiski
+                    examination and frequency analysis
                   </div>
                   <div>• Short or reused keywords weaken it further</div>
                   <div>• Use for educational purposes only</div>
-                  <div>
-                    • For real security, use modern encryption (AES, RSA)
-                  </div>
+                  <div>• For real security, use modern encryption (AES, RSA)</div>
                 </div>
               </div>
               <div>
@@ -308,8 +297,8 @@ export default function VigenereCipher(): JSX.Element {
           </div>
           <div className="border-t pt-4">
             <p className="text-sm text-muted-foreground">
-              All encryption happens locally in your browser. No data is sent to
-              external servers, ensuring complete privacy and security.
+              All encryption happens locally in your browser. No data is sent to external servers,
+              ensuring complete privacy and security.
             </p>
           </div>
         </CardContent>

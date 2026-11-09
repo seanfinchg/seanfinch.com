@@ -1,7 +1,10 @@
 @import "tailwindcss";
-@import "@fontsource/roboto-slab";
-@import "@fontsource/raleway";
-@import "@fontsource/jost";
+/* Latin subset, weight 400 only: every character the site uses is in the Latin
+   range (arrows and emoji fall back to system fonts either way), and bold text
+   has always been synthesized from 400. Was all subsets: Cyrillic, Greek, Vietnamese. */
+@import "@fontsource/roboto-slab/latin-400.css";
+@import "@fontsource/raleway/latin-400.css";
+@import "@fontsource/jost/latin-400.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -15,66 +18,82 @@
   --color-light-mode: #ffffff;
   --color-ultra-light-mode: #d2d3db;
   --color-linkedin: #0077b5;
-}
 
-@keyframes pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.5s ease-out both;
+  --animate-page-in: page-in 0.22s ease-out both;
+  --animate-gradient-shift: gradient-shift 5s ease infinite;
 
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes page-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
-@keyframes cursor-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 }
 
-@layer utilities {
-  .text-muted-foreground {
-    @apply text-gray-600 dark:text-gray-400;
-  }
+@utility text-muted-foreground {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+/* A gradient twice its box, sliding back and forth. */
+@utility animate-gradient {
+  background-size: 200% 200%;
+  animation: var(--animate-gradient-shift);
+}
+
+@utility dot-grid-bg {
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* White chevron for a native <select> drawn with appearance-none. */
+@utility select-chevron {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1.2rem;
+}
+
+/* useScrollReveal adds .is-visible once the element enters the viewport. */
+@layer components {
   .scroll-reveal {
     opacity: 0;
     transform: translateY(18px);
@@ -86,28 +105,30 @@
     opacity: 1;
     transform: translateY(0);
   }
-  .animate-pulse-dot {
-    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Respect "reduce motion" (SF-10). Unlayered, so it beats the utilities layer.
+   Nothing changes for anyone who hasn't asked for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  .animate-fade-up {
-    animation: fade-up 0.5s ease-out both;
+  /* Scroll-revealed sections are simply there. */
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
   }
-  .animate-page-in {
-    animation: page-in 0.22s ease-out both;
-  }
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 5s ease infinite;
-  }
-  .animate-cursor-blink {
-    animation: cursor-blink 1s step-end infinite;
-  }
-  .dot-grid-bg {
-    background-image: radial-gradient(
-      circle,
-      currentColor 1px,
-      transparent 1px
-    );
-    background-size: 24px 24px;
+  /* No hover zoom or lift; colour and shadow hover states stay. */
+  [class*="hover:scale"]:hover,
+  .group:hover [class*="group-hover:scale"],
+  [class*="hover:-translate-y"]:hover,
+  .group:hover [class*="group-hover:translate-x"] {
+    scale: none !important;
+    translate: none !important;
   }
 }

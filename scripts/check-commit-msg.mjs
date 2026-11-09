@@ -40,9 +40,11 @@ if (separator !== undefined && separator !== "") {
   problems.push("Leave a blank line between the subject and the bullets.");
 }
 
+/** @param {string} line */
 const isTrailer = (line) =>
   /^[A-Za-z][A-Za-z-]*: \S/.test(line) ||
   /^(Fixes|Fixed|Closes|Closed|Resolves|Resolved|Refs|Part of) #\d+/.test(line);
+/** @param {string} line */
 const isBullet = (line) => line.startsWith("- ");
 
 const content = body.filter((line) => line !== "");

@@ -11,18 +11,7 @@ export interface SliderProps {
 }
 
 const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
-  (
-    {
-      value = [0],
-      onValueChange,
-      min = 0,
-      max = 100,
-      step = 1,
-      className = "",
-      id,
-    },
-    ref,
-  ) => {
+  ({ value = [0], onValueChange, min = 0, max = 100, step = 1, className = "", id }, ref) => {
     return (
       <input
         ref={ref}

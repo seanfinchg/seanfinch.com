@@ -11,12 +11,8 @@ const HomelabDiagrams: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Find the Homelab project
-  const homelabProject = projects.find((p) =>
-    p.title.toLowerCase().includes("homelab"),
-  );
-  const currentDiagram = homelabProject?.diagrams?.find(
-    (d) => d.name === selectedDiagram,
-  );
+  const homelabProject = projects.find((p) => p.title.toLowerCase().includes("homelab"));
+  const currentDiagram = homelabProject?.diagrams?.find((d) => d.name === selectedDiagram);
 
   // Redirect out if the project/diagrams are missing (side effect, not render).
   useEffect(() => {
@@ -53,43 +49,30 @@ const HomelabDiagrams: React.FC = () => {
           }
         }
       `}</style>
-      <div
-        className={`homelab-container flex flex-col ${getThemeClasses(theme)}`}
-      >
+      <div className={`homelab-container flex flex-col ${getThemeClasses(theme)}`}>
         <div className="container mx-auto px-4 md:px-4 pt-6 pb-2 md:pt-4 md:pb-1.5 flex-shrink-0">
           <div className="mb-2 md:mb-1">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-1">
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => { void navigate("/projects"); }}
+                  onClick={() => {
+                    void navigate("/projects");
+                  }}
                   className="text-blue-500 hover:text-blue-600 font-monospace text-lg md:text-base transition-all"
                   title="Back to Projects"
                 >
                   ←
                 </button>
-                <h1 className="text-3xl md:text-2xl font-bold font-jost">
-                  {homelabProject.title}
-                </h1>
+                <h1 className="text-3xl md:text-2xl font-bold font-jost">{homelabProject.title}</h1>
               </div>
               {/* Diagram Selector - Dropdown on Mobile, Buttons on Desktop */}
               <div className="md:hidden">
                 <select
                   value={selectedDiagram}
                   onChange={(e) => {
-                    if (e.target.value !== "networking")
-                      setSelectedDiagram(e.target.value);
+                    if (e.target.value !== "networking") setSelectedDiagram(e.target.value);
                   }}
-                  className="w-full px-4 py-2.5 rounded-lg font-monospace text-base font-semibold border-2 transition-all shadow-sm bg-sky-500 border-sky-500 text-white hover:bg-sky-600"
-                  style={{
-                    WebkitAppearance: "none",
-                    MozAppearance: "none",
-                    appearance: "none",
-                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 0.7rem center",
-                    backgroundSize: "1.2rem",
-                    paddingRight: "2.5rem",
-                  }}
+                  className="w-full px-4 py-2.5 rounded-lg font-monospace text-base font-semibold border-2 transition-all shadow-sm bg-sky-500 border-sky-500 text-white hover:bg-sky-600 appearance-none select-chevron pr-10"
                 >
                   {homelabProject.diagrams.map((diagram) => (
                     <option
@@ -109,8 +92,7 @@ const HomelabDiagrams: React.FC = () => {
                   <button
                     key={diagram.name}
                     onClick={() => {
-                      if (diagram.name !== "networking")
-                        setSelectedDiagram(diagram.name);
+                      if (diagram.name !== "networking") setSelectedDiagram(diagram.name);
                     }}
                     disabled={diagram.name === "networking"}
                     className={`px-5 py-2 rounded-lg font-monospace text-sm transition-all ${
@@ -150,10 +132,11 @@ const HomelabDiagrams: React.FC = () => {
             )}
             <iframe
               src={viewerUrl}
-              className="w-full h-full"
-              onLoad={() => { setLoading(false); }}
+              className="w-full h-full border-0"
+              onLoad={() => {
+                setLoading(false);
+              }}
               title={currentDiagram.label}
-              style={{ border: "none" }}
             />
           </div>
         </div>

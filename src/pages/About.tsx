@@ -42,9 +42,7 @@ const About: React.FC = () => {
           <h1 className="font-jost font-extrabold tracking-tight text-4xl sm:text-6xl leading-none mb-4">
             Sean Finch
           </h1>
-          <p
-            className={`font-raleway text-base sm:text-lg max-w-2xl mb-6 ${muted}`}
-          >
+          <p className={`font-raleway text-base sm:text-lg max-w-2xl mb-6 ${muted}`}>
             {aboutSummary}
           </p>
           <div className="flex flex-wrap items-center gap-2 mb-6">
@@ -70,7 +68,12 @@ const About: React.FC = () => {
           className="flex flex-col md:flex-row gap-8 md:gap-12 mb-16"
         >
           <img
-            src="/SeanPortrait.jpg"
+            src="/SeanPortrait-960.webp"
+            srcSet="/SeanPortrait-480.webp 480w, /SeanPortrait-960.webp 960w, /SeanPortrait-1440.webp 1440w"
+            sizes="(min-width: 768px) 320px, (min-width: 640px) 50vw, 75vw"
+            width={960}
+            height={1440}
+            fetchPriority="high"
             alt="Portrait of Sean Finch"
             className="w-3/4 sm:w-1/2 md:w-80 md:shrink-0 self-start object-cover rounded-xl shadow-lg"
           />
@@ -87,15 +90,9 @@ const About: React.FC = () => {
         </section>
 
         {/* Skills */}
-        <section
-          aria-labelledby="skills-heading"
-          className={`border-t pt-10 mb-16 ${rule}`}
-        >
+        <section aria-labelledby="skills-heading" className={`border-t pt-10 mb-16 ${rule}`}>
           <p className={`${kicker} mb-2`}>Toolbox</p>
-          <h2
-            id="skills-heading"
-            className="font-jost font-extrabold tracking-tight text-3xl mb-8"
-          >
+          <h2 id="skills-heading" className="font-jost font-extrabold tracking-tight text-3xl mb-8">
             Technical Skills
           </h2>
           <div className="space-y-6">
@@ -116,9 +113,7 @@ const About: React.FC = () => {
               </div>
             ))}
             <div>
-              <h3
-                className={`font-monospace text-[10px] uppercase tracking-[0.3em] mb-3 ${muted}`}
-              >
+              <h3 className={`font-monospace text-[10px] uppercase tracking-[0.3em] mb-3 ${muted}`}>
                 Off the clock
               </h3>
               <ul className="flex flex-wrap gap-2">
@@ -133,10 +128,7 @@ const About: React.FC = () => {
         </section>
 
         {/* Leadership */}
-        <section
-          aria-labelledby="leadership-heading"
-          className={`border-t pt-10 ${rule}`}
-        >
+        <section aria-labelledby="leadership-heading" className={`border-t pt-10 ${rule}`}>
           <p className={`${kicker} mb-2`}>Service &amp; music</p>
           <h2
             id="leadership-heading"
@@ -154,11 +146,7 @@ const About: React.FC = () => {
                 <span
                   aria-hidden="true"
                   className={`absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full ${
-                    entry.active
-                      ? "bg-amber-500"
-                      : light
-                        ? "bg-neutral-400"
-                        : "bg-neutral-600"
+                    entry.active ? "bg-amber-500" : light ? "bg-neutral-400" : "bg-neutral-600"
                   }`}
                 />
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
@@ -180,18 +168,11 @@ const About: React.FC = () => {
                     {entry.badge}
                   </span>
                 </div>
-                <p className={`font-raleway text-sm mb-3 ${muted}`}>
-                  {entry.description}
-                </p>
+                <p className={`font-raleway text-sm mb-3 ${muted}`}>{entry.description}</p>
                 <ul className="space-y-1.5">
                   {entry.roles.map(({ role, period, active }) => (
-                    <li
-                      key={role}
-                      className="flex items-center gap-2 text-sm font-monospace"
-                    >
-                      <span className={active ? "font-semibold" : muted}>
-                        {role}
-                      </span>
+                    <li key={role} className="flex items-center gap-2 text-sm font-monospace">
+                      <span className={active ? "font-semibold" : muted}>{role}</span>
                       <span
                         className={`ml-auto flex items-center gap-1.5 text-xs shrink-0 ${muted}`}
                       >

@@ -3,8 +3,18 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import { readdirSync, readFileSync, writeFileSync, existsSync, statSync, mkdirSync, renameSync } from "fs";
+import {
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  statSync,
+  mkdirSync,
+  renameSync,
+} from "fs";
 import sharp from "sharp";
+import { z } from "zod";
+import { photoExifSchema, photoHiddenSchema, photoMetaDbSchema } from "./src/data/schemas";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -12,12 +22,14 @@ const VIRTUAL_ID = "virtual:photo-manifest";
 const RESOLVED_ID = "\0" + VIRTUAL_ID;
 
 // Resized WebP derivatives generated at build time (dev + prod). Grid tiles use
-// `thumb`, the lightbox/compare view uses `large`. Full-res originals are only
+// `thumb`; the lightbox picks `medium` or `large` via srcset (phones and 1x
+// screens get `medium`), and the hero/compare view use `large`. Full-res originals are only
 // downloaded on explicit request. Output lives in public/photography/_derived
 // (gitignored) so originals stay the single source of truth and nothing extra
 // is committed. Bump SUFFIX-less widths here to trade quality for bytes.
 const DERIVATIVES = [
   { dir: "thumb", width: 500, quality: 72 },
+  { dir: "medium", width: 1200, quality: 78 },
   { dir: "large", width: 2000, quality: 80 },
 ] as const;
 const DERIVED_DIR = "_derived";
@@ -49,7 +61,7 @@ const DERIVED_XMP = `<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
 <?xpacket end="w"?>`;
 // Bump when derivative settings or embedded metadata change, so existing
 // derivatives are regenerated instead of skipped as "up to date".
-const DERIVED_VERSION = "3-attribution-raw";
+const DERIVED_VERSION = "4-medium";
 
 async function generateDerivatives(photoDir: string): Promise<void> {
   if (!existsSync(photoDir)) return;
@@ -58,7 +70,8 @@ async function generateDerivatives(photoDir: string): Promise<void> {
     mkdirSync(resolve(photoDir, DERIVED_DIR, cfg.dir), { recursive: true });
   }
   const stampPath = resolve(photoDir, DERIVED_DIR, ".version");
-  const stale = !existsSync(stampPath) || readFileSync(stampPath, "utf8").trim() !== DERIVED_VERSION;
+  const stale =
+    !existsSync(stampPath) || readFileSync(stampPath, "utf8").trim() !== DERIVED_VERSION;
 
   let made = 0;
   for (const f of files) {
@@ -76,7 +89,9 @@ async function generateDerivatives(photoDir: string): Promise<void> {
           .resize({ width: cfg.width, withoutEnlargement: true })
           .raw()
           .toBuffer({ resolveWithObject: true });
-        await sharp(data, { raw: { width: info.width, height: info.height, channels: info.channels } })
+        await sharp(data, {
+          raw: { width: info.width, height: info.height, channels: info.channels },
+        })
           .webp({ quality: cfg.quality })
           .withExif(DERIVED_EXIF)
           .withXmp(DERIVED_XMP)
@@ -84,12 +99,26 @@ async function generateDerivatives(photoDir: string): Promise<void> {
         renameSync(outPath + ".tmp", outPath);
         made++;
       } catch (e) {
-        console.warn(`[photo-manifest] failed to resize ${f} (${cfg.dir}):`, (e as Error).message);
+        console.warn(
+          `[photo-manifest] failed to resize ${f} (${cfg.dir}):`,
+          e instanceof Error ? e.message : e,
+        );
       }
     }
   }
   writeFileSync(stampPath, DERIVED_VERSION);
   if (made > 0) console.log(`[photo-manifest] generated ${made} image derivative(s)`);
+}
+
+/** Reads a JSON data file and validates it, failing the build with the file name on a mismatch. */
+function readJson<T>(path: string, schema: z.ZodType<T>, fallback: T): T {
+  if (!existsSync(path)) return fallback;
+  const parsed = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
+  if (!parsed.success) {
+    throw new Error(`[photo-manifest] ${path} is invalid:
+${z.prettifyError(parsed.error)}`);
+  }
+  return parsed.data;
 }
 
 interface Stack {
@@ -111,23 +140,20 @@ async function buildManifest(): Promise<Stack[]> {
 
   // Filenames listed in src/data/photo-hidden.json are kept in the repo but
   // excluded from the gallery.
-  const hidden = new Set<string>(
-    existsSync(hiddenPath)
-      ? (JSON.parse(readFileSync(hiddenPath, "utf8")) as string[])
-      : [],
-  );
+  const hidden = new Set<string>(readJson(hiddenPath, photoHiddenSchema, []));
 
   const files = readdirSync(photoDir)
     .filter((f) => f.toLowerCase().endsWith(".webp") && !hidden.has(f))
     .sort();
 
-  type ExifEntry = { DateTimeOriginal?: string } | undefined;
-  const exifDb: Record<string, ExifEntry> = existsSync(exifPath)
-    ? (JSON.parse(readFileSync(exifPath, "utf8")) as Record<string, ExifEntry>)
-    : {};
+  const exifDb = readJson(exifPath, photoExifSchema, {});
 
   const getBase = (f: string): string =>
-    f.replace(/\.webp$/i, "").replace(/[_-]edit(ed)?$/i, "").replace(/\s*\(\d+\)$/, "").trim();
+    f
+      .replace(/\.webp$/i, "")
+      .replace(/[_-]edit(ed)?$/i, "")
+      .replace(/\s*\(\d+\)$/, "")
+      .trim();
 
   const sortOrder = (f: string): number => {
     const name = f.replace(/\.webp$/i, "");
@@ -136,8 +162,7 @@ async function buildManifest(): Promise<Stack[]> {
     return m?.[1] != null ? parseInt(m[1], 10) : 0;
   };
 
-  const isEdited = (f: string): boolean =>
-    /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
+  const isEdited = (f: string): boolean => /[_-]edit(ed)?$/i.test(f.replace(/\.webp$/i, ""));
 
   const groups = new Map<string, string[]>();
   for (const f of files) {
@@ -154,19 +179,24 @@ async function buildManifest(): Promise<Stack[]> {
       const editedIdx = sortedFiles.findIndex(isEdited);
       const cover = editedIdx >= 0 ? editedIdx : 0;
       // Header-only read; originals are already orientation-corrected by copy-exif.
-      const meta = await sharp(resolve(photoDir, sortedFiles[cover])).metadata();
+      const coverFile = sortedFiles[cover];
+      if (coverFile === undefined) throw new Error(`Photo stack ${id} has no files`);
+      const meta = await sharp(resolve(photoDir, coverFile)).metadata();
       return { id, files: sortedFiles, cover, w: meta.width, h: meta.height };
     }),
   );
 
   // Sort stacks newest-first by EXIF date, fall back to filename descending
   stacks.sort((a, b) => {
-    const da = exifDb[a.files[0]]?.DateTimeOriginal ?? "";
-    const db = exifDb[b.files[0]]?.DateTimeOriginal ?? "";
+    // Every stack has at least one file (groups are created with one).
+    const fa = a.files[0] ?? "";
+    const fb = b.files[0] ?? "";
+    const da = exifDb[fa]?.DateTimeOriginal ?? "";
+    const db = exifDb[fb]?.DateTimeOriginal ?? "";
     if (da && db) return db.localeCompare(da);
     if (da) return -1;
     if (db) return 1;
-    return b.files[0].localeCompare(a.files[0]);
+    return fb.localeCompare(fa);
   });
 
   return stacks;
@@ -177,7 +207,7 @@ function photoManifestPlugin(): Plugin {
     name: "photo-manifest",
 
     resolveId(id) {
-      if (id === VIRTUAL_ID) return RESOLVED_ID;
+      return id === VIRTUAL_ID ? RESOLVED_ID : null;
     },
 
     async load(id) {
@@ -188,12 +218,18 @@ export const photoStacks = ${JSON.stringify(stacks)};
 export const PHOTOS_PER_PAGE = 24;
 export const photoSrc = (f) => '/photography/' + encodeURIComponent(f);
 export const photoThumb = (f) => '/photography/${DERIVED_DIR}/thumb/' + encodeURIComponent(f);
+export const photoMedium = (f) => '/photography/${DERIVED_DIR}/medium/' + encodeURIComponent(f);
 export const photoLarge = (f) => '/photography/${DERIVED_DIR}/large/' + encodeURIComponent(f);
 export const photos = photoStacks.map(s => s.files[s.cover]);
 `;
     },
 
     async buildStart() {
+      // App code imports photo-meta.json directly; validate it here so a bad edit fails the build.
+      readJson(resolve(__dirname, "src/data/photo-meta.json"), photoMetaDbSchema, {
+        tags: {},
+        photos: {},
+      });
       await generateDerivatives(resolve(__dirname, "public/photography"));
     },
 

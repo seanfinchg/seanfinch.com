@@ -15,10 +15,12 @@ stack (React 19 + Vite + Tailwind, deployed on Netlify):
 **Recommended approach — MDX files in the repo (no CMS, no backend, free):**
 
 Install:
+
 ```bash
 npm i @mdx-js/rollup @mdx-js/react remark-gfm rehype-slug rehype-autolink-headings
 npm i -D reading-time gray-matter
 ```
+
 - `@mdx-js/rollup` — lets you author posts as `.mdx` (Markdown + React components) and import them like modules. Add it to `plugins` in `vite.config.ts`.
 - `remark-gfm` — GitHub-flavored Markdown (tables, task lists, strikethrough).
 - `rehype-slug` + `rehype-autolink-headings` — auto-anchored headings.
@@ -27,6 +29,7 @@ npm i -D reading-time gray-matter
 - Use Vite's `import.meta.glob("./posts/*.mdx")` to build the post index automatically (mirrors how `virtual:photo-manifest` already works here).
 
 **Optional niceties later:**
+
 - `shiki` or `rehype-pretty-code` — syntax-highlighted code blocks (great for security/homelab write-ups).
 - An RSS feed (`feed` package) generated at build.
 
@@ -39,11 +42,12 @@ cheapest and fits the "everything free" constraint best.
 ## 2. Project Case Studies (recommended — high ROI)
 
 Yes — this is the single highest-signal addition for a new-grad hunt. A list of
-project titles tells a recruiter *what*; a case study shows *how you think*,
+project titles tells a recruiter _what_; a case study shows _how you think_,
 which is what actually gets interviews.
 
 Turn 2–3 flagship projects (homelab, a security tool, CyberPatriot) into a
 detail page each, structured as:
+
 1. **Problem / context** — what and why, in one paragraph.
 2. **Approach** — architecture, decisions, trade-offs (diagrams welcome — you
    already have `HomelabDiagrams`/`DiagramViewer` components to reuse).
@@ -78,6 +82,7 @@ blog's MDX pipeline exists, case studies can just be MDX too.)
 
 Done: build-time `thumb`/`large` WebP derivatives (grid no longer loads full-res).
 Possible next steps if the gallery grows:
+
 - Move full-res originals off-repo (Cloudflare R2 free tier) to stop git bloat.
 - Add a third `medium` size + real `srcset`/`sizes` on grid `<img>` for finer
   responsive selection.

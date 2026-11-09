@@ -5,36 +5,24 @@ import { getThemeClasses } from "../utils/themeUtils";
 import { experiences, type ExperienceProps } from "../data/experiences";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { isCurrentlyActive } from "../utils/experienceUtils";
+import { revealDelayClass } from "../utils/revealDelay";
 
-const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
-  exp,
-  index,
-}) => {
+const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({ exp, index }) => {
   const { theme } = useTheme();
   const ref = useScrollReveal();
   const isActive = isCurrentlyActive(exp.dateRange);
 
   return (
-    <div
-      ref={ref}
-      className="scroll-reveal relative pl-14 mb-8"
-      style={{ transitionDelay: `${Math.min(index * 70, 350)}ms` }}
-    >
+    <div ref={ref} className={`scroll-reveal relative pl-14 mb-8 ${revealDelayClass(index)}`}>
       {/* Timeline node */}
       <div
         className={`absolute left-[0.85rem] top-2 w-7 h-7 rounded-full z-10 flex items-center justify-center shadow-md overflow-hidden
         ${
-          exp.featured
-            ? "ring-2 ring-sky-400/60 shadow-sky-500/30"
-            : "ring-1 ring-neutral-500/40"
+          exp.featured ? "ring-2 ring-sky-400/60 shadow-sky-500/30" : "ring-1 ring-neutral-500/40"
         }`}
       >
         {exp.logo ? (
-          <img
-            src={exp.logo}
-            alt={exp.company}
-            className="w-full h-full object-cover"
-          />
+          <img src={exp.logo} alt={exp.company} className="w-full h-full object-cover" />
         ) : (
           <span
             className={`text-xs font-bold ${exp.featured ? "text-white bg-sky-500 w-full h-full flex items-center justify-center" : "text-muted-foreground"}`}
@@ -46,7 +34,7 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
 
       {/* Date + location */}
       <p className="text-[11px] font-monospace text-muted-foreground mb-1.5 tracking-wide">
-        <span style={{ color: "#6fa8f8" }}>{exp.dateRange}</span>
+        <span className="text-[#6fa8f8]">{exp.dateRange}</span>
         <span className="opacity-40 mx-1.5">·</span>
         {exp.location}
       </p>
@@ -72,9 +60,7 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
           )}
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-0.5">
-              <h3 className="text-lg font-bold font-jost leading-tight">
-                {exp.company}
-              </h3>
+              <h3 className="text-lg font-bold font-jost leading-tight">{exp.company}</h3>
               {exp.featured && (
                 <span className="text-[10px] font-monospace px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/25">
                   FEATURED
@@ -107,9 +93,11 @@ const ExperienceItem: React.FC<{ exp: ExperienceProps; index: number }> = ({
           target="_blank"
           rel="noopener noreferrer"
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-monospace font-semibold transition-colors duration-150
-            ${theme === "light"
-              ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
-              : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40"}`}
+            ${
+              theme === "light"
+                ? "text-sky-700 border-sky-200 bg-sky-50 hover:bg-sky-100"
+                : "text-sky-400 border-sky-800/50 bg-sky-900/20 hover:bg-sky-800/40"
+            }`}
         >
           Website →
         </a>
@@ -126,9 +114,7 @@ const Experience: React.FC = () => {
     "Cybersecurity internships and co-ops — Palo Alto Networks, Neuralink, Audax Group, CENIC, and more.",
   );
 
-  const sorted = [...experiences].sort(
-    (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0),
-  );
+  const sorted = [...experiences].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 
   return (
     <div className={`flex flex-col items-center ${getThemeClasses(theme)}`}>

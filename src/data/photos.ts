@@ -1,6 +1,7 @@
 import type { PhotoStack } from "virtual:photo-manifest";
 import { photoStacks } from "virtual:photo-manifest";
 import metaDb from "./photo-meta.json";
+import type { PhotoMeta, PhotoMetaDb } from "./schemas";
 
 export type { PhotoStack } from "virtual:photo-manifest";
 export {
@@ -9,28 +10,18 @@ export {
   PHOTOS_PER_PAGE,
   photoSrc,
   photoThumb,
+  photoMedium,
   photoLarge,
 } from "virtual:photo-manifest";
 
 /**
  * Hand-written per-stack metadata from photo-meta.json, keyed by stack id
- * (the shared base filename, e.g. "DSC_8875"). Every field is optional — a
- * photo with no entry still shows up, it just has no title/tags.
+ * (the shared base filename, e.g. "DSC_8875"). A photo with no entry still
+ * shows up, it just has no title/tags. The build validates the file.
  */
-export interface PhotoMeta {
-  title?: string;
-  alt?: string;
-  tags?: string[];
-}
+export type { PhotoMeta } from "./schemas";
 
-interface PhotoMetaDb {
-  featured?: string;
-  /** Tag id → display label, in the order the filter chips appear. */
-  tags: Record<string, string>;
-  photos: Record<string, PhotoMeta>;
-}
-
-const db = metaDb as PhotoMetaDb;
+const db: PhotoMetaDb = metaDb;
 
 export const PHOTO_TAGS: readonly (readonly [string, string])[] = Object.entries(db.tags);
 

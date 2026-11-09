@@ -20,17 +20,18 @@ Every commit is kept, so history shows what changed and when, and promotion PRs 
 
 ## Branches
 
-| Branch  | Purpose                         | How changes get in                         | Netlify                                  |
-| ------- | ------------------------------- | ------------------------------------------ | ---------------------------------------- |
-| `dev`   | Integration. Base for all work  | PR from a `<type>/<slug>` branch, green CI | Branch deploy, noindex                   |
-| `stage` | Pre-release check               | PR from `dev` only, green CI               | Branch deploy, noindex                   |
-| `prod`  | What seanfinch.com serves       | PR from `stage` only, green CI             | Production deploy, tagged `YYYY.MM.N`    |
+| Branch  | Purpose                        | How changes get in                         | Netlify                               |
+| ------- | ------------------------------ | ------------------------------------------ | ------------------------------------- |
+| `dev`   | Integration. Base for all work | PR from a `<type>/<slug>` branch, green CI | Branch deploy, noindex                |
+| `stage` | Pre-release check              | PR from `dev` only, green CI               | Branch deploy, noindex                |
+| `prod`  | What seanfinch.com serves      | PR from `stage` only, green CI             | Production deploy, tagged `YYYY.MM.N` |
 
 Every PR also gets a Deploy Preview (noindex). Force-pushing and deleting `dev`, `stage`
 and `prod` are blocked once the rulesets are on.
 
-Until the cutover described in `docs/plans/branch-workflow.md` is done, `main` is still
-the production branch and CI also runs on it. After the cutover `main` no longer exists.
+`prod` is Netlify's production branch (seanfinch.com); `dev` and `stage` are branch
+deploys at dev.seanfinch.com and stage.seanfinch.com, served with `noindex`. There is no
+`main` branch: it was renamed to `prod` at the cutover.
 
 ## Making a change
 
@@ -60,8 +61,13 @@ A `commit-msg` hook (lefthook) and a CI check enforce this.
 
 - **Commit subject:** one line, at most 72 characters, no trailing period.
 - **Commit body (optional):** a blank line, then up to 8 `- ` bullets, each under 100
-  characters. No paragraphs. Trailers (`Co-Authored-By: ...`) and GitHub references
-  (`Fixes #12`) are allowed.
+  characters. No paragraphs. GitHub references (`Fixes #12`) and trailers for human
+  co-authors are allowed.
+- **Attribution: everything is Sean's.** No AI co-author trailers, no "generated with"
+  footers, no tool links or robot emoji, in commits, PR titles or PR descriptions. The
+  content policy blocks them in the hooks and in CI, and `.claude/settings.json` turns
+  Claude Code's own attribution off. Plain mentions (`CLAUDE.md`, AI crawlers in
+  `robots.txt`) are fine.
 - **PR description:** fill in the template with bullets only. At most 25 lines and 1500
   characters. Headings, bullets, checklists, numbered steps, tables and lone images or links
   are allowed. Paragraphs are not.
@@ -91,14 +97,14 @@ Fixes #12
 
 CI (`.github/workflows/ci.yml`) runs on every PR and on pushes to `dev`, `stage` and `prod`:
 
-| Job             | What it does                                                        | Blocks?                  |
-| --------------- | ------------------------------------------------------------------- | ------------------------ |
-| `check`         | `npm ci`, `npm run check`, `npm run security:headers`, `git diff --check` | Always             |
-| `branch-flow`   | Only `dev` → `stage` and `stage` → `prod`                            | Always                   |
-| `secrets`       | gitleaks over the full history                                      | Always                   |
-| `security-code` | Semgrep over `src`, `scripts`, `vite.config.ts`                     | `stage`/`prod`, not `dev` |
-| `security-deps` | OSV-Scanner over `package-lock.json`                                | `stage`/`prod`, not `dev` |
-| `description`   | PR body is short and bulleted (separate workflow)                   | Always                   |
+| Job             | What it does                                                              | Blocks?                   |
+| --------------- | ------------------------------------------------------------------------- | ------------------------- |
+| `check`         | `npm ci`, `npm run check`, `npm run security:headers`, `git diff --check` | Always                    |
+| `branch-flow`   | Only `dev` → `stage` and `stage` → `prod`                                 | Always                    |
+| `secrets`       | gitleaks over the full history                                            | Always                    |
+| `security-code` | Semgrep over `src`, `scripts`, `vite.config.ts`                           | `stage`/`prod`, not `dev` |
+| `security-deps` | OSV-Scanner over `package-lock.json`                                      | `stage`/`prod`, not `dev` |
+| `description`   | PR body is short and bulleted (separate workflow)                         | Always                    |
 
 On `dev` the two security scans only warn, so findings don't block day-to-day work. They
 must pass before a promotion to `stage` or `prod`. Accepted, unreachable vulnerabilities

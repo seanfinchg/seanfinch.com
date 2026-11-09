@@ -16,6 +16,8 @@ declare module "virtual:photo-manifest" {
   export const photoSrc: (f: string) => string;
   /** Small grid thumbnail derivative (~500px wide). */
   export const photoThumb: (f: string) => string;
+  /** Medium display derivative (~1200px wide); lightbox srcset on small/1x screens. */
+  export const photoMedium: (f: string) => string;
   /** Large display derivative (~2000px wide) for the lightbox. */
   export const photoLarge: (f: string) => string;
   export const photos: string[];
