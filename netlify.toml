@@ -1,37 +1,37 @@
 [build]
-  command = "npm run build"
-  publish = "dist"
+command = "npm run build"
+publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "24"
+NODE_VERSION = "24"
 
 # Non-production deploys (Deploy Previews and branch deploys of dev/stage) must stay out of
 # search indexes. The script adds X-Robots-Tag noindex and a Disallow-all robots.txt, and
 # refuses to run when CONTEXT is production.
 [context.deploy-preview]
-  command = "npm run build && node scripts/netlify-noindex.mjs"
+command = "npm run build && node scripts/netlify-noindex.mjs"
 
 [context.branch-deploy]
-  command = "npm run build && node scripts/netlify-noindex.mjs"
+command = "npm run build && node scripts/netlify-noindex.mjs"
 
 # Security headers on every response. CSP is tuned to this app: self-hosted
 # assets/fonts, inline styles (React style props + a few inline <style> blocks),
 # and the draw.io viewer embedded in an iframe on the homelab diagram pages.
 [[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
-    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src https://viewer.diagrams.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+for = "/*"
+[headers.values]
+X-Frame-Options = "SAMEORIGIN"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-src https://viewer.diagrams.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
 
 # Vite build output — content-hashed filenames, safe to cache forever
 [[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+for = "/assets/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
 
 # Photography — camera filenames never change, cache for 1 year.
 # X-Robots-Tag carries the AI-reuse opt-out. noai/noimageai are non-standard
@@ -40,54 +40,54 @@
 # thumbnails as intended. Real enforcement for AI crawlers is the scoped
 # User-agent groups in public/robots.txt.
 [[headers]]
-  for = "/photography/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-    X-Robots-Tag = "noai, noimageai"
+for = "/photography/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+X-Robots-Tag = "noai, noimageai"
 
 # Retired /music page — hard 404 via _redirects, plus an explicit noindex so
 # crawlers that already have the URL drop it from the index.
 [[headers]]
-  for = "/music"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow, noarchive"
+for = "/music"
+[headers.values]
+X-Robots-Tag = "noindex, nofollow, noarchive"
 
 # Music assets — orphaned with the page, but still reachable by direct link.
 # noindex keeps the images out of Google Images and the PDF out of web results.
 [[headers]]
-  for = "/music/*"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
-    X-Robots-Tag = "noindex, nofollow, noarchive"
+for = "/music/*"
+[headers.values]
+Cache-Control = "public, max-age=604800"
+X-Robots-Tag = "noindex, nofollow, noarchive"
 
 # Root-level images and media — cache for 1 week
 [[headers]]
-  for = "/*.webp"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
+for = "/*.webp"
+[headers.values]
+Cache-Control = "public, max-age=604800"
 
 [[headers]]
-  for = "/*.jpg"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
+for = "/*.jpg"
+[headers.values]
+Cache-Control = "public, max-age=604800"
 
 [[headers]]
-  for = "/*.jpeg"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
+for = "/*.jpeg"
+[headers.values]
+Cache-Control = "public, max-age=604800"
 
 [[headers]]
-  for = "/*.png"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
+for = "/*.png"
+[headers.values]
+Cache-Control = "public, max-age=604800"
 
 [[headers]]
-  for = "/*.pdf"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
+for = "/*.pdf"
+[headers.values]
+Cache-Control = "public, max-age=604800"
 
 # HTML — never cache, always fetch latest
 [[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+for = "/*.html"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"

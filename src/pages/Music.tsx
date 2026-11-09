@@ -19,10 +19,7 @@ const Music: React.FC = () => {
         <div className="flex flex-col items-center text-center mt-16">
           <h1 className="text-4xl font-bold mb-8 font-jost">Music</h1>
           <div className="flex justify-center flex-wrap">
-            <SocialMediaButton
-              url="/music/music_resume.pdf"
-              className="mb-4 md:mb-0"
-            >
+            <SocialMediaButton url="/music/music_resume.pdf" className="mb-4 md:mb-0">
               Music Resume
             </SocialMediaButton>
             <SocialMediaButton
@@ -47,46 +44,40 @@ const Music: React.FC = () => {
                 }`}
             >
               <p className="mb-4">
-                My name is Sean Finch, and I'm currently a third-year
-                Cybersecurity major and Music minor at Northeastern University.
+                My name is Sean Finch, and I'm currently a third-year Cybersecurity major and Music
+                minor at Northeastern University.
               </p>
               <p className="mb-4">
-                Music has been central to my life since childhood. I began
-                playing piano in first grade and discovered my passion for
-                singing as I grew older. Joining choir in eighth grade marked
-                the beginning of my vocal journey, one that continues to bring
-                me immense joy as I develop my craft.
+                Music has been central to my life since childhood. I began playing piano in first
+                grade and discovered my passion for singing as I grew older. Joining choir in eighth
+                grade marked the beginning of my vocal journey, one that continues to bring me
+                immense joy as I develop my craft.
               </p>
               <p className="mb-4">
-                Throughout high school at Fullerton Union High School, I
-                immersed myself in various ensembles: Bass Chorus, Vocal
-                Ensemble (three years), and the FUHS Fullertones. I served as
-                tenor section lead in Vocal Ensemble for two years and president
-                of the Fullertones. Beyond my school, I sang in the SCVA
-                Southern California Regional Honor Choir for three years and the
-                CASMEC California All-State Honor Choir for two years.
+                Throughout high school at Fullerton Union High School, I immersed myself in various
+                ensembles: Bass Chorus, Vocal Ensemble (three years), and the FUHS Fullertones. I
+                served as tenor section lead in Vocal Ensemble for two years and president of the
+                Fullertones. Beyond my school, I sang in the SCVA Southern California Regional Honor
+                Choir for three years and the CASMEC California All-State Honor Choir for two years.
               </p>
               <p className="mb-4">
-                During my first year at Northeastern, I expanded my musical
-                horizons by singing in St. Mary's College of California Glee and
-                Chamber Singers as a visiting student, and as a member of the UC
-                Berkeley University Chorus.
+                During my first year at Northeastern, I expanded my musical horizons by singing in
+                St. Mary's College of California Glee and Chamber Singers as a visiting student, and
+                as a member of the UC Berkeley University Chorus.
               </p>
               <p className="mb-4">
-                Currently, I'm singing in Northeastern University's Chorus and
-                Chamber Ensemble under the direction of Dr. Katherine Chan. I
-                also serve as Vice President (Spring 2025) and President (Fall
-                2025 - Spring 2026) of the Northeastern University Choral
+                Currently, I'm singing in Northeastern University's Chorus and Chamber Ensemble
+                under the direction of Dr. Katherine Chan. I also serve as Vice President (Spring
+                2025) and President (Fall 2025 - Spring 2026) of the Northeastern University Choral
                 Society.
               </p>
               <p className="mb-4">
-                Additional accomplishments include serving as Historian for the
-                Tri-M Music Honor Society Chapter #7054, earning the Music
-                Teachers' Association of California Certificate of Merit Level 5
-                in Piano, receiving a nomination for Orange County Artist of the
-                Year in Piano (2023), completing the Fullerton Union High School
-                Academy of the Arts Choral/Vocal Track, and receiving a voice
-                scholarship from Northeastern University's Music Department.
+                Additional accomplishments include serving as Historian for the Tri-M Music Honor
+                Society Chapter #7054, earning the Music Teachers' Association of California
+                Certificate of Merit Level 5 in Piano, receiving a nomination for Orange County
+                Artist of the Year in Piano (2023), completing the Fullerton Union High School
+                Academy of the Arts Choral/Vocal Track, and receiving a voice scholarship from
+                Northeastern University's Music Department.
               </p>
             </div>
           </div>
@@ -97,8 +88,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_10.jpg"
                 alt="Music Portrait"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Music Portrait</p>
             </div>
@@ -106,8 +96,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_9.jpg"
                 alt="CASMEC Honor Choir Concert 2023"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">CASMEC Honor Choir Concert 2023</p>
             </div>
@@ -115,8 +104,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_8.jpg"
                 alt="Winter Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Winter Concert 2022</p>
             </div>
@@ -124,8 +112,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_7.jpg"
                 alt="SCVA Honor Choir Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">SCVA Honor Choir Concert 2022</p>
             </div>
@@ -133,8 +120,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_6.jpg"
                 alt="Spring Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Spring Concert 2022</p>
             </div>
@@ -142,8 +128,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_5.jpg"
                 alt="Spring Concert 2022 Poster"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Spring Concert 2022 Poster</p>
             </div>
@@ -151,8 +136,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_4.jpg"
                 alt="CASMEC Honor Choir Concert 2022"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">CASMEC Honor Choir Concert 2022</p>
             </div>
@@ -160,8 +144,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_3.jpg"
                 alt="SCVA Honor Choir Concert 2021"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">SCVA Honor Choir Concert 2021</p>
             </div>
@@ -169,8 +152,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_2.jpg"
                 alt="Winter Concert 2019"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Winter Concert 2019</p>
             </div>
@@ -178,8 +160,7 @@ const Music: React.FC = () => {
               <img
                 src="/music/music_image_1.jpg"
                 alt="Fall Concert 2019"
-                className="object-cover h-full rounded-lg"
-                style={{ maxHeight: "400px", width: "auto" }}
+                className="object-cover h-full max-h-[400px] w-auto! rounded-lg"
               />
               <p className="legend">Fall Concert 2019</p>
             </div>

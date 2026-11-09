@@ -51,7 +51,7 @@ const Home: React.FC = () => {
             className="absolute inset-0 dot-grid-bg text-gray-200 dark:text-gray-700 opacity-50 pointer-events-none"
             aria-hidden="true"
           />
-          <p className="relative animate-fade-up mb-4 text-6xl md:text-7xl font-jost font-extrabold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent animate-gradient">
+          <p className="relative mb-4 text-6xl md:text-7xl font-jost font-extrabold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent animate-gradient">
             Sean Finch
           </p>
           {currentRole && (
@@ -65,7 +65,8 @@ const Home: React.FC = () => {
               {isActive && (
                 <span className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse-dot inline-block" />
               )}
-              {isActive ? "Currently at" : "Most recently at"} {currentRole.company} · {currentRole.title}
+              {isActive ? "Currently at" : "Most recently at"} {currentRole.company} ·{" "}
+              {currentRole.title}
             </div>
           )}
           <p className="relative mb-2 mx-4 text-base font-raleway font-bold">
@@ -105,19 +106,29 @@ const Home: React.FC = () => {
           {/* About Me card */}
           <div className="w-full flex justify-center px-4 mb-10">
             <div
-              onClick={() => { void navigate("/about"); window.scrollTo(0, 0); }}
+              onClick={() => {
+                void navigate("/about");
+                window.scrollTo(0, 0);
+              }}
               className={`group w-full max-w-xl overflow-hidden rounded-2xl border cursor-pointer
                 transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl
-                ${theme === "light"
-                  ? "border-slate-200 bg-white/60 hover:border-sky-300 hover:shadow-sky-100/70"
-                  : "border-white/10 bg-white/[0.05] hover:border-sky-500/40 hover:shadow-sky-900/30"}`}
+                ${
+                  theme === "light"
+                    ? "border-slate-200 bg-white/60 hover:border-sky-300 hover:shadow-sky-100/70"
+                    : "border-white/10 bg-white/[0.05] hover:border-sky-500/40 hover:shadow-sky-900/30"
+                }`}
             >
               {/* accent bar */}
               <div className="h-[3px] w-full bg-gradient-to-r from-sky-400 via-indigo-500 to-transparent" />
 
               <div className="flex items-center gap-5 p-6">
                 <img
-                  src="/pfp.webp"
+                  src="/pfp-176.webp"
+                  srcSet="/pfp-88.webp 88w, /pfp-176.webp 176w, /pfp-264.webp 264w"
+                  sizes="88px"
+                  width={88}
+                  height={88}
+                  decoding="async"
                   alt="Sean Finch"
                   className="w-[88px] h-[88px] rounded-full object-cover shrink-0
                     ring-2 ring-sky-400/40 group-hover:ring-sky-400/80
@@ -127,17 +138,17 @@ const Home: React.FC = () => {
                   <p className="font-monospace text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-1">
                     About Me
                   </p>
-                  <p className="font-jost font-extrabold text-lg leading-tight mb-2">
-                    Sean Finch
-                  </p>
+                  <p className="font-jost font-extrabold text-lg leading-tight mb-2">Sean Finch</p>
                   <div className="flex flex-wrap gap-1.5 mb-2.5">
                     {["Cybersecurity", "Music", "Homelab", "Photography"].map((tag) => (
                       <span
                         key={tag}
                         className={`text-[10px] font-monospace px-2 py-0.5 rounded-full border
-                          ${theme === "light"
-                            ? "border-slate-200 bg-slate-100 text-slate-600"
-                            : "border-white/10 bg-white/5 text-slate-400"}`}
+                          ${
+                            theme === "light"
+                              ? "border-slate-200 bg-slate-100 text-slate-600"
+                              : "border-white/10 bg-white/5 text-slate-400"
+                          }`}
                       >
                         {tag}
                       </span>
@@ -153,9 +164,7 @@ const Home: React.FC = () => {
 
           <div className="w-full flex flex-col items-center px-4">
             <div className="relative mb-6">
-              <h2 className="text-3xl font-bold font-jost">
-                Featured Experiences
-              </h2>
+              <h2 className="text-3xl font-bold font-jost">Featured Experiences</h2>
               <div className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-sky-400 to-transparent" />
             </div>
             {experiences
@@ -169,18 +178,11 @@ const Home: React.FC = () => {
                     window.scrollTo(0, 0);
                   }}
                 >
-                  <ExperienceCard
-                    {...exp}
-                    featured
-                    hideContent
-                    badgeLabel="FEATURED ROLE"
-                  />
+                  <ExperienceCard {...exp} featured hideContent badgeLabel="FEATURED ROLE" />
                 </div>
               ))}
             <div className="relative mb-6 mt-4">
-              <h2 className="text-3xl font-bold font-jost">
-                Featured Projects
-              </h2>
+              <h2 className="text-3xl font-bold font-jost">Featured Projects</h2>
               <div className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-green-500 to-transparent" />
             </div>
             {projects
@@ -194,12 +196,7 @@ const Home: React.FC = () => {
                     window.scrollTo(0, 0);
                   }}
                 >
-                  <ProjectCard
-                    {...proj}
-                    featured
-                    hideContent
-                    badgeLabel="FEATURED PROJECT"
-                  />
+                  <ProjectCard {...proj} featured hideContent badgeLabel="FEATURED PROJECT" />
                 </div>
               ))}
           </div>

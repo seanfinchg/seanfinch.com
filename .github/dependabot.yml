@@ -1,8 +1,5 @@
 # Weekly dependency update PRs into `dev`. Nothing auto-merges: every update goes
 # through the required checks like any other PR.
-#
-# NOTE: `target-branch: dev` errors until the `dev` branch exists (branch-workflow
-# Phase 3). Until then Dependabot reports a configuration error; that is expected.
 version: 2
 
 updates:
@@ -20,7 +17,14 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
+      # TypeScript 7 (the native port) ships no classic compiler API, and typescript-eslint
+      # 8.x needs it (peer typescript <6.1.0). Lift this when typescript-eslint supports 7.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
     groups:
+      # ESLint majors land together: eslint 10 alone breaks @eslint/js 9, and vice versa.
+      eslint:
+        patterns: ["eslint", "@eslint/*", "eslint-plugin-*", "typescript-eslint", "globals"]
       react:
         patterns: ["react", "react-dom", "@types/react", "@types/react-dom", "@types/react-*"]
       vite:
@@ -30,12 +34,33 @@ updates:
         dependency-type: development
         update-types: [minor, patch]
         exclude-patterns:
-          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+          [
+            "react",
+            "react-dom",
+            "@types/react*",
+            "vite",
+            "@vitejs/*",
+            "@tailwindcss/vite",
+            "tailwindcss",
+            "eslint",
+            "@eslint/*",
+            "eslint-plugin-*",
+            "typescript-eslint",
+            "globals",
+          ]
       production-minor-patch:
         dependency-type: production
         update-types: [minor, patch]
         exclude-patterns:
-          ["react", "react-dom", "@types/react*", "vite", "@vitejs/*", "@tailwindcss/vite", "tailwindcss"]
+          [
+            "react",
+            "react-dom",
+            "@types/react*",
+            "vite",
+            "@vitejs/*",
+            "@tailwindcss/vite",
+            "tailwindcss",
+          ]
 
   - package-ecosystem: github-actions
     directory: /
@@ -43,6 +68,8 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    cooldown:
+      default-days: 3
     groups:
       actions:
         patterns: ["*"]

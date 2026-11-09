@@ -118,18 +118,16 @@ const args = [
 try {
   execFileSync("exiftool", args, { encoding: "utf8", stdio: "inherit" });
 } catch (err) {
-  console.error("exiftool failed:", err.message);
+  console.error("exiftool failed:", err instanceof Error ? err.message : String(err));
   process.exit(1);
 }
 
 // Verify: re-read every file and fail loudly if any stripped tag survived.
 let leaks = 0;
 for (const name of originals) {
-  const out = execFileSync(
-    "exiftool",
-    ["-a", "-G1", "-s", path.join(PHOTO_DIR, name)],
-    { encoding: "utf8" },
-  );
+  const out = execFileSync("exiftool", ["-a", "-G1", "-s", path.join(PHOTO_DIR, name)], {
+    encoding: "utf8",
+  });
   const bad = out
     .split("\n")
     .filter((line) => {
@@ -137,7 +135,7 @@ for (const name of originals) {
       // "[Nikon] SerialNumber :" and those are already clean.
       const m = /^\[[^\]]+\]\s+(\S+)\s*:\s*(.*)$/.exec(line.trim());
       if (!m) return false;
-      const [, tag, value] = m;
+      const [, tag = "", value = ""] = m;
       if (!value.trim()) return false;
       return /serial|owner ?name|software(agent)?|shuttercount|poweruptime|imagenumber|documentid|instanceid|rawfilename|creatortool|historywhen/i.test(
         tag,
@@ -147,7 +145,7 @@ for (const name of originals) {
   if (bad.length) {
     leaks++;
     console.error(`  LEAK in ${name}:`);
-    bad.forEach((b) => console.error(`    ${b}`));
+    for (const b of bad) console.error(`    ${b}`);
   }
 }
 

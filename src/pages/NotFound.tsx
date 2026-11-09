@@ -39,12 +39,8 @@ const NotFound: React.FC = () => {
     <div
       className={`flex justify-center w-full flex-col items-center text-center ${theme === "light" ? "bg-light-mode text-ultra-dark-mode" : "bg-dark-mode text-light-mode"}`}
     >
-      <p className="mt-20 mb-12 text-7xl font-jost font-extrabold">
-        Error 404 - Page Not Found
-      </p>
-      <p className="mb-4 mx-4 font-jost font-bold">
-        The page you are looking for does not exist
-      </p>
+      <p className="mt-20 mb-12 text-7xl font-jost font-extrabold">Error 404 - Page Not Found</p>
+      <p className="mb-4 mx-4 font-jost font-bold">The page you are looking for does not exist</p>
       <HomeButton>
         <FaArrowLeft className="mr-2" />
         Go back to safety

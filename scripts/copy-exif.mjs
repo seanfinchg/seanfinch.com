@@ -29,16 +29,16 @@ for (const file of srcFiles) {
 
   try {
     await sharp(srcPath)
-      .rotate()           // Apply EXIF orientation to pixels, then strip orientation tag
+      .rotate() // Apply EXIF orientation to pixels, then strip orientation tag
       .webp({ quality: 85 })
-      .withMetadata()     // Keep all other EXIF (aperture, ISO, shutter, date, etc.)
+      .withMetadata() // Keep all other EXIF (aperture, ISO, shutter, date, etc.)
       .toFile(destPath + ".tmp");
 
     fs.renameSync(destPath + ".tmp", destPath);
     console.log(`  OK: ${file} → ${base}.webp`);
     converted++;
   } catch (err) {
-    console.error(`  FAIL: ${file} — ${err.message}`);
+    console.error(`  FAIL: ${file} — ${err instanceof Error ? err.message : String(err)}`);
     if (fs.existsSync(destPath + ".tmp")) fs.unlinkSync(destPath + ".tmp");
     failed++;
   }
@@ -58,20 +58,23 @@ if (converted > 0) {
 // Spot-check: verify EXIF is readable in first output file
 console.log("\n--- EXIF spot-check on first output file ---");
 import exifr from "exifr";
-const first = srcFiles.find(f => f.toLowerCase().endsWith(".jpg") || f.toLowerCase().endsWith(".jpeg"));
+const first = srcFiles.find(
+  (f) => f.toLowerCase().endsWith(".jpg") || f.toLowerCase().endsWith(".jpeg"),
+);
 if (first) {
   const base = path.basename(first, path.extname(first));
   const check = path.join(DEST, base + ".webp");
   try {
+    /** @type {unknown} */
     const data = await exifr.parse(check, {
-      pick: ["Make", "Model", "FNumber", "ExposureTime", "ISO", "DateTimeOriginal", "FocalLength"]
+      pick: ["Make", "Model", "FNumber", "ExposureTime", "ISO", "DateTimeOriginal", "FocalLength"],
     });
-    if (data && Object.keys(data).length > 0) {
+    if (typeof data === "object" && data !== null && Object.keys(data).length > 0) {
       console.log("EXIF found:", JSON.stringify(data, null, 2));
     } else {
       console.log("WARNING: No EXIF data found in output WebP — sharp may not be embedding it.");
     }
   } catch (e) {
-    console.log("ERROR reading back EXIF:", e.message);
+    console.log("ERROR reading back EXIF:", e instanceof Error ? e.message : String(e));
   }
 }

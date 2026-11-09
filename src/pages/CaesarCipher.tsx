@@ -31,22 +31,22 @@ export default function CaesarCipher(): JSX.Element {
       return text
         .split("")
         .map((char) => {
-        // Only shift letters
-        if (/[a-zA-Z]/.test(char)) {
-          const isUpper = char === char.toUpperCase();
-          const base = isUpper ? 65 : 97; // ASCII 'A' or 'a'
-          const charCode = char.charCodeAt(0);
-          // Add 26 before modulo to handle negative shifts correctly
-          const shifted = ((charCode - base + shiftAmount + 26) % 26) + base;
-          let result = String.fromCharCode(shifted);
+          // Only shift letters
+          if (/[a-zA-Z]/.test(char)) {
+            const isUpper = char === char.toUpperCase();
+            const base = isUpper ? 65 : 97; // ASCII 'A' or 'a'
+            const charCode = char.charCodeAt(0);
+            // Add 26 before modulo to handle negative shifts correctly
+            const shifted = ((charCode - base + shiftAmount + 26) % 26) + base;
+            let result = String.fromCharCode(shifted);
 
-          // Apply capitalization option
-          if (!keepCapitalization) {
-            result = result.toLowerCase();
+            // Apply capitalization option
+            if (!keepCapitalization) {
+              result = result.toLowerCase();
+            }
+
+            return result;
           }
-
-          return result;
-        }
           // Keep or remove non-letters based on option
           return keepPunctuation ? char : "";
         })
@@ -56,16 +56,10 @@ export default function CaesarCipher(): JSX.Element {
   );
 
   // Compute encoded text
-  const encoded = useMemo(
-    () => caesarShift(inputText, shift),
-    [inputText, shift, caesarShift],
-  );
+  const encoded = useMemo(() => caesarShift(inputText, shift), [inputText, shift, caesarShift]);
 
   // Compute decoded text (negative shift)
-  const decoded = useMemo(
-    () => caesarShift(inputText, -shift),
-    [inputText, shift, caesarShift],
-  );
+  const decoded = useMemo(() => caesarShift(inputText, -shift), [inputText, shift, caesarShift]);
 
   // Brute force - generate all possible shifts
   const bruteForceResults = useMemo(() => {
@@ -86,10 +80,14 @@ export default function CaesarCipher(): JSX.Element {
         await navigator.clipboard.writeText(text);
         if (type === "encoded") {
           setCopiedEncoded(true);
-          setTimeout(() => { setCopiedEncoded(false); }, 2000);
+          setTimeout(() => {
+            setCopiedEncoded(false);
+          }, 2000);
         } else if (type === "decoded") {
           setCopiedDecoded(true);
-          setTimeout(() => { setCopiedDecoded(false); }, 2000);
+          setTimeout(() => {
+            setCopiedDecoded(false);
+          }, 2000);
         }
         toast.success("Copied to clipboard");
       } catch {
@@ -100,15 +98,11 @@ export default function CaesarCipher(): JSX.Element {
   );
 
   return (
-    <ToolsWrapper
-      backUrl="/projects/cipher-tools"
-      backLabel="Back to Cipher Tools"
-    >
+    <ToolsWrapper backUrl="/projects/cipher-tools" backLabel="Back to Cipher Tools">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Caesar Cipher Encoder/Decoder</h1>
         <p className="text-muted-foreground">
-          Encode and decode text using the classic Caesar cipher with adjustable
-          shift values
+          Encode and decode text using the classic Caesar cipher with adjustable shift values
         </p>
       </div>
 
@@ -126,7 +120,9 @@ export default function CaesarCipher(): JSX.Element {
                   id="input-text"
                   placeholder="Enter your text here..."
                   value={inputText}
-                  onChange={(e) => { setInputText(e.target.value); }}
+                  onChange={(e) => {
+                    setInputText(e.target.value);
+                  }}
                   rows={8}
                   className="font-mono"
                 />
@@ -146,7 +142,9 @@ export default function CaesarCipher(): JSX.Element {
                   max={25}
                   step={1}
                   value={[shift]}
-                  onValueChange={(value) => { if (value[0] !== undefined) setShift(value[0]); }}
+                  onValueChange={(value) => {
+                    if (value[0] !== undefined) setShift(value[0]);
+                  }}
                   className="w-full"
                 />
                 <Input
@@ -168,14 +166,11 @@ export default function CaesarCipher(): JSX.Element {
                   <Checkbox
                     id="keep-caps"
                     checked={keepCapitalization}
-                    onCheckedChange={(checked) =>
-                      { setKeepCapitalization(checked); }
-                    }
+                    onCheckedChange={(checked) => {
+                      setKeepCapitalization(checked);
+                    }}
                   />
-                  <Label
-                    htmlFor="keep-caps"
-                    className="cursor-pointer text-sm font-normal"
-                  >
+                  <Label htmlFor="keep-caps" className="cursor-pointer text-sm font-normal">
                     Keep Capitalization
                   </Label>
                 </div>
@@ -183,14 +178,11 @@ export default function CaesarCipher(): JSX.Element {
                   <Checkbox
                     id="keep-punct"
                     checked={keepPunctuation}
-                    onCheckedChange={(checked) =>
-                      { setKeepPunctuation(checked); }
-                    }
+                    onCheckedChange={(checked) => {
+                      setKeepPunctuation(checked);
+                    }}
                   />
-                  <Label
-                    htmlFor="keep-punct"
-                    className="cursor-pointer text-sm font-normal"
-                  >
+                  <Label htmlFor="keep-punct" className="cursor-pointer text-sm font-normal">
                     Keep Punctuation & Spaces
                   </Label>
                 </div>
@@ -215,7 +207,9 @@ export default function CaesarCipher(): JSX.Element {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => { void copyToClipboard(encoded, "encoded"); }}
+                    onClick={() => {
+                      void copyToClipboard(encoded, "encoded");
+                    }}
                     disabled={!encoded}
                   >
                     {copiedEncoded ? (
@@ -235,9 +229,7 @@ export default function CaesarCipher(): JSX.Element {
                     </div>
                   ) : (
                     <div className="flex min-h-[200px] items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
-                      <p className="text-muted-foreground">
-                        Enter text to see encoded result
-                      </p>
+                      <p className="text-muted-foreground">Enter text to see encoded result</p>
                     </div>
                   )}
                 </CardContent>
@@ -251,7 +243,9 @@ export default function CaesarCipher(): JSX.Element {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => { void copyToClipboard(decoded, "decoded"); }}
+                    onClick={() => {
+                      void copyToClipboard(decoded, "decoded");
+                    }}
                     disabled={!decoded}
                   >
                     {copiedDecoded ? (
@@ -271,9 +265,7 @@ export default function CaesarCipher(): JSX.Element {
                     </div>
                   ) : (
                     <div className="flex min-h-[200px] items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
-                      <p className="text-muted-foreground">
-                        Enter text to see decoded result
-                      </p>
+                      <p className="text-muted-foreground">Enter text to see decoded result</p>
                     </div>
                   )}
                 </CardContent>
@@ -297,9 +289,7 @@ export default function CaesarCipher(): JSX.Element {
                           className="flex items-start gap-3 rounded-lg border bg-gray-50 p-3 dark:bg-gray-900"
                         >
                           <div className="flex min-w-[60px] flex-col items-center">
-                            <span className="text-xs font-medium text-muted-foreground">
-                              Shift
-                            </span>
+                            <span className="text-xs font-medium text-muted-foreground">Shift</span>
                             <span className="text-lg font-bold text-rose-600 dark:text-rose-400">
                               {shiftVal}
                             </span>
@@ -312,7 +302,9 @@ export default function CaesarCipher(): JSX.Element {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => { void copyToClipboard(result, "brute"); }}
+                            onClick={() => {
+                              void copyToClipboard(result, "brute");
+                            }}
                           >
                             <Copy className="h-4 w-4" />
                           </Button>
@@ -365,15 +357,13 @@ export default function CaesarCipher(): JSX.Element {
                 <h4 className="mb-2 font-semibold">Security Best Practices</h4>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div>
-                    ⚠️ <strong>Not secure for real-world encryption</strong> -
-                    Caesar cipher is easily cracked with brute force
+                    ⚠️ <strong>Not secure for real-world encryption</strong> - Caesar cipher is
+                    easily cracked with brute force
                   </div>
                   <div>• Only 25 possible keys (very weak)</div>
                   <div>• Vulnerable to frequency analysis</div>
                   <div>• Use for educational purposes only</div>
-                  <div>
-                    • For real security, use modern encryption (AES, RSA)
-                  </div>
+                  <div>• For real security, use modern encryption (AES, RSA)</div>
                 </div>
               </div>
               <div>
@@ -390,8 +380,8 @@ export default function CaesarCipher(): JSX.Element {
           </div>
           <div className="border-t pt-4">
             <p className="text-sm text-muted-foreground">
-              All encryption happens locally in your browser. No data is sent to
-              external servers, ensuring complete privacy and security.
+              All encryption happens locally in your browser. No data is sent to external servers,
+              ensuring complete privacy and security.
             </p>
           </div>
         </CardContent>

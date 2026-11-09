@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { photos, PHOTOS_PER_PAGE, photoThumb } from "../data/photos";
+import { canPrefetch } from "../utils/idle";
 import { useMediaQuery } from "react-responsive";
 
 interface NavLink {
@@ -23,7 +24,7 @@ const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   const photoPreloaded = useRef(false);
 
   const handlePhotoHover = (): void => {
-    if (photoPreloaded.current) return;
+    if (photoPreloaded.current || !canPrefetch()) return;
     photoPreloaded.current = true;
     photos.slice(0, PHOTOS_PER_PAGE).forEach((f) => {
       const img = new Image();
@@ -35,8 +36,7 @@ const Links: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
     <>
       {links.map((link) => {
         const isActive =
-          location.pathname === link.to ||
-          (isHomelabPage && link.to === "/projects");
+          location.pathname === link.to || (isHomelabPage && link.to === "/projects");
         return (
           <Link
             key={link.to}
@@ -83,12 +83,20 @@ const Navbar: React.FC = () => {
       <div className="flex items-center w-full">
         <button
           className="text-5xl md:invisible opacity-60 hover:opacity-90 transition-opacity"
-          onClick={() => { setIsOpen(!isOpen); }}
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
         >
           ☰
         </button>
         <div className={getStyleForMobileNavbar()}>
-          {(isOpen || !isMobile) && <Links onClick={() => { setIsOpen(false); }} />}
+          {(isOpen || !isMobile) && (
+            <Links
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

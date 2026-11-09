@@ -19,16 +19,11 @@ export default function FeaturedCard({
   const styles = {
     project: {
       border:
-        theme === "light"
-          ? "border-green-500 bg-green-50"
-          : "border-green-400 bg-green-900/20",
+        theme === "light" ? "border-green-500 bg-green-50" : "border-green-400 bg-green-900/20",
       badge: "bg-green-500",
     },
     experience: {
-      border:
-        theme === "light"
-          ? "border-blue-500 bg-blue-50"
-          : "border-blue-400 bg-blue-900/20",
+      border: theme === "light" ? "border-blue-500 bg-blue-50" : "border-blue-400 bg-blue-900/20",
       badge: "bg-blue-500",
     },
   }[type];

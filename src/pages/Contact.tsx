@@ -21,8 +21,7 @@ const Contact: React.FC = () => {
   const cardBase = `flex-1 group flex flex-col items-center p-8 rounded-2xl border backdrop-blur-sm
     cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl`;
 
-  const cardLight =
-    "border-slate-200 bg-white/50 hover:border-sky-300 hover:shadow-sky-100/60";
+  const cardLight = "border-slate-200 bg-white/50 hover:border-sky-300 hover:shadow-sky-100/60";
   const cardDark =
     "border-white/10 bg-white/[0.04] hover:border-sky-500/40 hover:shadow-sky-900/20";
 

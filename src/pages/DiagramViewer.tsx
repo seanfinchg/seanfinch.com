@@ -13,9 +13,7 @@ const DiagramViewer: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Find the Homelab project
-  const project = projects.find((p) =>
-    p.title.toLowerCase().includes("homelab"),
-  );
+  const project = projects.find((p) => p.title.toLowerCase().includes("homelab"));
 
   const diagram = project?.diagrams?.find((d) => d.name === diagramName);
 
@@ -51,7 +49,9 @@ const DiagramViewer: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <button
-            onClick={() => { void navigate("/projects/homelab"); }}
+            onClick={() => {
+              void navigate("/projects/homelab");
+            }}
             className="text-sky-500 hover:text-sky-400 font-monospace mb-2 transition-colors"
           >
             ← Back to Homelab
@@ -64,10 +64,9 @@ const DiagramViewer: React.FC = () => {
 
         {/* Diagram iframe container */}
         <div
-          className={`relative w-full rounded-xl border ${
+          className={`relative w-full h-[calc(100vh-250px)] min-h-[600px] rounded-xl border ${
             theme === "light" ? "border-slate-200" : "border-white/10"
           }`}
-          style={{ height: "calc(100vh - 250px)", minHeight: "600px" }}
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -77,26 +76,27 @@ const DiagramViewer: React.FC = () => {
           <iframe
             key={theme}
             src={viewerUrl}
-            className="w-full h-full rounded-lg"
+            className="w-full h-full rounded-lg border-0"
             title={diagram.label}
-            onLoad={() => { setLoading(false); }}
-            style={{ border: "none" }}
+            onLoad={() => {
+              setLoading(false);
+            }}
           />
         </div>
 
         {/* Navigation to other diagrams if available */}
         {project.diagrams && project.diagrams.length > 1 && (
           <div className="mt-6">
-            <h3 className="text-xl font-bold font-jost mb-3">
-              Other Diagrams:
-            </h3>
+            <h3 className="text-xl font-bold font-jost mb-3">Other Diagrams:</h3>
             <div className="flex flex-wrap gap-3">
               {project.diagrams
                 .filter((d) => d.name !== diagramName)
                 .map((d) => (
                   <button
                     key={d.name}
-                    onClick={() => { void navigate(`/projects/homelab/${d.name}`); }}
+                    onClick={() => {
+                      void navigate(`/projects/homelab/${d.name}`);
+                    }}
                     className="bg-sky-500 hover:bg-sky-400 text-white px-4 py-2 rounded-lg font-monospace transition-colors"
                   >
                     {d.label}

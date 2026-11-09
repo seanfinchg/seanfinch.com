@@ -20,11 +20,11 @@ Every commit is kept, so history shows what changed and when, and promotion PRs 
 
 ## Branches
 
-| Branch  | Purpose                         | How changes get in                         | Netlify                                  |
-| ------- | ------------------------------- | ------------------------------------------ | ---------------------------------------- |
-| `dev`   | Integration. Base for all work  | PR from a `<type>/<slug>` branch, green CI | Branch deploy, noindex                   |
-| `stage` | Pre-release check               | PR from `dev` only, green CI               | Branch deploy, noindex                   |
-| `prod`  | What seanfinch.com serves       | PR from `stage` only, green CI             | Production deploy, tagged `YYYY.MM.N`    |
+| Branch  | Purpose                        | How changes get in                         | Netlify                               |
+| ------- | ------------------------------ | ------------------------------------------ | ------------------------------------- |
+| `dev`   | Integration. Base for all work | PR from a `<type>/<slug>` branch, green CI | Branch deploy, noindex                |
+| `stage` | Pre-release check              | PR from `dev` only, green CI               | Branch deploy, noindex                |
+| `prod`  | What seanfinch.com serves      | PR from `stage` only, green CI             | Production deploy, tagged `YYYY.MM.N` |
 
 Every PR also gets a Deploy Preview (noindex). Force-pushing and deleting `dev`, `stage`
 and `prod` are blocked once the rulesets are on.
@@ -97,14 +97,14 @@ Fixes #12
 
 CI (`.github/workflows/ci.yml`) runs on every PR and on pushes to `dev`, `stage` and `prod`:
 
-| Job             | What it does                                                        | Blocks?                  |
-| --------------- | ------------------------------------------------------------------- | ------------------------ |
-| `check`         | `npm ci`, `npm run check`, `npm run security:headers`, `git diff --check` | Always             |
-| `branch-flow`   | Only `dev` → `stage` and `stage` → `prod`                            | Always                   |
-| `secrets`       | gitleaks over the full history                                      | Always                   |
-| `security-code` | Semgrep over `src`, `scripts`, `vite.config.ts`                     | `stage`/`prod`, not `dev` |
-| `security-deps` | OSV-Scanner over `package-lock.json`                                | `stage`/`prod`, not `dev` |
-| `description`   | PR body is short and bulleted (separate workflow)                   | Always                   |
+| Job             | What it does                                                              | Blocks?                   |
+| --------------- | ------------------------------------------------------------------------- | ------------------------- |
+| `check`         | `npm ci`, `npm run check`, `npm run security:headers`, `git diff --check` | Always                    |
+| `branch-flow`   | Only `dev` → `stage` and `stage` → `prod`                                 | Always                    |
+| `secrets`       | gitleaks over the full history                                            | Always                    |
+| `security-code` | Semgrep over `src`, `scripts`, `vite.config.ts`                           | `stage`/`prod`, not `dev` |
+| `security-deps` | OSV-Scanner over `package-lock.json`                                      | `stage`/`prod`, not `dev` |
+| `description`   | PR body is short and bulleted (separate workflow)                         | Always                    |
 
 On `dev` the two security scans only warn, so findings don't block day-to-day work. They
 must pass before a promotion to `stage` or `prod`. Accepted, unreachable vulnerabilities

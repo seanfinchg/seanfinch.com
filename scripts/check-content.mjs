@@ -31,7 +31,12 @@ const BLOCKLIST = ".github/content-blocklist.txt"; // hashes only
 const ALLOWLIST = ".github/content-policy-allowlist.txt"; // "<blob sha> <path>"
 const IMAGE = /\.(jpe?g|webp|png|tiff?|heic)$/i;
 // Files that legitimately contain the patterns this script looks for.
-const SELF = new Set(["scripts/check-content.mjs", "scripts/check-content.test.mjs", BLOCKLIST, ALLOWLIST]);
+const SELF = new Set([
+  "scripts/check-content.mjs",
+  "scripts/check-content.test.mjs",
+  BLOCKLIST,
+  ALLOWLIST,
+]);
 const SKIP = /(^|\/)(package-lock\.json|node_modules\/)|\.(pdf|woff2?|ttf|ico|mp3|wav|zip)$/i;
 
 const ALLOWED_EMAIL = [
@@ -44,8 +49,16 @@ const ALLOWED_EMAIL = [
 const STREET_SUFFIX =
   "St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ln|Lane|Ct|Court|Way|Pl|Place|Ter|Terrace|Pkwy|Parkway|Cir|Circle|Hwy|Highway";
 const RULES = [
-  { name: "street address", re: new RegExp(`\\b\\d{1,5}\\s+(?:[NSEW]\\.?\\s+)?(?:[A-Z][a-z]+\\s+){1,3}(?:${STREET_SUFFIX})\\b\\.?`) },
-  { name: "phone number", re: /(?<![\d.])(?:\+?1[\s.-]?)?\(?[2-9]\d{2}\)?[\s.-]\d{3}[\s.-]\d{4}(?![\d.])/ },
+  {
+    name: "street address",
+    re: new RegExp(
+      `\\b\\d{1,5}\\s+(?:[NSEW]\\.?\\s+)?(?:[A-Z][a-z]+\\s+){1,3}(?:${STREET_SUFFIX})\\b\\.?`,
+    ),
+  },
+  {
+    name: "phone number",
+    re: /(?<![\d.])(?:\+?1[\s.-]?)?\(?[2-9]\d{2}\)?[\s.-]\d{3}[\s.-]\d{4}(?![\d.])/,
+  },
   { name: "SSN", re: /\b(?!000|666|9\d\d)\d{3}-(?!00)\d{2}-(?!0000)\d{4}\b/ },
   {
     name: "confidential marker",
@@ -53,16 +66,25 @@ const RULES = [
   },
 ];
 
+/** @param {string} v */
 const hash = (v) => createHash("sha256").update(v).digest("hex").slice(0, 16);
 const loadHashes = () =>
   new Set(
     existsSync(BLOCKLIST)
-      ? readFileSync(BLOCKLIST, "utf8").split(/\r?\n/).map((l) => l.trim()).filter((l) => /^[0-9a-f]{16}$/.test(l))
+      ? readFileSync(BLOCKLIST, "utf8")
+          .split(/\r?\n/)
+          .map((l) => l.trim())
+          .filter((l) => /^[0-9a-f]{16}$/.test(l))
       : [],
   );
 const PRIVATE = loadHashes();
 
 /** Returns the reason a line is blocked, or null. */
+/**
+ * @param {string} line
+ * @param {Set<string>} [privateHashes]
+ * @returns {string | null}
+ */
 export const lineProblem = (line, privateHashes = PRIVATE) => {
   for (const { name, re } of RULES) if (re.test(line)) return name;
   for (const m of line.matchAll(/[\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,}/gi)) {
@@ -70,9 +92,11 @@ export const lineProblem = (line, privateHashes = PRIVATE) => {
   }
   const words = line.toLowerCase().match(/[a-z0-9]+/g) ?? [];
   for (let i = 0; i < words.length; i++) {
-    if (privateHashes.has(hash(words[i]))) return "private term";
-    if (i > 0 && privateHashes.has(hash(`${words[i - 1]} ${words[i]}`))) return "private term";
-    if (i > 1 && privateHashes.has(hash(`${words[i - 2]} ${words[i - 1]} ${words[i]}`))) return "private term";
+    const word = words[i] ?? "";
+    if (privateHashes.has(hash(word))) return "private term";
+    if (i > 0 && privateHashes.has(hash(`${words[i - 1] ?? ""} ${word}`))) return "private term";
+    if (i > 1 && privateHashes.has(hash(`${words[i - 2] ?? ""} ${words[i - 1] ?? ""} ${word}`)))
+      return "private term";
   }
   return null;
 };
@@ -85,17 +109,27 @@ const AI = "claude|anthropic|copilot|chatgpt|openai|gemini|cursor|codeium|windsu
 const AI_NAME = new RegExp(`\\b(${AI})\\b`, "i");
 const ATTRIBUTION = [
   new RegExp(`^\\s*co-authored-by:.*\\b(${AI})\\b`, "i"),
-  new RegExp(`\\b(generated|written|made|created|authored|built)\\s+(with|by|using|in)\\s+\\[?(${AI})\\b`, "i"),
+  new RegExp(
+    `\\b(generated|written|made|created|authored|built)\\s+(with|by|using|in)\\s+\\[?(${AI})\\b`,
+    "i",
+  ),
   /\bnoreply@anthropic\.com\b/i,
   /claude\.(com|ai)\/(claude-)?code/i,
   /\u{1F916}/u,
 ];
 
 /** Returns "AI attribution" if a message line credits an AI tool, or null. */
+/** @param {string} line */
 export const attributionProblem = (line) =>
   ATTRIBUTION.some((re) => re.test(line)) ? "AI attribution" : null;
 
+/** @type {string[]} */
 const problems = [];
+/**
+ * @param {string} where
+ * @param {string} text
+ * @param {{ message?: boolean }} [options]
+ */
 const scanText = (where, text, { message = false } = {}) => {
   text.split(/\r?\n/).forEach((line, i) => {
     const why = (message && attributionProblem(line)) || lineProblem(line);
@@ -104,41 +138,83 @@ const scanText = (where, text, { message = false } = {}) => {
   });
 };
 
-const git = (args, { allowFailure = false, buffer = false } = {}) => {
-  const r = spawnSync("git", args, { encoding: buffer ? "buffer" : "utf8", maxBuffer: 256 * 1024 * 1024 });
+const MAX_BUFFER = 256 * 1024 * 1024;
+/**
+ * Runs git and returns stdout as text. Exits on failure unless `allowFailure`.
+ * @param {string[]} args
+ * @param {{ allowFailure?: boolean }} [options]
+ * @returns {string}
+ */
+const git = (args, { allowFailure = false } = {}) => {
+  const r = spawnSync("git", args, { encoding: "utf8", maxBuffer: MAX_BUFFER });
   if (r.status !== 0) {
-    if (allowFailure) return buffer ? Buffer.alloc(0) : "";
-    process.stderr.write(String(r.stderr));
+    if (allowFailure) return "";
+    process.stderr.write(r.stderr);
     process.exit(2);
   }
   return r.stdout;
 };
+/**
+ * Runs git and returns stdout as bytes, or an empty buffer on failure.
+ * @param {string[]} args
+ * @returns {Buffer}
+ */
+const gitBytes = (args) => {
+  const r = spawnSync("git", args, { maxBuffer: MAX_BUFFER });
+  return r.status === 0 ? r.stdout : Buffer.alloc(0);
+};
+/** @param {string} t */
 const lines = (t) => t.split(/\r?\n/).filter((l) => l !== "");
+/** @param {string} diff */
 const addedLines = (diff) =>
-  lines(diff).filter((l) => l.startsWith("+") && !l.startsWith("+++")).map((l) => l.slice(1)).join("\n");
+  lines(diff)
+    .filter((l) => l.startsWith("+") && !l.startsWith("+++"))
+    .map((l) => l.slice(1))
+    .join("\n");
 
+/**
+ * @param {string} text
+ * @returns {Map<string, string>} path -> approved blob sha
+ */
 const parseAllowlist = (text) =>
   new Map(
     lines(text)
       .filter((l) => !l.startsWith("#"))
       .map((l) => {
         const [blob = "", ...p] = l.trim().split(" ");
-        return [p.join(" "), blob];
+        return /** @type {[string, string]} */ ([p.join(" "), blob]);
       }),
   );
 
-let exifr = null;
+/** @type {typeof import("exifr").gps | null} */
+let exifrGps = null;
+/** @param {Buffer} buf */
 const imageHasGps = async (buf) => {
   if (buf.length === 0) return false;
-  exifr ??= (await import("exifr")).default;
+  exifrGps ??= (await import("exifr")).default.gps;
   try {
-    const gps = await exifr.gps(buf);
-    return gps != null && (gps.latitude != null || gps.longitude != null);
+    // exifr resolves undefined when there is no GPS block, despite its typings.
+    const gps = /** @type {{ latitude?: number, longitude?: number } | undefined} */ (
+      await exifrGps(buf)
+    );
+    return gps?.latitude != null || gps?.longitude != null;
   } catch {
     return false;
   }
 };
 
+/**
+ * @typedef {object} FileSource
+ * @property {(path: string) => string} blobOf
+ * @property {(path: string) => string} diffOf
+ * @property {(path: string) => Buffer} bytesOf
+ * @property {Map<string, string>} allowed
+ */
+/**
+ * @param {string} where
+ * @param {string[]} files
+ * @param {FileSource} source
+ */
 const scanFiles = async (where, files, { blobOf, diffOf, bytesOf, allowed }) => {
   for (const path of files) {
     if (SELF.has(path) || SKIP.test(path)) continue;
@@ -146,19 +222,23 @@ const scanFiles = async (where, files, { blobOf, diffOf, bytesOf, allowed }) => 
     if (pinned !== undefined) {
       const blob = blobOf(path);
       if (blob === "" || blob === pinned) continue;
-      problems.push(`${where}: ${path} is an approved exception but its content changed; re-approve with \`allow\``);
+      problems.push(
+        `${where}: ${path} is an approved exception but its content changed; re-approve with \`allow\``,
+      );
       continue;
     }
     const why = lineProblem(path);
     if (why) problems.push(`${where}: file name ${path}: ${why}`);
     if (IMAGE.test(path)) {
-      if (await imageHasGps(bytesOf(path))) problems.push(`${where}: ${path}: image contains GPS coordinates`);
+      if (await imageHasGps(bytesOf(path)))
+        problems.push(`${where}: ${path}: image contains GPS coordinates`);
       continue;
     }
     scanText(`${where} ${path}`, addedLines(diffOf(path)));
   }
 };
 
+/** @param {string} sha */
 const scanCommit = async (sha) => {
   const short = sha.slice(0, 7);
   const allowed = parseAllowlist(git(["show", `${sha}:${ALLOWLIST}`], { allowFailure: true }));
@@ -168,37 +248,63 @@ const scanCommit = async (sha) => {
   if (AI_NAME.test(git(["log", "-1", "--format=%an <%ae>%n%cn <%ce>", sha]))) {
     problems.push(`commit ${short} author/committer: AI identity`);
   }
-  const files = lines(git(["diff-tree", "--no-commit-id", "--name-only", "--diff-filter=ACMR", "-r", "--root", "-m", "--first-parent", sha]));
+  const files = lines(
+    git([
+      "diff-tree",
+      "--no-commit-id",
+      "--name-only",
+      "--diff-filter=ACMR",
+      "-r",
+      "--root",
+      "-m",
+      "--first-parent",
+      sha,
+    ]),
+  );
   await scanFiles(`commit ${short}`, files, {
-    blobOf: (p) => git(["rev-parse", "--verify", "--quiet", `${sha}:${p}`], { allowFailure: true }).trim(),
-    diffOf: (p) => git(["show", "--format=", "--no-color", "-U0", "-m", "--first-parent", sha, "--", p]),
-    bytesOf: (p) => git(["show", `${sha}:${p}`], { allowFailure: true, buffer: true }),
+    blobOf: (p) =>
+      git(["rev-parse", "--verify", "--quiet", `${sha}:${p}`], { allowFailure: true }).trim(),
+    diffOf: (p) =>
+      git(["show", "--format=", "--no-color", "-U0", "-m", "--first-parent", sha, "--", p]),
+    bytesOf: (p) => gitBytes(["show", `${sha}:${p}`]),
     allowed,
   });
 };
 
 const [mode, ...args] = process.argv.slice(2);
 const ZERO = /^0+$/;
-const isMain = process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
+const isMain =
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMain) {
   switch (mode) {
     case "staged": {
       const allowed = parseAllowlist(git(["show", `:${ALLOWLIST}`], { allowFailure: true }));
-      await scanFiles("staged", lines(git(["diff", "--cached", "--name-only", "--diff-filter=ACMR"])), {
-        blobOf: (p) => git(["rev-parse", "--verify", "--quiet", `:${p}`], { allowFailure: true }).trim(),
-        diffOf: (p) => git(["diff", "--cached", "--no-color", "-U0", "--", p]),
-        bytesOf: (p) => git(["show", `:${p}`], { allowFailure: true, buffer: true }),
-        allowed,
-      });
+      await scanFiles(
+        "staged",
+        lines(git(["diff", "--cached", "--name-only", "--diff-filter=ACMR"])),
+        {
+          blobOf: (p) =>
+            git(["rev-parse", "--verify", "--quiet", `:${p}`], { allowFailure: true }).trim(),
+          diffOf: (p) => git(["diff", "--cached", "--no-color", "-U0", "--", p]),
+          bytesOf: (p) => gitBytes(["show", `:${p}`]),
+          allowed,
+        },
+      );
       break;
     }
     case "tree": {
       const allowed = parseAllowlist(existsSync(ALLOWLIST) ? readFileSync(ALLOWLIST, "utf8") : "");
-      const files = lines(git(["ls-files", "--cached", "--others", "--exclude-standard"])).filter((p) => existsSync(p));
+      const files = lines(git(["ls-files", "--cached", "--others", "--exclude-standard"])).filter(
+        (p) => existsSync(p),
+      );
       await scanFiles("tree", files, {
         blobOf: (p) => git(["hash-object", "--", p]).trim(),
-        diffOf: (p) => readFileSync(p, "utf8").split(/\r?\n/).map((l) => `+${l}`).join("\n"),
+        diffOf: (p) =>
+          readFileSync(p, "utf8")
+            .split(/\r?\n/)
+            .map((l) => `+${l}`)
+            .join("\n"),
         bytesOf: (p) => readFileSync(p),
         allowed,
       });
@@ -206,13 +312,21 @@ if (isMain) {
     }
     case "msg":
       if (!args[0]) process.exit(2);
-      scanText("commit message", lines(readFileSync(args[0], "utf8")).filter((l) => !l.startsWith("#")).join("\n"), { message: true });
+      scanText(
+        "commit message",
+        lines(readFileSync(args[0], "utf8"))
+          .filter((l) => !l.startsWith("#"))
+          .join("\n"),
+        { message: true },
+      );
       break;
     case "push":
       for (const ref of lines(readFileSync(0, "utf8"))) {
         const [, localSha = "", , remoteSha = ""] = ref.split(" ");
         if (ZERO.test(localSha)) continue;
-        const range = ZERO.test(remoteSha) ? [localSha, "--not", "--remotes"] : [`${remoteSha}..${localSha}`];
+        const range = ZERO.test(remoteSha)
+          ? [localSha, "--not", "--remotes"]
+          : [`${remoteSha}..${localSha}`];
         for (const sha of lines(git(["rev-list", ...range]))) await scanCommit(sha);
       }
       break;
@@ -224,27 +338,43 @@ if (isMain) {
       scanText("text", readFileSync(0, "utf8"), { message: true });
       break;
     case "block": {
-      const term = args.join(" ").toLowerCase().match(/[a-z0-9]+/g) ?? [];
+      const term =
+        args
+          .join(" ")
+          .toLowerCase()
+          .match(/[a-z0-9]+/g) ?? [];
       if (term.length < 1 || term.length > 3) {
         process.stderr.write("block takes a word or a 2-3 word phrase\n");
         process.exit(2);
       }
       const hashes = loadHashes();
       hashes.add(hash(term.join(" ")));
-      writeFileSync(BLOCKLIST, `# Private terms the content policy blocks, as truncated SHA-256 hashes.\n# Add with: node scripts/check-content.mjs block "<term>"\n${[...hashes].sort().join("\n")}\n`);
+      writeFileSync(
+        BLOCKLIST,
+        `# Private terms the content policy blocks, as truncated SHA-256 hashes.\n# Add with: node scripts/check-content.mjs block "<term>"\n${[...hashes].sort().join("\n")}\n`,
+      );
       process.stdout.write(`Added 1 term (${hashes.size} total) to ${BLOCKLIST}\n`);
       break;
     }
     case "allow": {
       const allowed = parseAllowlist(existsSync(ALLOWLIST) ? readFileSync(ALLOWLIST, "utf8") : "");
-      for (const p of args) allowed.set(p.replaceAll("\\", "/"), git(["hash-object", "--", p]).trim());
-      const body = [...allowed].sort(([a], [b]) => a.localeCompare(b)).map(([p, b]) => `${b} ${p}`).join("\n");
-      writeFileSync(ALLOWLIST, `# Approved exceptions to the content policy. Edit only with \`check-content.mjs allow\`.\n${body}\n`);
+      for (const p of args)
+        allowed.set(p.replaceAll("\\", "/"), git(["hash-object", "--", p]).trim());
+      const body = [...allowed]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([p, b]) => `${b} ${p}`)
+        .join("\n");
+      writeFileSync(
+        ALLOWLIST,
+        `# Approved exceptions to the content policy. Edit only with \`check-content.mjs allow\`.\n${body}\n`,
+      );
       process.stdout.write(`Approved ${args.length} file(s) in ${ALLOWLIST}\n`);
       break;
     }
     default:
-      process.stderr.write("usage: check-content.mjs staged | msg <file> | push | range <a..b> | text | tree | block <term> | allow <files...>\n");
+      process.stderr.write(
+        "usage: check-content.mjs staged | msg <file> | push | range <a..b> | text | tree | block <term> | allow <files...>\n",
+      );
       process.exit(2);
   }
 
