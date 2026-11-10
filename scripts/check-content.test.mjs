@@ -30,6 +30,8 @@ test("blocks personal emails but allows site and noreply addresses", () => {
   assert.equal(lineProblem("contact@seanfinch.com", none), null);
   assert.equal(lineProblem("Co-Authored-By: Bot <noreply@example.com>", none), null);
   assert.equal(lineProblem("1234+bot@users.noreply.github.com", none), null);
+  assert.equal(lineProblem("Signed-off-by: dependabot[bot] <support@github.com>", none), null);
+  assert.equal(lineProblem("someone@github.com", none), "email address");
 });
 
 test("blocks private terms by hash, as words and phrases", () => {
