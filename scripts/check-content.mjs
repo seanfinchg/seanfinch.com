@@ -43,6 +43,7 @@ const ALLOWED_EMAIL = [
   /@seanfinch\.com$/i, // public site addresses
   /^noreply@/i,
   /@users\.noreply\.github\.com$/i,
+  /^support@github\.com$/i, // Dependabot's Signed-off-by trailer
   /@example\.(com|org)$/i,
 ];
 
